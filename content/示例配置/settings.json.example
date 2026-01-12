@@ -1,0 +1,78 @@
+{
+  "// 说明": "这是 Claude Code settings.json 的示例配置",
+
+  "permissions": {
+    "default_mode": "default",
+    "allow": [
+      "ReadFile",
+      "WriteFile",
+      "ExecuteBash",
+      "WebSearch",
+      "Grep",
+      "Glob"
+    ],
+    "ask": [
+      "DeleteFile",
+      "MoveFile"
+    ],
+    "deny": [
+      "**/.env*",
+      "**/config/secrets.*",
+      "**/*.key",
+      "**/*.pem",
+      "**/id_rsa*"
+    ],
+    "protected_paths": [
+      "package.json",
+      "package-lock.json",
+      "pnpm-lock.yaml",
+      "yarn.lock",
+      "tsconfig.json",
+      "next.config.js",
+      "prisma/schema.prisma",
+      ".github/workflows/**"
+    ]
+  },
+
+  "cost": {
+    "warning_threshold": 10.0,
+    "limit": 50.0,
+    "currency": "USD"
+  },
+
+  "model": {
+    "default": "sonnet",
+    "aliases": {
+      "fast": "haiku",
+      "balanced": "sonnet",
+      "powerful": "opus"
+    }
+  },
+
+  "output": {
+    "style": "detailed",
+    "verbose": false,
+    "show_tool_calls": true
+  },
+
+  "memory": {
+    "auto_compact_threshold": 100,
+    "max_context_files": 20
+  },
+
+  "git": {
+    "auto_stage": false,
+    "commit_message_template": "<type>(<scope>): <subject>\n\n<body>\n\n🤖 Generated with Claude Code\n\nCo-Authored-By: Claude <noreply@anthropic.com>"
+  },
+
+  "terminal": {
+    "multi_line_key": "Option+Enter",
+    "clear_on_exit": false
+  },
+
+  "hooks": {
+    "pre_tool_use": null,
+    "post_tool_use": null,
+    "on_error": null
+  }
+}

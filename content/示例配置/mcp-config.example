@@ -1,0 +1,62 @@
+{
+  "_comment": "MCP 服务器配置示例 - .mcp.json（项目共享，无令牌）",
+
+  "mcpServers": {
+    "github": {
+      "transport": "http",
+      "url": "https://github.mcp.api.anthropic.com",
+      "description": "GitHub 仓库访问 - PR, Issues, Code"
+    },
+
+    "postgres": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "description": "PostgreSQL 数据库查询和分析"
+    },
+
+    "filesystem": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/you/allowed/directory"
+      ],
+      "description": "文件系统访问（受限目录）"
+    },
+
+    "sentry": {
+      "transport": "http",
+      "url": "https://sentry.mcp.api.anthropic.com",
+      "description": "Sentry 错误监控和分析"
+    },
+
+    "slack": {
+      "transport": "http",
+      "url": "https://slack.mcp.api.anthropic.com",
+      "description": "Slack 团队通信"
+    },
+
+    "figma": {
+      "transport": "http",
+      "url": "https://figma.mcp.api.anthropic.com",
+      "description": "Figma 设计资源访问"
+    },
+
+    "notion": {
+      "transport": "http",
+      "url": "https://mcp.notion.com/mcp",
+      "description": "Notion 知识库访问"
+    }
+  },
+
+  "mcpSettings": {
+    "auto_reconnect": true,
+    "reconnect_delay": 5000,
+    "timeout": 30000
+  }
+}

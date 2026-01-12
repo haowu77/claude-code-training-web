@@ -1,0 +1,10399 @@
+# Claude Code 培训教程
+
+> 全面的 Claude Code 使用指南 - 从基础到高级
+>
+> 最后更新：2025年12月
+
+---
+
+## 📋 目录
+
+- [第一部分：基本操作](#第一部分基本操作)
+  - [1.1 安装和配置](#11-安装和配置)
+  - [1.2 IDE 集成](#12-ide-集成)
+  - [1.3 命令行基本使用](#13-命令行基本使用)
+  - [1.4 斜线命令完整指南](#14-斜线命令完整指南)
+- [第二部分：使用技巧](#第二部分使用技巧)
+  - [2.1 记忆系统深度解析](#21-记忆系统深度解析)
+  - [2.2 CLAUDE.md 文件详解](#22-claudemd-文件详解)
+  - [2.3 会话管理技巧](#23-会话管理技巧)
+  - [2.4 高效工作技巧](#24-高效工作技巧)
+- [第三部分：最佳实践](#第三部分最佳实践)
+  - [3.1 Plan Mode 详解](#31-plan-mode-详解)
+  - [3.2 权限模式管理](#32-权限模式管理)
+  - [3.3 MCP 服务器集成](#33-mcp-服务器集成)
+  - [3.4 Agent/Subagent 系统](#34-agentsubagent-系统)
+  - [3.5 Git 集成和并行开发](#35-git-集成和并行开发)
+  - [3.6 工作流程循环](#36-工作流程循环)
+- [第四部分：常见问题和资源](#第四部分常见问题和资源)
+  - [4.1 常见问题解答](#41-常见问题解答)
+  - [4.2 快速参考表](#42-快速参考表)
+  - [4.3 项目演示建议](#43-项目演示建议)
+
+---
+
+## 什么是 Claude Code？
+
+Claude Code 是 Anthropic 开发的命令行 AI 编程助手，它能够：
+
+- 🚀 **将想法转化为代码** - 从自然语言描述生成功能代码
+- 🐛 **智能调试** - 分析代码库，识别并修复问题
+- 📂 **理解项目结构** - 导航和理解整个项目架构
+- ⚡ **自动化任务** - 直接执行文件编辑、命令运行、创建提交
+- 🔌 **扩展集成** - 通过 MCP 连接外部工具和数据源
+
+**核心优势：**
+- ✅ 直接集成到终端工作流中
+- ✅ 不只是对话 - 直接实现更改
+- ✅ 支持 CI/CD 自动化
+- ✅ 企业级安全和隐私标准
+
+---
+
+## 第一部分：基本操作
+
+### 1.1 安装和配置
+
+#### 1.1.1 安装方法
+
+**方法一：Homebrew（推荐 - macOS/Linux）**
+
+```bash
+brew install --cask claude-code
+```
+
+**方法二：通用安装脚本**
+
+```bash
+# macOS/Linux/WSL
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**方法三：Windows PowerShell**
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+**方法四：npm（需要 Node.js 18+）**
+
+```bash
+npm install -g @anthropic-ai/claude-code
+```
+
+**系统要求：**
+- macOS 10.15+ / Ubuntu 20.04+ / Debian 10+ / Windows 10+
+- 至少 4GB 内存
+- 网络连接
+
+#### 1.1.2 验证安装
+
+安装完成后，运行诊断命令验证：
+
+```bash
+claude doctor
+```
+
+此命令会检查：
+- ✅ 安装状态
+- ✅ 认证状态
+- ✅ 环境配置
+- ✅ 网络连接
+
+**预期输出示例：**
+```
+✓ Claude Code is installed correctly
+✓ Authentication is valid
+✓ Network connection is stable
+✓ All systems operational
+```
+
+#### 1.1.3 首次使用和认证
+
+**启动 Claude Code：**
+
+```bash
+# 在项目目录中运行
+claude
+```
+
+**认证方式选择：**
+
+Claude Code 支持两种认证方式：
+
+**选项 1：Claude.ai 账户（推荐）**
+- ✅ 需要 Claude Pro 或 Max 订阅
+- ✅ 更简单的设置流程
+- ✅ 在 claude.ai 上认证
+
+**选项 2：Claude Console 账户**
+- 需要在 console.anthropic.com 设置活跃账单
+- 使用预付信用额度
+- 适合需要 API 访问的用户
+
+**账户切换：**
+
+```bash
+# 在交互模式中
+/login
+
+# 或使用命令行
+claude --login
+```
+
+**认证存储：**
+- 凭证存储在本地，无需重复登录
+- 系统自动为 Console 账户创建专用工作区用于成本追踪
+
+---
+
+### 1.2 IDE 集成
+
+#### 1.2.1 VS Code 集成
+
+**安装扩展：**
+
+1. 打开 Visual Studio Code（版本 1.98.0+）
+2. 进入 Extensions 市场（快捷键：`Cmd+Shift+X` / `Ctrl+Shift+X`）
+3. 搜索 "Claude Code"
+4. 点击 Anthropic 官方扩展并安装
+
+**直接链接：** [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code)
+
+**基本使用：**
+
+安装后，左侧栏会显示⚡火花图标。点击后可以：
+- 💬 向 Claude Code 输入提示
+- 👀 查看建议的代码更改
+- 🔄 在交互面板中与 Claude 对话
+
+**核心功能：**
+
+| 功能 | 说明 |
+|------|------|
+| **Native IDE 体验** | 专用侧边栏面板，无需切换窗口 |
+| **计划审查** | 接受前预览和审查代码更改 |
+| **Extended Thinking** | 按需启用深度思考模式 |
+| **文件附加** | 用 `@` 符号快速引用文件 |
+| **多会话** | 同时打开多个对话标签 |
+| **斜线命令** | 访问大多数 CLI 命令 |
+
+**快捷键：**
+
+```
+Tab           - 切换 Extended Thinking
+Shift+Tab     - 切换权限模式
+Cmd+K         - 快速打开 Claude Code
+@filename     - 引用文件
+```
+
+**第三方提供商配置：**
+
+如果使用 AWS Bedrock、Microsoft Foundry 或 Google Vertex AI：
+
+1. 打开 VS Code 设置（`Cmd+,` / `Ctrl+,`）
+2. 搜索 "Claude Code: Environment Variables"
+3. 添加提供商特定变量：
+
+```json
+{
+  "claudeCode.environmentVariables": {
+    // Bedrock
+    "CLAUDE_CODE_USE_BEDROCK": "true",
+    "AWS_REGION": "us-west-2",
+
+    // Foundry
+    "ANTHROPIC_FOUNDRY_RESOURCE": "your-resource-id",
+
+    // Vertex AI
+    "ANTHROPIC_VERTEX_REGION": "us-central1"
+  }
+}
+```
+
+**⚠️ 安全提示：**
+- 启用自动编辑权限时，Claude Code 可能修改 IDE 配置文件
+- 对于不受信任的项目，建议使用手动批准模式
+- 使用 Plan Mode 审查所有更改
+
+#### 1.2.2 JetBrains IDE 集成
+
+**支持的 IDE：**
+- IntelliJ IDEA
+- PyCharm
+- WebStorm
+- PhpStorm
+- GoLand
+- RubyMine
+- CLion
+- DataGrip
+
+**安装插件：**
+
+1. 打开任何 JetBrains IDE
+2. 进入 **Plugins** → **Marketplace**
+3. 搜索 "Claude Code"
+4. 安装官方插件
+5. **⚠️ 重启 IDE**（完全重启，不只是插件加载）
+
+**激活集成：**
+
+在 IDE 的集成终端中运行：
+
+```bash
+claude
+```
+
+这将激活所有 IDE 集成功能。
+
+**快捷键：**
+
+| 快捷键 | macOS | Windows/Linux | 功能 |
+|--------|-------|---------------|------|
+| 快速打开 | `Cmd+Esc` | `Ctrl+Esc` | 快速打开 Claude Code |
+| 文件引用 | `Cmd+Option+K` | `Alt+Ctrl+K` | 快速文件引用 |
+
+**关键功能：**
+
+- **🔄 Diff 集成** - 代码更改直接显示在 IDE diff 查看器中
+- **📋 上下文共享** - 选中的代码自动传递给 Claude Code
+- **⚠️ 诊断共享** - IDE 错误自动共享
+- **💻 终端集成** - 直接从 IDE 终端运行命令
+
+**配置建议：**
+
+获得最佳体验的配置：
+
+```bash
+# 在交互模式中
+/config
+```
+
+将 diff 工具设置为 `auto`：
+
+```yaml
+diff_tool: auto
+```
+
+**WSL 用户特殊配置：**
+
+```bash
+wsl -d Ubuntu -- bash -lic "claude"
+```
+
+**ESC 键问题解决：**
+
+如果 ESC 无法中断操作，调整终端设置：
+- **Settings** → **Tools** → **Terminal**
+- 确保终端正确处理转义序列
+
+**⚠️ 安全提示：**
+- 与 VS Code 类似的安全考虑
+- 不受信任的项目使用手动批准模式
+- 定期审查权限设置
+
+---
+
+### 1.3 命令行基本使用
+
+Claude Code 提供强大的命令行接口，支持多种使用模式。
+
+#### 1.3.1 交互模式（Interactive Mode）
+
+**基本命令：**
+
+```bash
+# 启动交互式会话
+claude
+
+# 用初始提示启动
+claude "请分析这个项目的结构"
+
+# 恢复最近的会话
+claude -c
+
+# 从会话选择器中选择
+claude -c    # 显示交互菜单
+```
+
+**交互模式特点：**
+- 💬 持续对话
+- 📝 保持上下文
+- 🔄 可以执行多个任务
+- 💾 自动保存会话历史
+
+#### 1.3.2 一次性模式（One-Shot Mode）
+
+**基本用法：**
+
+```bash
+# 获取回复后退出
+claude -p "解释这个函数的作用"
+
+# 处理管道输入
+cat file.txt | claude -p "分析这个文件"
+
+# 处理错误日志
+npm test 2>&1 | claude -p "分析这些测试错误"
+```
+
+**一次性模式特点：**
+- ⚡ 快速执行
+- 🔧 适合脚本和自动化
+- 📤 输出可管道传递
+- 🎯 单一任务focus
+
+#### 1.3.3 会话管理
+
+**继续特定会话：**
+
+```bash
+# 继续指定 ID 的会话
+claude -r "session-id" "新的问题"
+
+# 查看会话历史
+ls -la ~/.claude/sessions/
+```
+
+**会话隔离：**
+- 每个工作目录有独立的会话历史
+- 会话自动保存和恢复
+- 可以同时在不同目录运行多个实例
+
+#### 1.3.4 核心命令行标志
+
+**系统行为：**
+
+```bash
+# 指定模型
+claude --model sonnet        # 默认，平衡性能
+claude --model opus          # 最强大，复杂任务
+claude --model haiku         # 最快，简单任务
+
+# 显示详细输出
+claude --verbose
+
+# 限制迭代次数（非交互模式）
+claude --max-turns 10
+```
+
+**自定义提示：**
+
+```bash
+# 完全替换系统提示
+claude --system-prompt "你是Python专家"
+
+# 追加到默认系统提示
+claude --append-system-prompt "总是使用类型提示"
+```
+
+**访问控制：**
+
+```bash
+# 授予访问其他目录的权限
+claude --add-dir /path/to/another/directory
+
+# 设置权限模式
+claude --permission-mode plan           # 计划模式
+claude --permission-mode auto-accept    # 自动批准
+claude --permission-mode default        # 默认模式
+
+# ⚠️ 危险：跳过所有权限检查（但是我喜欢，因为在我高强度使用3个月里，没有发现我要拒绝的权限申请）
+claude --dangerously-skip-permissions
+```
+
+**输出控制：**
+
+```bash
+# JSON 输出（用于脚本）
+claude --output-format json
+
+# 文本输出（默认）
+claude --output-format text
+
+# 流式 JSON
+claude --output-format stream-json
+```
+
+**完整示例：**
+
+```bash
+# 复杂的命令组合
+claude \
+  --model opus \
+  --permission-mode plan \
+  --add-dir ../shared-components \
+  --append-system-prompt "遵循 PEP 8 风格" \
+  "重构 auth.py 文件"
+```
+
+---
+
+### 1.4 斜线命令完整指南
+
+斜线命令是在交互模式中控制 Claude Code 行为的快捷方式。
+
+#### 1.4.1 管理命令
+
+**会话控制：**
+
+```bash
+/clear          # 清除当前会话历史（保持文件权限）
+/exit           # 退出 Claude Code
+/rewind         # 回到之前的状态，撤销最后操作
+```
+
+**账户管理：**
+
+```bash
+/login          # 切换或登录不同账户
+/logout         # 登出当前账户
+```
+
+#### 1.4.2 配置命令
+
+**基本配置：**
+
+```bash
+/config         # 打开交互式配置菜单
+/model          # 查看或切换当前模型
+/permissions    # 查看和管理权限设置
+/vim            # 启用/禁用 Vim 模式
+```
+
+**输出配置：**
+
+```bash
+/output-style   # 改变输出格式
+                # - compact: 紧凑格式
+                # - detailed: 详细格式
+                # - minimal: 最小化
+```
+
+#### 1.4.3 分析和信息命令
+
+**上下文和状态：**
+
+```bash
+/context        # 显示当前加载的上下文
+                # - 已加载的文件
+                # - 内存内容
+                # - MCP 连接
+                # - 权限设置
+
+/status         # 显示账户信息和当前模型
+                # - 账户类型
+                # - 模型版本
+                # - 订阅状态
+```
+
+**成本和使用：**
+
+```bash
+/cost           # 显示当前会话成本估计
+/usage          # 显示 API 使用统计
+```
+
+**诊断：**
+
+```bash
+/doctor         # 诊断 Claude Code 设置
+                # - 安装检查
+                # - 连接测试
+                # - 配置验证
+                # - 问题排查建议
+```
+
+#### 1.4.4 工作流命令
+
+**会话优化：**
+
+```bash
+/compact        # 压缩会话以节省 token
+                # - 保留关键决策
+                # - 删除冗余对话
+                # - 总结已完成工作
+```
+
+**导出和审查：**
+
+```bash
+/export         # 导出当前会话
+                # - Markdown 格式
+                # - JSON 格式
+                # - 包含完整历史
+
+/review         # 启动代码审查会话
+                # - 自动分析更改
+                # - 提供改进建议
+```
+
+#### 1.4.5 集成命令
+
+**MCP 和扩展：**
+
+```bash
+/mcp            # 查看或管理 MCP 服务器
+                # - 列出已连接的服务器
+                # - 查看可用工具
+                # - 测试连接
+
+/ide            # 检查和配置 IDE 集成
+/plugin         # 列出和管理已安装插件
+/hooks          # 查看和管理 Hooks
+```
+
+**Agent 和记忆：**
+
+```bash
+/agents         # 创建、编辑或删除自定义 Agent
+                # - 查看现有 Agent
+                # - 创建新 Agent
+                # - 配置 Agent 权限
+
+/memory         # 编辑项目或用户记忆文件
+                # - 打开 CLAUDE.md
+                # - 快速添加记忆
+```
+
+#### 1.4.6 其他实用命令
+
+```bash
+/help           # 显示所有可用命令
+/terminal-setup # 配置多行输入
+/feedback       # 报告问题或提交功能建议
+```
+
+#### 1.4.7 自定义斜线命令
+
+**创建自定义命令：**
+
+自定义命令存储为 Markdown 文件：
+
+**项目级别：**
+```bash
+.claude/commands/
+├── optimize.md
+├── test-all.md
+└── deploy.md
+```
+
+**用户级别：**
+```bash
+~/.claude/commands/
+├── code-review.md
+└── security-audit.md
+```
+
+**命令文件示例：**
+
+`.claude/commands/optimize.md`
+
+```markdown
+---
+name: optimize
+description: 优化代码性能
+---
+
+请分析当前文件的性能问题并提供优化建议：
+
+1. 识别性能瓶颈
+2. 提供具体的优化方案
+3. 保持代码可读性
+4. 添加必要的注释
+```
+
+**使用自定义命令：**
+
+```bash
+# 在交互模式中
+/optimize
+
+# 命令会显示在 /help 中
+/help    # 查看所有自定义命令
+```
+
+---
+
+## 第二部分：使用技巧
+
+### 2.1 记忆系统深度解析
+
+#### 2.1.1 快速添加记忆（# 符号）
+
+在交互模式中，使用 `#` 快速添加记忆到 CLAUDE.md：
+
+```bash
+# 查看当前记忆
+/memory
+
+# 快速添加一行记忆（直接在提示中）
+# 这是我的代码风格：使用 2 空格缩进
+
+# 添加多行记忆
+# 项目使用 React 18 + TypeScript
+# 状态管理使用 Zustand
+# 样式使用 Tailwind CSS
+```
+
+这会自动更新你的 `CLAUDE.md` 文件。
+
+#### 2.1.2 引用文件（@ 符号）
+
+使用 `@` 符号快速引用文件：
+
+```bash
+# 引用单个文件
+查看 @package.json 并建议更新依赖
+
+# 引用多个文件
+比较 @src/old.ts 和 @src/new.ts 的区别
+
+# 使用通配符
+检查 @src/components/*.tsx 中的代码风格
+
+# Tab 补全
+@src/  # 按 Tab 显示建议
+```
+
+**引用文件的好处：**
+- ✅ 明确指定上下文
+- ✅ 减少歧义
+- ✅ 提高响应准确性
+- ✅ 支持 Tab 补全
+
+#### 2.1.3 执行 Bash 命令（! 符号）
+
+使用 `!` 前缀直接执行命令：
+
+```bash
+# 查看文件
+! ls -la
+
+# 运行测试
+! npm test
+
+# 查看 Git 状态
+! git status
+
+# 查看进程
+! ps aux | grep node
+
+# 执行并分析结果
+! npm run build
+现在分析上面的构建输出，找出警告的原因
+```
+
+**执行命令的优势：**
+- ⚡ 无需退出 Claude Code
+- 📊 结果自动加入上下文
+- 🔄 可以立即分析输出
+- 🛠️ 适合调试工作流
+
+---
+
+### 2.2 CLAUDE.md 文件详解
+
+CLAUDE.md 是 Claude Code 的"记忆系统"，存储项目特定的信息和偏好。
+
+#### 2.2.1 分层记忆系统
+
+Claude Code 使用四层记忆系统（按优先级从高到低）：
+
+**1. 企业策略级别（最高优先级）**
+```
+位置：由组织 MDM 或 Group Policy 管理
+用途：全公司统一标准
+特点：不可被用户覆盖
+示例：安全策略、合规要求
+```
+
+**2. 项目级别（团队共享）**
+```
+位置：./CLAUDE.md 或 ./.claude/CLAUDE.md
+用途：项目特定的架构和约定
+特点：通过 Git 与团队共享
+示例：项目架构、编码规范
+```
+
+**3. 用户级别（个人）**
+```
+位置：~/.claude/CLAUDE.md
+用途：个人偏好和风格
+特点：跨所有项目生效
+示例：代码风格、常用命令
+```
+
+**4. 项目本地级别（已弃用）**
+```
+位置：CLAUDE.local.md（不再推荐）
+替代：在主 CLAUDE.md 中使用导入
+```
+
+**优先级规则：**
+```
+企业策略 > 项目配置 > 用户配置 > 项目本地
+```
+
+#### 2.2.2 基本语法和组织方式
+
+CLAUDE.md 是标准 Markdown 文件：
+
+**基础模板：**
+
+```markdown
+# 项目记忆文档
+
+## 项目概述
+这是一个使用 React + TypeScript 的 Web 应用
+
+## 技术栈
+- Framework: React 18.0 + Next.js 14
+- Language: TypeScript 5.0
+- Styling: Tailwind CSS
+- State: Zustand
+- Database: PostgreSQL + Prisma
+- Auth: NextAuth.js
+
+## 编码标准
+
+### TypeScript/JavaScript
+- 使用 2 空格缩进
+- 始终使用 const/let，避免 var
+- 使用函数式组件和 Hooks
+- 使用 TypeScript 严格模式
+- 导入顺序：React → 第三方 → 本地
+
+### CSS/Styling
+- 优先使用 Tailwind utilities
+- 自定义样式放在 CSS 模块中
+- 使用语义化的 class 名称
+
+### 命名约定
+- 组件：PascalCase (UserProfile.tsx)
+- Hooks：camelCase，use 前缀 (useAuth.ts)
+- Utils：camelCase (formatDate.ts)
+- Constants：UPPER_SNAKE_CASE (API_BASE_URL)
+
+## 项目结构
+\`\`\`
+app/
+  ├── (auth)/          # 认证相关页面
+  ├── (dashboard)/     # Dashboard 页面
+  ├── api/             # API routes
+  └── layout.tsx       # 根布局
+components/
+  ├── ui/              # 基础 UI 组件
+  └── features/        # 功能组件
+lib/
+  ├── db.ts            # 数据库客户端
+  ├── auth.ts          # 认证逻辑
+  └── utils.ts         # 工具函数
+\`\`\`
+
+## 不应该修改的文件
+- `.env*` 文件（包含密钥）
+- `prisma/migrations/*`（数据库迁移历史）
+- `public/assets/*`（设计团队管理的资源）
+- `node_modules/`（依赖包）
+
+## 测试规范
+- 使用 Vitest 进行单元测试
+- 使用 Playwright 进行 E2E 测试
+- 测试文件命名：`*.test.ts` 或 `*.spec.ts`
+- 测试覆盖率目标：80%+
+
+## Git 工作流
+- main 分支保护，需要 PR
+- 分支命名：feature/xxx, fix/xxx, chore/xxx
+- Commit 遵循 Conventional Commits
+- PR 需要至少一个审查批准
+
+## 性能要求
+- 首屏加载 < 2 秒
+- Core Web Vitals 达到 "Good"
+- 图片使用 Next.js Image 组件优化
+- 使用动态导入减少初始包大小
+
+## 安全要求
+- 所有 API 路由需要认证
+- 使用 CSRF 保护
+- 敏感数据加密存储
+- 定期更新依赖以修复安全漏洞
+```
+
+#### 2.2.3 文件导入功能
+
+使用 `@` 语法导入其他文件：
+
+**主 CLAUDE.md：**
+
+```markdown
+# 团队标准
+
+## 核心标准
+@standards/typescript-guide.md
+@standards/testing-practices.md
+@standards/git-workflow.md
+
+## 项目特定
+@docs/architecture.md
+@docs/api-conventions.md
+
+注意：最大导入深度为 5 级
+```
+
+**standards/typescript-guide.md：**
+
+```markdown
+# TypeScript 编码指南
+
+## 类型定义
+- 优先使用 interface 而不是 type（对象类型）
+- 使用 type 定义联合类型和交叉类型
+- 避免使用 any，使用 unknown 替代
+
+## 函数签名
+\`\`\`typescript
+// 好的做法
+function processUser(user: User): Promise<ProcessedUser> {
+  // implementation
+}
+
+// 避免
+function processUser(user: any): any {
+  // implementation
+}
+\`\`\`
+
+## 导入导出
+- 使用命名导出而不是默认导出
+- 保持导入按字母顺序排列
+```
+
+**导入的好处：**
+- 📁 模块化组织文档
+- 🔄 重用共享标准
+- 👥 团队协作更容易
+- 📝 文档维护更简单
+
+#### 2.2.4 最佳实践
+
+**1. 具体胜过笼统**
+
+```markdown
+# ✅ 好的做法
+- 使用 2 空格缩进（不是 4 空格或 Tab）
+- 字符串使用单引号，JSX 使用双引号
+- 行长度限制 100 字符
+
+# ❌ 不好的做法
+- 代码应该看起来好
+- 遵循最佳实践
+- 保持一致性
+```
+
+**2. 使用清晰的 Markdown 结构**
+
+```markdown
+# 一级标题 - 主要分类
+## 二级标题 - 子分类
+### 三级标题 - 具体指导
+
+- 使用列表
+- 提高可读性
+- 便于扫描
+```
+
+**3. 包含否定性信息**
+
+```markdown
+## 不应该做什么
+
+- ❌ 不要使用 var 关键字
+- ❌ 不要提交 .env 文件
+- ❌ 不要修改 migrations/ 目录中的文件
+- ❌ 不要在组件中直接写 API 调用
+- ❌ 不要使用内联样式（使用 Tailwind）
+```
+
+**4. 定期审查和更新**
+
+```markdown
+# 变更日志
+
+## 2025-12-02
+- 迁移到 Next.js 14
+- 采用 App Router
+- 更新认证为 NextAuth v5
+
+## 2025-11-15
+- 添加 Zustand 状态管理
+- 移除 Redux
+```
+
+**5. 使用代码示例**
+
+```markdown
+## API Route 模板
+
+\`\`\`typescript
+// app/api/users/route.ts
+import { NextResponse } from 'next/server'
+import { auth } from '@/lib/auth'
+
+export async function GET(request: Request) {
+  const session = await auth()
+
+  if (!session) {
+    return NextResponse.json(
+      { error: 'Unauthorized' },
+      { status: 401 }
+    )
+  }
+
+  // 实现逻辑
+  const users = await db.user.findMany()
+
+  return NextResponse.json(users)
+}
+\`\`\`
+```
+
+**6. 文档版本控制**
+
+```bash
+# 将 CLAUDE.md 加入版本控制
+git add CLAUDE.md
+git commit -m "docs: 更新项目编码标准"
+```
+
+---
+
+### 2.3 会话管理技巧
+
+#### 2.3.1 /compact 压缩会话
+
+**什么是压缩：**
+
+`/compact` 命令压缩对话历史，保留关键信息同时删除冗余内容。
+
+**何时使用：**
+
+```
+✅ 长时间对话（超过 50 轮）
+✅ 需要刷新记忆清除陈旧信息
+✅ Token 成本过高
+✅ 准备从检查点恢复
+✅ 会话变慢或响应质量下降
+```
+
+**使用方法：**
+
+```bash
+# 在交互模式中
+/compact
+
+# Claude 会：
+# 1. 保留所有关键决策和上下文
+# 2. 删除重复的对话
+# 3. 总结已完成的工作
+# 4. 释放 token 预算
+```
+
+**压缩后的效果：**
+
+```
+压缩前：
+- 150 条消息
+- ~40,000 tokens
+- 响应变慢
+
+压缩后：
+- 20 条关键消息
+- ~8,000 tokens
+- 响应速度恢复
+```
+
+**⚠️ 注意：**
+- 压缩后仍可访问完整历史记录
+- 压缩是安全的，不会丢失重要信息
+- 建议每 100 轮对话压缩一次
+
+#### 2.3.2 /clear 清除会话
+
+**什么是清除：**
+
+`/clear` 删除当前会话的所有对话历史。
+
+**何时使用：**
+
+```
+✅ 开始完全不同的任务
+✅ 切换到新的项目部分
+✅ 之前的上下文不再相关
+✅ 想要全新开始
+```
+
+**使用方法：**
+
+```bash
+/clear
+```
+
+**清除 vs 压缩：**
+
+| 操作 | /clear | /compact |
+|------|---------|----------|
+| 删除历史 | ✅ 全部删除 | ❌ 保留关键内容 |
+| 保留权限 | ✅ | ✅ |
+| 保留文件访问 | ✅ | ✅ |
+| Token 成本 | 最低 | 中等 |
+| 使用场景 | 全新任务 | 继续当前任务 |
+
+#### 2.3.3 /init 命令初始化项目
+
+**功能：**
+
+`/init` 自动扫描项目并生成 `CLAUDE.md` 文件。
+
+**使用场景：**
+
+```
+✅ 开始新项目
+✅ 为现有项目创建记忆
+✅ 与新团队成员共享知识
+✅ 重新组织项目文档
+```
+
+**使用方法：**
+
+```bash
+# 基本用法
+/init
+
+# 排除特定目录
+/init --exclude "node_modules,dist,build"
+
+# 指定输出位置
+/init --output .claude/CLAUDE.md
+```
+
+**生成的内容示例：**
+
+```markdown
+# 项目文档
+
+## 项目概述
+检测到 React + Next.js 应用，使用 TypeScript
+
+## 技术栈
+- Framework: Next.js 14.0.0
+- Language: TypeScript 5.0
+- Package Manager: pnpm
+- Node Version: 18.17.0
+
+## 项目结构
+\`\`\`
+app/
+  ├── layout.tsx
+  ├── page.tsx
+  └── api/
+components/
+  ├── ui/
+  └── features/
+lib/
+public/
+\`\`\`
+
+## 依赖包
+主要依赖：
+- react: 18.2.0
+- next: 14.0.0
+- typescript: 5.0.0
+- tailwindcss: 3.3.0
+
+## 脚本命令
+- npm run dev - 开发服务器
+- npm run build - 生产构建
+- npm run test - 运行测试
+```
+
+**自定义生成：**
+
+```bash
+# 创建 .claude/init-config.json
+{
+  "include": ["src", "components", "lib"],
+  "exclude": ["node_modules", "dist", ".next"],
+  "analyze": {
+    "dependencies": true,
+    "scripts": true,
+    "structure": true
+  }
+}
+```
+
+#### 2.3.4 上下文管理策略
+
+**查看当前上下文：**
+
+```bash
+/context
+```
+
+**输出示例：**
+
+```
+当前上下文：
+
+📁 已加载文件 (5)：
+  - src/app/page.tsx (245 lines)
+  - src/components/Header.tsx (89 lines)
+  - package.json (32 lines)
+  - CLAUDE.md (156 lines)
+  - tsconfig.json (24 lines)
+
+📝 记忆：
+  - 项目 CLAUDE.md (活跃)
+  - 用户 CLAUDE.md (活跃)
+
+🔌 MCP 连接 (2)：
+  - github (已连接)
+  - postgres (已连接)
+
+🔐 权限：
+  - 模式：Default
+  - 允许的工具：ReadFile, WriteFile, Bash
+```
+
+**优化上下文：**
+
+```bash
+# 1. 清除不需要的文件引用
+/clear
+
+# 2. 明确指定需要的文件
+@src/specific/file.ts
+
+# 3. 使用压缩减少历史
+/compact
+
+# 4. 限制工作目录
+claude --add-dir ./src/specific-feature
+```
+
+**上下文管理最佳实践：**
+
+```markdown
+1. 🎯 **保持专注** - 只加载当前任务需要的文件
+2. 🧹 **定期清理** - 使用 /clear 或 /compact
+3. 📋 **使用 CLAUDE.md** - 存储长期信息，而不是对话中
+4. 🔍 **明确引用** - 使用 @ 引用具体文件
+5. 📊 **监控成本** - 使用 /cost 查看 token 使用
+```
+
+**会话恢复：**
+
+```bash
+# 恢复最近会话
+claude -c
+
+# 列出所有会话
+ls ~/.claude/sessions/
+
+# 恢复特定会话
+claude -r <session-id>
+```
+
+---
+
+### 2.4 高效工作技巧
+
+#### Claude Code 性能优化技巧
+
+> Token 成本优化和性能提升实用指南
+
+---
+
+##### 📋 目录
+
+- [Token 成本分析](#token-成本分析)
+- [模型选择策略](#模型选择策略)
+- [上下文管理技巧](#上下文管理技巧)
+- [会话压缩策略](#会话压缩策略)
+- [批处理优化](#批处理优化)
+- [成本监控和预警](#成本监控和预警)
+- [实用优化清单](#实用优化清单)
+
+---
+
+##### Token 成本分析
+
+###### 理解 Token 计费
+
+**基本概念：**
+```
+1 Token ≈ 4 个字符（英文）
+1 Token ≈ 1-2 个汉字（中文）
+
+示例：
+"Hello World" = 2 tokens
+"你好世界" = 4 tokens
+```
+
+**计费模型：**
+
+| 模型 | 输入成本 | 输出成本 | 适用场景 |
+|------|---------|---------|----------|
+| Haiku | 最低 | 最低 | 简单任务、代码搜索 |
+| Sonnet | 中等 | 中等 | 一般开发、重构 |
+| Opus | 最高 | 最高 | 复杂架构、关键决策 |
+
+###### 成本计算示例
+
+```bash
+#### 查看当前会话成本
+/cost
+
+#### 输出示例：
+当前会话成本估计：
+- 输入 tokens: 12,450
+- 输出 tokens: 3,280
+- 总计: 15,730 tokens
+- 估计成本: $0.47 USD (Sonnet)
+```
+
+**典型会话成本：**
+```
+短会话 (10-20 轮):
+  Haiku:  $0.05 - $0.10
+  Sonnet: $0.20 - $0.40
+  Opus:   $0.80 - $1.50
+
+中等会话 (50-100 轮):
+  Haiku:  $0.20 - $0.50
+  Sonnet: $1.00 - $2.00
+  Opus:   $4.00 - $8.00
+
+长会话 (200+ 轮):
+  Haiku:  $1.00 - $2.00
+  Sonnet: $5.00 - $10.00
+  Opus:   $20.00 - $40.00
+```
+
+---
+
+##### 模型选择策略
+
+###### 选择决策树
+
+```
+任务复杂度？
+├─ 简单（代码搜索、文档生成）
+│  └─ 使用 Haiku
+├─ 中等（功能开发、重构、调试）
+│  └─ 使用 Sonnet
+└─ 复杂（架构设计、关键算法）
+   └─ 使用 Opus
+```
+
+###### 具体场景指南
+
+###### 使用 Haiku ($)
+
+```bash
+#### 代码搜索
+claude --model haiku "搜索所有 API 端点"
+
+#### 文档生成
+claude --model haiku "为这个函数生成文档"
+
+#### 简单修复
+claude --model haiku "修复这个拼写错误"
+
+#### 代码审查（基础）
+claude --model haiku "检查代码风格问题"
+
+#### 日志分析
+cat error.log | claude --model haiku -p "分析错误模式"
+```
+
+###### 使用 Sonnet ($$)
+
+```bash
+#### 功能开发
+claude --model sonnet "实现用户认证"
+
+#### 重构
+claude --model sonnet "重构这个模块"
+
+#### Bug 修复
+claude --model sonnet "修复登录超时问题"
+
+#### 代码审查（深度）
+claude --model sonnet "审查安全性和性能"
+
+#### 测试编写
+claude --model sonnet "为这个组件编写测试"
+```
+
+###### 使用 Opus ($$$)
+
+```bash
+#### 架构设计
+claude --model opus "设计微服务架构"
+
+#### 复杂算法
+claude --model opus "优化推荐算法"
+
+#### 关键决策
+claude --model opus "评估技术选型"
+
+#### 性能优化
+claude --model opus "分析并优化系统性能"
+
+#### 安全审计
+claude --model opus "进行安全审计"
+```
+
+###### 动态切换模型
+
+```bash
+#### 会话中切换
+/model haiku    # 切换到 Haiku
+/model sonnet   # 切换到 Sonnet
+/model opus     # 切换到 Opus
+
+#### 查看当前模型
+/model
+
+#### 或在命令中临时指定
+claude --model haiku "简单任务"
+```
+
+---
+
+##### 上下文管理技巧
+
+###### 最小化上下文
+
+###### 技巧 1: 明确引用文件
+
+```bash
+#### ❌ 不好：加载整个目录
+! ls -R src/ | cat
+分析所有文件
+
+#### ✅ 好：只引用需要的
+@src/auth/login.ts
+@src/middleware/auth.ts
+分析这两个文件
+```
+
+###### 技巧 2: 使用 Subagent 探索
+
+```bash
+#### ❌ 不好：直接搜索（使用主 Agent）
+搜索所有 API 调用
+
+#### ✅ 好：使用 Explore Subagent（使用 Haiku）
+请 explore subagent 搜索所有 API 调用
+```
+
+###### 技巧 3: 限制搜索范围
+
+```bash
+#### ❌ 不好：全局搜索
+! grep -r "function" .
+
+#### ✅ 好：限制范围
+! grep -r "function" src/auth/
+```
+
+###### 清理上下文
+
+###### 定期清除
+
+```bash
+#### 检查当前上下文
+/context
+
+#### 如果上下文过大
+/clear  # 完全清除
+#### 或
+/compact  # 压缩保留关键内容
+```
+
+###### 使用 .gitignore 模式
+
+```bash
+#### CLAUDE.md 中指定
+##### 不应该访问的目录
+- `node_modules/`
+- `dist/`
+- `.next/`
+- `build/`
+- `coverage/`
+```
+
+---
+
+##### 会话压缩策略
+
+###### 何时压缩
+
+```
+信号：
+✅ 会话超过 50 轮对话
+✅ 响应速度变慢
+✅ 成本超过预期
+✅ 上下文感觉混乱
+
+不需要压缩：
+❌ 短会话 (<20 轮)
+❌ 需要完整历史记录
+❌ 正在进行复杂调试
+```
+
+###### 压缩命令
+
+```bash
+#### 基本压缩
+/compact
+
+#### 查看效果
+/cost  # 对比压缩前后
+
+#### 示例输出：
+压缩前: 15,730 tokens, $0.47
+压缩后:  3,200 tokens, $0.10
+节省: 79% tokens, 79% cost
+```
+
+###### 压缩最佳时机
+
+```bash
+#### 1. 完成一个大任务后
+实现完认证系统
+/compact  # 压缩，开始下一个任务
+
+#### 2. 切换任务前
+/compact
+现在开始开发通知功能
+
+#### 3. 感觉会话变慢时
+/cost  # 检查 token 数
+/compact  # 如果很高，压缩
+
+#### 4. 每天结束时
+/compact  # 总结今天工作
+/export  # 导出记录
+```
+
+---
+
+##### 批处理优化
+
+###### 批量操作原则
+
+```bash
+#### ❌ 不好：逐个处理
+修复 file1.ts 的类型错误
+#### 等待...
+修复 file2.ts 的类型错误
+#### 等待...
+修复 file3.ts 的类型错误
+
+#### ✅ 好：批量处理
+修复以下文件的类型错误：
+@file1.ts
+@file2.ts
+@file3.ts
+@file4.ts
+@file5.ts
+
+一次性处理所有文件
+```
+
+###### 批处理策略
+
+###### 1. 批量文件操作
+
+```bash
+#### 批量重命名
+重命名以下文件，使用 kebab-case：
+@UserProfile.tsx → user-profile.tsx
+@UserSettings.tsx → user-settings.tsx
+@UserAvatar.tsx → user-avatar.tsx
+```
+
+###### 2. 批量代码审查
+
+```bash
+审查整个 PR 的更改：
+@src/auth/*.ts
+@src/middleware/*.ts
+@tests/auth/*.test.ts
+
+提供综合审查报告
+```
+
+###### 3. 批量测试生成
+
+```bash
+为以下组件生成测试：
+@src/components/Button.tsx
+@src/components/Input.tsx
+@src/components/Modal.tsx
+
+使用一致的测试模式
+```
+
+###### 管道处理
+
+```bash
+#### 使用 Unix 管道
+cat error-logs/*.log | claude -p "分析所有错误模式"
+
+#### 处理多个文件
+find src/ -name "*.ts" -type f | xargs -I {} claude -p "检查 {} 的类型安全"
+```
+
+---
+
+##### 成本监控和预警
+
+###### 实时监控
+
+```bash
+#### 查看当前成本
+/cost
+
+#### 查看累计使用
+/usage
+
+#### 输出示例：
+本月使用统计：
+- 总 tokens: 1,245,890
+- 总成本: $37.42
+- 会话数: 127
+- 平均每会话: $0.29
+```
+
+###### 设置预算限制
+
+```bash
+#### 配置成本限制
+/config
+
+#### 在配置中设置：
+cost_warning_threshold: 10.00    # $10 警告
+cost_limit: 50.00                # $50 硬限制
+```
+
+**settings.json 配置：**
+
+```json
+{
+  "cost": {
+    "warning_threshold": 10.0,
+    "limit": 50.0,
+    "currency": "USD",
+    "alert_enabled": true
+  }
+}
+```
+
+###### 成本报警
+
+```bash
+#### 设置 Hook 监控成本
+#### .claude/hooks/cost-monitor.sh
+
+#!/bin/bash
+
+COST=$(claude --output-format json -p "/cost" | jq '.cost')
+
+if (( $(echo "$COST > 10.0" | bc -l) )); then
+  echo "⚠️  成本警告: $COST USD"
+  # 发送通知
+  osascript -e 'display notification "Claude Code 成本超过 $10" with title "成本警告"'
+fi
+```
+
+###### 成本分析报告
+
+```bash
+#### 导出详细成本报告
+claude -p "/usage --detailed" > cost-report.json
+
+#### 分析成本分布
+cat cost-report.json | jq '.sessions[] | {date, cost, model, turns}'
+
+#### 识别高成本会话
+cat cost-report.json | jq '.sessions[] | select(.cost > 5.0)'
+```
+
+---
+
+##### 实用优化清单
+
+###### 日常开发优化
+
+###### ✅ 每天执行
+
+```bash
+#### 1. 开始工作前检查模型
+/model
+
+#### 2. 定期检查成本
+/cost  # 每 50 轮对话
+
+#### 3. 压缩长会话
+/compact  # 超过 100 轮
+
+#### 4. 结束时清理
+/cost
+/export  # 导出重要会话
+```
+
+###### ✅ 每周执行
+
+```bash
+#### 1. 审查本周成本
+/usage
+
+#### 2. 清理旧会话
+#### 删除不需要的检查点
+
+#### 3. 优化 CLAUDE.md
+#### 移除过时信息
+
+#### 4. 更新成本预算
+/config
+```
+
+###### 成本优化技巧总结
+
+###### Top 10 优化技巧
+
+1. **选择合适的模型**
+   ```bash
+   简单任务用 Haiku
+   一般任务用 Sonnet
+   复杂任务才用 Opus
+   ```
+
+2. **使用 Subagent 探索**
+   ```bash
+   explore subagent 用 Haiku（便宜）
+   ```
+
+3. **明确引用文件**
+   ```bash
+   @specific-file.ts  # 而不是加载整个目录
+   ```
+
+4. **定期压缩会话**
+   ```bash
+   /compact  # 每 50-100 轮
+   ```
+
+5. **批量处理任务**
+   ```bash
+   一次处理多个文件，而不是逐个
+   ```
+
+6. **限制上下文**
+   ```bash
+   只加载必需的文件
+   ```
+
+7. **使用 /clear**
+   ```bash
+   切换任务时清除上下文
+   ```
+
+8. **监控成本**
+   ```bash
+   /cost  # 经常检查
+   ```
+
+9. **使用管道**
+   ```bash
+   cat file | claude -p  # 一次性模式
+   ```
+
+10. **避免重复询问**
+    ```bash
+    记录答案在 CLAUDE.md 中
+    ```
+
+---
+
+##### 成本优化案例
+
+###### 案例 1: 代码审查优化
+
+**优化前：**
+```bash
+#### 使用 Opus 逐个审查
+claude --model opus
+审查 file1.ts
+#### $0.50
+审查 file2.ts
+#### $0.50
+审查 file3.ts
+#### $0.50
+总计: $1.50
+```
+
+**优化后：**
+```bash
+#### 使用 Sonnet 批量审查
+claude --model sonnet
+审查以下文件：
+@file1.ts
+@file2.ts
+@file3.ts
+#### $0.30
+节省: $1.20 (80%)
+```
+
+###### 案例 2: 探索代码库
+
+**优化前：**
+```bash
+#### 使用 Sonnet 探索
+claude --model sonnet
+搜索所有 API 端点
+#### 50+ 轮对话
+成本: $2.00
+```
+
+**优化后：**
+```bash
+#### 使用 Explore Agent (Haiku)
+claude --model sonnet
+请 explore subagent 搜索所有 API 端点
+#### 自动使用 Haiku
+成本: $0.40
+节省: $1.60 (80%)
+```
+
+###### 案例 3: 长时间开发
+
+**优化前：**
+```bash
+#### 200 轮对话，未压缩
+成本: $8.00
+```
+
+**优化后：**
+```bash
+#### 每 50 轮压缩一次
+0-50:   $1.00
+/compact
+50-100: $1.00
+/compact
+100-150: $1.00
+/compact
+150-200: $1.00
+总计: $4.00
+节省: $4.00 (50%)
+```
+
+---
+
+##### 性能监控脚本
+
+###### 成本监控脚本
+
+```bash
+#### ~/scripts/claude-cost-monitor.sh
+
+#!/bin/bash
+
+LOG_FILE=~/.claude/cost-log.txt
+DATE=$(date +"%Y-%m-%d %H:%M")
+
+#### 获取当前成本
+COST=$(claude --output-format json -p "/cost" | jq -r '.estimated_cost')
+
+#### 记录
+echo "$DATE,$COST" >> $LOG_FILE
+
+#### 检查是否超过阈值
+THRESHOLD=10.0
+if (( $(echo "$COST > $THRESHOLD" | bc -l) )); then
+  echo "⚠️  警告: 成本 $COST 超过阈值 $THRESHOLD"
+
+  # 发送通知（macOS）
+  osascript -e "display notification \"成本: \$$COST\" with title \"Claude Code 成本警告\""
+
+  # 或发送邮件、Slack 等
+fi
+
+#### 显示今日统计
+TODAY=$(date +"%Y-%m-%d")
+TODAY_COST=$(grep "$TODAY" $LOG_FILE | awk -F',' '{sum+=$2} END {printf "%.2f", sum}')
+echo "今日总成本: \$$TODAY_COST"
+```
+
+###### 使用监控脚本
+
+```bash
+#### 添加到 cron，每小时运行
+crontab -e
+
+#### 添加：
+0 * * * * ~/scripts/claude-cost-monitor.sh
+
+#### 或手动运行
+~/scripts/claude-cost-monitor.sh
+```
+
+---
+
+##### 总结
+
+###### 核心原则
+
+1. **选择合适的模型** - 根据任务复杂度
+2. **最小化上下文** - 只加载需要的
+3. **定期压缩** - 保持会话精简
+4. **批量处理** - 减少往返次数
+5. **监控成本** - 及时发现异常
+
+###### 预期效果
+
+遵循这些优化技巧，可以：
+- ✅ 减少 50-80% 的 token 成本
+- ✅ 提高 2-3x 的响应速度
+- ✅ 更清晰的上下文管理
+- ✅ 更好的成本可预测性
+
+###### 行动清单
+
+- [ ] 设置成本监控
+- [ ] 配置模型别名
+- [ ] 创建批处理脚本
+- [ ] 建立压缩习惯
+- [ ] 定期审查成本
+
+开始优化你的 Claude Code 使用吧！💰
+
+**macOS:**
+
+```bash
+# 配置多行输入
+/terminal-setup
+
+# 手动配置
+Option+Enter    # 或 Shift+Enter
+```
+
+**Linux/Windows：**
+
+```bash
+# 配置多行输入
+/terminal-setup
+
+# 手动配置
+Shift+Enter
+```
+
+**终端特定配置：**
+
+```bash
+# iTerm2 (macOS)
+Preferences → Profiles → Keys
+设置 Option+Enter 为 "Send Text: \n"
+
+# Windows Terminal
+Settings → Actions
+添加 Shift+Enter 绑定
+```
+
+#### 2.4.3 Token 使用优化
+
+**监控成本：**
+
+```bash
+# 查看当前会话成本
+/cost
+
+# 输出示例
+当前会话成本估计：
+- 输入 tokens: 12,450
+- 输出 tokens: 3,280
+- 总计: 15,730 tokens
+- 估计成本: $0.47 USD
+```
+
+**优化策略：**
+
+**1. 使用合适的模型**
+
+```bash
+# 简单任务使用 Haiku
+claude --model haiku "修复这个拼写错误"
+
+# 复杂任务使用 Sonnet
+claude --model sonnet "重构这个复杂的架构"
+
+# 最难任务使用 Opus
+claude --model opus "设计整个系统架构"
+```
+
+**模型选择指南：**
+
+| 模型 | 成本 | 速度 | 适用场景 |
+|------|------|------|----------|
+| Haiku | 最低 | 最快 | 简单修复、代码审查、文档生成 |
+| Sonnet | 中等 | 中等 | 功能开发、重构、调试 |
+| Opus | 最高 | 最慢 | 架构设计、复杂算法、关键决策 |
+
+**2. 压缩长会话**
+
+```bash
+# 定期压缩
+/compact    # 每 50-100 轮对话
+
+# 查看压缩效果
+/cost       # 压缩前后对比
+```
+
+**3. 限制上下文**
+
+```bash
+# 只加载必需的文件
+@src/specific-file.ts
+
+# 而不是
+! ls -R src/ | cat    # 加载整个目录树
+```
+
+**4. 使用探索 Subagent**
+
+```bash
+# 探索时使用 Haiku（更便宜）
+请使用 explore subagent 搜索所有 API 调用
+
+# 而不是直接问
+搜索所有 API 调用并分析它们
+```
+
+**5. 批处理相似任务**
+
+```bash
+# 好的做法 - 批处理
+请一次性修复以下 5 个文件中的类型错误：
+@file1.ts
+@file2.ts
+@file3.ts
+@file4.ts
+@file5.ts
+
+# 避免 - 逐个处理
+修复 file1.ts 中的类型错误
+# 等待响应
+修复 file2.ts 中的类型错误
+# 等待响应
+# ...
+```
+
+#### 2.4.4 成本监控和预算
+
+**设置成本提醒：**
+
+```bash
+# 配置成本限制
+/config
+
+# 在配置中设置
+cost_warning_threshold: 10.00    # $10 USD
+cost_limit: 50.00                # $50 USD
+```
+
+**查看使用统计：**
+
+```bash
+# 详细使用统计
+/usage
+
+# 输出示例
+本月使用统计：
+- 总 tokens: 1,245,890
+- 总成本: $37.42
+- 会话数: 127
+- 平均每会话: $0.29
+```
+
+**成本优化清单：**
+
+```markdown
+✅ 使用最便宜的能完成任务的模型
+✅ 定期压缩长会话
+✅ 限制加载的文件数量
+✅ 使用 Subagent 进行探索
+✅ 批处理相似任务
+✅ 避免重复询问同样的问题
+✅ 使用 CLAUDE.md 存储长期信息
+✅ 监控每会话成本
+```
+
+---
+
+## 第三部分：最佳实践
+
+### 3.1 Plan Mode 详解
+
+#### 3.1.1 什么是 Plan Mode
+
+Plan Mode 是一种安全的审查模式，其中 Claude Code：
+
+- ✅ 不直接修改文件
+- ✅ 在应用更改前显示完整计划
+- ✅ 让你审查和批准每个步骤
+- ✅ 用于探索和多步骤实现
+
+**Plan Mode vs 默认模式：**
+
+| 特性 | Plan Mode | 默认模式 |
+|------|-----------|----------|
+| 文件修改 | 显示计划，需批准 | 直接修改（危险操作需确认） |
+| 速度 | 较慢 | 较快 |
+| 控制度 | 最高 | 中等 |
+| 适用场景 | 复杂任务、学习 | 日常开发 |
+| 安全性 | 最高 | 中等 |
+
+#### 3.1.2 何时使用 Plan Mode
+
+**✅ 适合使用 Plan Mode：**
+
+```
+1. 复杂的多步骤重构
+   - 涉及多个文件的架构更改
+   - 重命名影响广泛的符号
+   - 重组项目结构
+
+2. 不熟悉的代码库
+   - 首次接触的项目
+   - 遗留代码维护
+   - 没有测试覆盖的代码
+
+3. 高风险变更
+   - 数据库迁移
+   - 认证系统修改
+   - 支付处理逻辑
+
+4. 学习和探索
+   - 理解现有实现
+   - 评估不同方案
+   - 学习新的代码模式
+
+5. 需要详细记录
+   - 需要保存决策过程
+   - 需要团队审查
+   - 合规性要求
+```
+
+**❌ 不需要 Plan Mode：**
+
+```
+1. 简单的单行修复
+   - 拼写错误
+   - 简单的类型修复
+   - 明显的 bug
+
+2. 熟悉的常规操作
+   - 已验证的模式
+   - 重复性任务
+   - 低风险更改
+
+3. 时间敏感任务
+   - 紧急 bug 修复
+   - 热修复部署
+   - Demo 准备
+```
+
+#### 3.1.3 如何进入/退出 Plan Mode
+
+**方法一：快捷键**
+
+```
+Shift+Tab    # 循环切换权限模式
+             # Default → Plan → Auto-Accept → Default
+```
+
+**方法二：命令行启动**
+
+```bash
+# 以 Plan Mode 启动
+claude --permission-mode plan
+
+# 或
+claude --mode plan
+```
+
+**方法三：交互模式命令**
+
+```bash
+# 在交互模式中
+/permissions set plan
+
+# 查看当前模式
+/permissions
+```
+
+**退出 Plan Mode：**
+
+```
+Shift+Tab    # 切换到其他模式
+/permissions set default
+```
+
+#### 3.1.4 Plan Mode 工作流程
+
+**完整流程：**
+
+```
+1. 输入任务
+   ↓
+2. Claude 分析并制定计划
+   ↓
+3. 显示详细的步骤和预期更改
+   ↓
+4. 你审查计划
+   ↓
+5. 做出决策：
+   - 接受 (y/yes/accept)
+   - 修改 (提出调整建议)
+   - 拒绝 (n/no/reject)
+   ↓
+6. 如果接受，执行并应用更改
+   ↓
+7. 显示执行结果
+```
+
+**实际示例：**
+
+```bash
+# 输入任务
+重构 auth.ts 使用 async/await 替代 callbacks
+
+# Claude 的 Plan Mode 响应：
+═══════════════════════════════════════
+计划：重构 auth.ts 到 async/await
+═══════════════════════════════════════
+
+步骤 1: 分析当前实现
+- 识别所有基于回调的函数
+- 文件：src/lib/auth.ts
+- 影响：3 个函数
+
+步骤 2: 转换函数签名
+- loginUser(callback) → async loginUser()
+- verifyToken(callback) → async verifyToken()
+- refreshSession(callback) → async refreshSession()
+
+步骤 3: 更新错误处理
+- 将 callback(error) 转换为 try/catch
+- 添加适当的错误抛出
+- 保留错误类型
+
+步骤 4: 更新调用站点
+- 文件影响：
+  - src/pages/api/login.ts
+  - src/pages/api/refresh.ts
+  - src/middleware.ts
+
+步骤 5: 更新测试
+- 修改 auth.test.ts 中的异步测试
+- 使用 async/await 替代 done callbacks
+
+═══════════════════════════════════════
+预期更改：
+- 修改文件：5 个
+- 添加行：47
+- 删除行：52
+- 净减少：5 行
+═══════════════════════════════════════
+
+继续执行此计划吗？ (y/n/modify)
+```
+
+**响应选项：**
+
+```bash
+# 接受计划
+y
+# 或
+yes
+# 或
+accept
+
+# 拒绝计划
+n
+# 或
+no
+# 或
+reject
+
+# 修改计划
+modify
+# 然后提供反馈：
+"步骤 4 太激进了，只更新 login.ts，其他的我手动处理"
+```
+
+#### 3.1.5 Plan Mode 高级技巧
+
+**1. 分步执行**
+
+```bash
+# 请求分步执行
+执行步骤 1 和 2，然后暂停让我审查
+
+# Claude 会在指定步骤后停止
+```
+
+**2. 保存计划**
+
+```bash
+# 导出计划供以后使用
+/export
+# 选择导出格式：Markdown
+
+# 保存的计划可以在其他会话中引用
+```
+
+**3. 计划对比**
+
+```bash
+# 请求多个方案
+提供两个重构方案，一个保守，一个激进
+
+# Claude 会展示两个计划让你选择
+```
+
+**4. 增量审查**
+
+```bash
+# 对于大型任务
+先给我前3个文件的更改预览
+
+# 审查后
+继续下一批
+```
+
+---
+
+### 3.2 权限模式管理
+
+#### 3.2.1 四种权限模式
+
+**1. Default（默认模式）** ⭐ 推荐日常使用
+
+```
+特点：
+✅ 常规操作自动执行
+✅ 敏感操作需要确认
+✅ 平衡安全性和效率
+
+需要确认的操作：
+- 删除文件
+- 修改配置文件
+- 执行破坏性命令
+- 访问系统目录
+
+适用场景：
+- 日常开发
+- 熟悉的项目
+- 一般任务
+```
+
+**2. Auto-Accept（自动批准模式）** ⚡ 快速但危险
+
+```
+特点：
+✅ 所有操作自动执行
+❌ 不显示确认对话
+⚠️ 需要完全信任
+
+适用场景：
+- 完全信任的自动化
+- CI/CD 管道
+- 批处理任务
+- 时间紧迫的演示
+
+⚠️ 警告：
+谨慎使用！可能导致意外的文件删除或更改
+```
+
+**3. Plan（计划模式）** 🛡️ 最安全
+
+```
+特点：
+✅ 所有操作显示为计划
+✅ 需要明确批准
+✅ 提供详细预览
+✅ 可以修改计划
+
+适用场景：
+- 复杂重构
+- 不熟悉的代码
+- 高风险更改
+- 学习和探索
+
+优点：
+- 最高安全性
+- 最佳学习体验
+- 完整的操作记录
+```
+
+**4. BypassPermissions（绕过权限）** 🔓 仅特殊场景
+
+```
+特点：
+✅ 完全绕过权限检查
+❌ 极高风险
+⚠️ 仅特定场景
+
+适用场景：
+- 高度自动化环境
+- 沙盒测试
+- 内部工具开发
+
+⚠️ 极度危险：
+不建议一般用户使用
+```
+
+**模式对比表：**
+
+| 模式 | 安全性 | 速度 | 控制度 | 推荐场景 |
+|------|---------|------|---------|----------|
+| Default | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ | 日常开发 |
+| Plan | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐⭐ | 复杂任务 |
+| Auto-Accept | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐ | 自动化 |
+| Bypass | ⭐ | ⭐⭐⭐⭐⭐ | ⭐ | 特殊场景 |
+
+#### 3.2.2 切换权限模式
+
+**快捷键切换：**
+
+```
+Shift+Tab    # 循环切换
+Alt+M        # 同样功能
+
+循环顺序：
+Default → Plan → Auto-Accept → Default
+```
+
+**命令行切换：**
+
+```bash
+# 启动时指定
+claude --permission-mode plan
+claude --permission-mode auto-accept
+claude --permission-mode default
+
+# 危险模式（不推荐）
+claude --dangerously-skip-permissions
+```
+
+**交互模式切换：**
+
+```bash
+# 查看当前权限
+/permissions
+
+# 切换到特定模式
+/permissions set default
+/permissions set plan
+/permissions set auto-accept
+
+# 查看权限配置
+/permissions show
+```
+
+#### 3.2.3 权限配置
+
+**用户级配置：**
+
+`~/.claude/settings.json`
+
+```json
+{
+  "permissions": {
+    "default_mode": "default",
+    "allow": [
+      "ReadFile",
+      "WriteFile",
+      "ExecuteBash",
+      "WebSearch"
+    ],
+    "ask": [
+      "DeleteFile",
+      "MoveFile",
+      "ExecuteDangerous"
+    ],
+    "deny": [
+      "SystemCommand"
+    ]
+  }
+}
+```
+
+**项目级配置：**
+
+`.claude/settings.json`
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "**/.env*",
+      "**/config/secrets.*",
+      "**/migrations/**",
+      "**/node_modules/**"
+    ],
+    "protected_paths": [
+      "package.json",
+      "tsconfig.json",
+      "prisma/schema.prisma"
+    ],
+    "allow_tools": [
+      "ReadFile",
+      "WriteFile",
+      "Bash",
+      "Git"
+    ]
+  }
+}
+```
+
+**本地覆盖：**
+
+`.claude/settings.local.json`（不提交到版本控制）
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "**/*.test.ts",
+      "**/*.spec.ts"
+    ]
+  }
+}
+```
+
+#### 3.2.4 权限设置优先级
+
+```
+企业策略（最高）
+    ↓
+命令行参数
+    ↓
+本地项目设置 (.claude/settings.local.json)
+    ↓
+项目设置 (.claude/settings.json)
+    ↓
+用户设置 (~/.claude/settings.json)
+    ↓
+系统默认（最低）
+```
+
+**实例：**
+
+```json
+// 企业策略（不可覆盖）
+{
+  "permissions": {
+    "deny": ["**/.env*"]
+  }
+}
+
+// 项目设置
+{
+  "permissions": {
+    "deny": ["**/migrations/**"]
+  }
+}
+
+// 用户设置
+{
+  "permissions": {
+    "allow": ["**/test/**"]
+  }
+}
+
+// 最终生效：
+// ✅ 允许 test/**
+// ❌ 拒绝 .env*（企业策略）
+// ❌ 拒绝 migrations/**（项目设置）
+```
+
+#### 3.2.5 安全最佳实践
+
+**1. 保护敏感文件**
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "**/.env*",
+      "**/secrets.*",
+      "**/*.key",
+      "**/*.pem",
+      "**/id_rsa*"
+    ]
+  }
+}
+```
+
+**2. 保护关键配置**
+
+```json
+{
+  "permissions": {
+    "protected_paths": [
+      "package.json",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      ".github/workflows/**"
+    ]
+  }
+}
+```
+
+**3. 审计敏感操作**
+
+```json
+{
+  "permissions": {
+    "audit": {
+      "log_file": ".claude/audit.log",
+      "log_operations": [
+        "DeleteFile",
+        "ExecuteBash",
+        "ModifyConfig"
+      ]
+    }
+  }
+}
+```
+
+**4. 项目特定限制**
+
+```json
+{
+  "permissions": {
+    "restrict_by_path": {
+      "src/": {
+        "allow": ["ReadFile", "WriteFile"]
+      },
+      "scripts/": {
+        "deny": ["ExecuteBash"]
+      },
+      "config/": {
+        "ask": ["WriteFile"]
+      }
+    }
+  }
+}
+```
+
+---
+
+### 3.3 MCP 服务器集成
+
+#### MCP 服务器配置指南
+
+> Model Context Protocol (MCP) 服务器详细配置步骤
+
+---
+
+##### 📋 目录
+
+- [MCP 协议介绍](#mcp-协议介绍)
+- [配置文件位置](#配置文件位置)
+- [GitHub MCP 配置](#github-mcp-配置)
+- [PostgreSQL MCP 配置](#postgresql-mcp-配置)
+- [Supabase MCP 配置](#supabase-mcp-配置)
+- [Sentry MCP 配置](#sentry-mcp-配置)
+- [Slack MCP 配置](#slack-mcp-配置)
+- [Playwright MCP 配置](#playwright-mcp-配置)
+- [Chrome DevTools MCP 配置](#chrome-devtools-mcp-配置)
+- [OAuth 认证设置](#oauth-认证设置)
+- [故障排查指南](#故障排查指南)
+- [安全注意事项](#安全注意事项)
+- [自定义 MCP 服务器](#自定义-mcp-服务器)
+
+---
+
+##### MCP 协议介绍
+
+###### 什么是 MCP？
+
+**Model Context Protocol (MCP)** 是 Anthropic 开发的开放标准协议，用于连接 AI 模型与外部工具和数据源。
+
+###### 核心概念
+
+```
+┌─────────────┐
+│ Claude Code │
+└──────┬──────┘
+       │ MCP Protocol
+       ├──────────────┐
+       │              │
+┌──────▼──────┐ ┌────▼────────┐
+│   GitHub    │ │  PostgreSQL │
+│ MCP Server  │ │ MCP Server  │
+└─────────────┘ └─────────────┘
+```
+
+**MCP 组件：**
+
+1. **MCP Host** (Claude Code)
+   - 发起 MCP 连接
+   - 调用 MCP 工具
+   - 处理响应
+
+2. **MCP Server** (GitHub, PostgreSQL 等)
+   - 提供工具 (Tools)
+   - 提供资源 (Resources)
+   - 提供提示 (Prompts)
+
+3. **Transport Layer**
+   - stdio (本地进程)
+   - SSE (远程服务器)
+
+###### MCP 的优势
+
+```
+✅ 标准化接口 - 统一的工具集成方式
+✅ 安全隔离 - 每个服务器独立权限
+✅ 可扩展 - 轻松添加新服务
+✅ 开源生态 - 社区提供大量服务器
+```
+
+---
+
+##### 配置文件位置
+
+###### 全局配置
+
+```bash
+#### macOS/Linux
+~/.claude/mcp.json
+
+#### Windows
+%USERPROFILE%\.claude\mcp.json
+```
+
+###### 配置文件结构
+
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "command-to-run",
+      "args": ["arg1", "arg2"],
+      "env": {
+        "ENV_VAR": "value"
+      }
+    }
+  }
+}
+```
+
+###### 查看当前配置
+
+```bash
+#### 查看配置文件
+cat ~/.claude/mcp.json
+
+#### 或在 Claude Code 中
+/config mcp
+```
+
+---
+
+##### GitHub MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+#### 使用 npm 全局安装
+npm install -g @modelcontextprotocol/server-github
+
+#### 或使用 npx（无需全局安装）
+#### npx 会在配置中自动下载
+```
+
+###### 2. 获取 GitHub Token
+
+```bash
+#### 访问 GitHub Settings
+#### https://github.com/settings/tokens
+
+#### 创建 Personal Access Token
+#### 需要的权限：
+#### - repo (完整访问)
+#### - read:org
+#### - read:user
+#### - workflow (如果需要 Actions)
+```
+
+**Token 权限清单：**
+```
+✅ repo - 访问仓库
+✅ read:org - 读取组织信息
+✅ read:user - 读取用户信息
+✅ workflow - 管理 GitHub Actions（可选）
+```
+
+###### 3. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_your_token_here"
+      }
+    }
+  }
+}
+```
+
+###### 4. 验证配置
+
+```bash
+#### 重启 Claude Code
+claude
+
+#### 测试 GitHub 连接
+列出我的 GitHub 仓库
+
+#### 或
+! gh repo list  # 如果安装了 gh CLI
+```
+
+###### 可用功能
+
+**GitHub MCP Server 提供的工具：**
+
+```bash
+#### 1. 仓库管理
+创建新仓库
+列出我的仓库
+fork 仓库
+
+#### 2. Issue 管理
+创建 issue
+列出 issues
+更新 issue 状态
+添加评论
+
+#### 3. Pull Request 管理
+创建 PR
+列出 PRs
+合并 PR
+审查 PR
+
+#### 4. 文件操作
+读取文件内容
+创建/更新文件
+搜索代码
+
+#### 5. Branch 管理
+创建分支
+列出分支
+删除分支
+```
+
+###### 使用示例
+
+```bash
+#### 1. 创建 Issue
+在我的仓库 myuser/myrepo 中创建一个 issue：
+标题：修复登录 bug
+内容：用户登录后立即退出
+
+#### 2. 搜索代码
+在仓库中搜索所有包含 "authentication" 的代码
+
+#### 3. 创建 PR
+创建 PR，将 feature/auth 合并到 main
+
+#### 4. 列出最近的 PRs
+列出我的仓库最近 10 个 PRs
+```
+
+---
+
+##### PostgreSQL MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+#### 使用 npm 安装
+npm install -g @modelcontextprotocol/server-postgres
+
+#### 或使用 npx
+```
+
+###### 2. 准备数据库连接信息
+
+```bash
+#### 收集以下信息：
+#### - 主机地址 (host)
+#### - 端口 (port, 默认 5432)
+#### - 数据库名 (database)
+#### - 用户名 (username)
+#### - 密码 (password)
+```
+
+###### 3. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "postgresql://username:password@localhost:5432/mydb"
+      ]
+    }
+  }
+}
+```
+
+**或使用环境变量：**
+
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://username:password@localhost:5432/mydb"
+      }
+    }
+  }
+}
+```
+
+###### 4. 安全配置（推荐）
+
+```bash
+#### 使用 .env 文件
+cat > ~/.claude/.env << 'EOF'
+POSTGRES_CONNECTION_STRING=postgresql://username:password@localhost:5432/mydb
+EOF
+
+#### 配置文件引用环境变量
+```
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "${POSTGRES_CONNECTION_STRING}"
+      }
+    }
+  }
+}
+```
+
+###### 可用功能
+
+**PostgreSQL MCP Server 提供的工具：**
+
+```sql
+-- 1. 查询数据
+SELECT * FROM users WHERE id = 1;
+
+-- 2. 列出表
+列出数据库中的所有表
+
+-- 3. 表结构
+显示 users 表的结构
+
+-- 4. 执行查询
+查询最近 10 个订单
+
+-- 5. 数据分析
+分析用户活跃度统计
+```
+
+###### 使用示例
+
+```bash
+#### 1. 列出所有表
+列出数据库中的所有表
+
+#### 2. 查询数据
+查询 users 表中 email 包含 "gmail" 的用户
+
+#### 3. 统计分析
+统计每月的订单数量
+
+#### 4. 表结构分析
+显示 orders 表的完整结构，包括索引和约束
+
+#### 5. 数据库健康检查
+检查数据库性能，识别慢查询
+```
+
+---
+
+##### Supabase MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+#### 使用 npm 安装
+npm install -g @modelcontextprotocol/server-supabase
+
+#### 或使用 npx
+```
+
+###### 2. 获取 Supabase 凭证
+
+```bash
+#### 访问 Supabase Dashboard
+#### https://app.supabase.com/
+
+#### 获取：
+#### 1. Project URL (API URL)
+#### 2. Anon/Service Key
+#### 3. 数据库连接字符串（如需要）
+```
+
+###### 3. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-supabase"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_your_token_here"
+      }
+    }
+  }
+}
+```
+
+###### 可用功能
+
+```bash
+#### 1. 项目管理
+列出我的 Supabase 项目
+创建新项目
+获取项目详情
+
+#### 2. 数据库操作
+列出表
+执行 SQL 查询
+应用数据库迁移
+
+#### 3. Edge Functions
+部署 Edge Function
+列出 Edge Functions
+调用 Edge Function
+
+#### 4. 认证管理
+列出用户
+创建用户
+管理认证策略
+
+#### 5. 存储管理
+上传文件
+列出存储桶
+管理文件
+```
+
+###### 使用示例
+
+```bash
+#### 1. 列出项目
+列出我的所有 Supabase 项目
+
+#### 2. 数据库查询
+在项目 myproject 中查询 users 表
+
+#### 3. 部署 Edge Function
+部署 Edge Function:
+名称: send-email
+代码: [提供代码]
+
+#### 4. 应用迁移
+应用数据库迁移，添加 profiles 表
+```
+
+---
+
+##### Sentry MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+npm install -g @modelcontextprotocol/server-sentry
+```
+
+###### 2. 获取 Sentry Token
+
+```bash
+#### 访问 Sentry Settings
+#### https://sentry.io/settings/account/api/auth-tokens/
+
+#### 创建 Auth Token
+#### 权限：
+#### - event:read
+#### - project:read
+#### - org:read
+```
+
+###### 3. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "sentry": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sentry"
+      ],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "your_sentry_token",
+        "SENTRY_ORG_SLUG": "your_org_name"
+      }
+    }
+  }
+}
+```
+
+###### 可用功能
+
+```bash
+#### 1. 错误监控
+列出最近的错误
+查看错误详情
+标记错误为已解决
+
+#### 2. 项目管理
+列出所有项目
+查看项目统计
+
+#### 3. Issue 分析
+分析错误趋势
+识别高频错误
+```
+
+---
+
+##### Slack MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+npm install -g @modelcontextprotocol/server-slack
+```
+
+###### 2. 创建 Slack App
+
+```bash
+#### 1. 访问 https://api.slack.com/apps
+#### 2. 创建 New App
+#### 3. 选择 "From scratch"
+#### 4. 设置 OAuth & Permissions
+```
+
+**需要的权限（Scopes）：**
+
+```
+Bot Token Scopes:
+✅ channels:history - 读取频道历史
+✅ channels:read - 读取频道信息
+✅ chat:write - 发送消息
+✅ users:read - 读取用户信息
+✅ files:read - 读取文件
+✅ files:write - 上传文件
+```
+
+###### 3. 安装 App 到 Workspace
+
+```bash
+#### OAuth & Permissions 页面
+#### 点击 "Install to Workspace"
+#### 授权
+#### 复制 "Bot User OAuth Token"
+```
+
+###### 4. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-token",
+        "SLACK_TEAM_ID": "T01234567"
+      }
+    }
+  }
+}
+```
+
+###### 可用功能
+
+```bash
+#### 1. 发送消息
+在 #general 频道发送消息: "Hello team!"
+
+#### 2. 读取消息
+读取 #dev 频道最近 50 条消息
+
+#### 3. 用户管理
+列出所有 Slack 用户
+
+#### 4. 频道管理
+列出所有频道
+创建新频道
+
+#### 5. 文件操作
+上传文件到频道
+```
+
+---
+
+##### Playwright MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+npm install -g @modelcontextprotocol/server-playwright
+```
+
+###### 2. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-playwright"
+      ]
+    }
+  }
+}
+```
+
+###### 可用功能
+
+```bash
+#### 1. 浏览器自动化
+打开 https://example.com
+点击登录按钮
+填写表单
+
+#### 2. 截图
+访问网站并截图
+
+#### 3. 测试
+运行 E2E 测试
+验证页面元素
+
+#### 4. 页面快照
+获取页面的可访问性快照
+```
+
+---
+
+##### Chrome DevTools MCP 配置
+
+###### 安装步骤
+
+###### 1. 安装 MCP Server
+
+```bash
+npm install -g @modelcontextprotocol/server-chrome-devtools
+```
+
+###### 2. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-chrome-devtools"
+      ]
+    }
+  }
+}
+```
+
+###### 可用功能
+
+```bash
+#### 1. 页面导航
+打开网页
+点击元素
+填写表单
+
+#### 2. 性能分析
+开始性能追踪
+停止追踪并分析结果
+
+#### 3. 网络监控
+查看网络请求
+分析 API 调用
+
+#### 4. Console 监控
+列出 Console 消息
+过滤错误消息
+```
+
+---
+
+##### OAuth 认证设置
+
+###### 什么时候需要 OAuth？
+
+```
+需要 OAuth 的场景：
+✅ 访问用户私有数据（如 GitHub 私有仓库）
+✅ 代表用户执行操作（如发送 Slack 消息）
+✅ 需要细粒度权限控制
+```
+
+###### GitHub OAuth 设置
+
+###### 1. 创建 OAuth App
+
+```bash
+#### 访问 GitHub
+#### Settings > Developer settings > OAuth Apps
+#### 创建 New OAuth App
+
+#### 配置：
+#### Application name: Claude Code MCP
+#### Homepage URL: http://localhost
+#### Authorization callback URL: http://localhost:3000/callback
+```
+
+###### 2. 获取凭证
+
+```bash
+#### 记录：
+#### - Client ID
+#### - Client Secret
+```
+
+###### 3. 配置 MCP Server
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_CLIENT_ID": "your_client_id",
+        "GITHUB_CLIENT_SECRET": "your_client_secret"
+      }
+    }
+  }
+}
+```
+
+###### 4. 完成 OAuth 流程
+
+```bash
+#### 启动 Claude Code
+claude
+
+#### 首次使用时会提示：
+#### "需要授权 GitHub 访问"
+#### 点击链接 -> 授权 -> 返回
+```
+
+---
+
+##### 故障排查指南
+
+###### 常见问题
+
+###### 1. MCP Server 无法启动
+
+**症状：**
+```
+Error: Failed to start MCP server 'github'
+```
+
+**排查步骤：**
+
+```bash
+#### 1. 检查 MCP Server 是否安装
+npm list -g @modelcontextprotocol/server-github
+
+#### 2. 手动运行 server
+npx @modelcontextprotocol/server-github
+
+#### 3. 检查环境变量
+echo $GITHUB_PERSONAL_ACCESS_TOKEN
+
+#### 4. 查看日志
+cat ~/.claude/logs/mcp-github.log
+```
+
+**解决方案：**
+
+```bash
+#### 重新安装
+npm uninstall -g @modelcontextprotocol/server-github
+npm install -g @modelcontextprotocol/server-github
+
+#### 或使用 npx（推荐）
+#### 配置中使用 npx，无需全局安装
+```
+
+###### 2. 认证失败
+
+**症状：**
+```
+Error: Authentication failed
+```
+
+**排查步骤：**
+
+```bash
+#### 1. 验证 Token 是否有效
+#### GitHub:
+curl -H "Authorization: token ghp_your_token" https://api.github.com/user
+
+#### 2. 检查 Token 权限
+#### 确保有必需的 scopes
+
+#### 3. 检查配置文件
+cat ~/.claude/mcp.json | jq '.mcpServers.github.env'
+```
+
+**解决方案：**
+
+```bash
+#### 重新生成 Token
+#### 确保包含所有必需权限
+#### 更新配置文件
+```
+
+###### 3. 连接超时
+
+**症状：**
+```
+Error: Connection timeout
+```
+
+**排查步骤：**
+
+```bash
+#### 1. 检查网络连接
+ping api.github.com
+
+#### 2. 检查代理设置
+echo $HTTP_PROXY
+echo $HTTPS_PROXY
+
+#### 3. 测试直接连接
+curl https://api.github.com
+```
+
+**解决方案：**
+
+```bash
+#### 配置代理（如需要）
+export HTTP_PROXY=http://proxy.example.com:8080
+export HTTPS_PROXY=http://proxy.example.com:8080
+
+#### 或在配置中添加
+```
+
+###### 4. 工具调用失败
+
+**症状：**
+```
+Error: Tool 'create_issue' failed
+```
+
+**排查步骤：**
+
+```bash
+#### 1. 查看详细错误
+claude --verbose
+
+#### 2. 手动测试 API
+curl -X POST \
+  -H "Authorization: token your_token" \
+  https://api.github.com/repos/user/repo/issues \
+  -d '{"title":"test"}'
+
+#### 3. 检查权限
+#### 确保 Token 有 repo 权限
+```
+
+###### 调试模式
+
+```bash
+#### 启用调试日志
+export DEBUG=mcp:*
+
+#### 启动 Claude Code
+claude
+
+#### 查看详细日志
+tail -f ~/.claude/logs/debug.log
+```
+
+###### 重置配置
+
+```bash
+#### 备份当前配置
+cp ~/.claude/mcp.json ~/.claude/mcp.json.backup
+
+#### 重置为默认
+rm ~/.claude/mcp.json
+
+#### 重新配置
+claude
+/config mcp
+```
+
+---
+
+##### 安全注意事项
+
+###### Token 安全
+
+###### ✅ 应该做
+
+```bash
+#### 1. 使用环境变量
+export GITHUB_TOKEN=ghp_your_token
+
+#### 2. 使用 .env 文件（添加到 .gitignore）
+echo "GITHUB_TOKEN=ghp_your_token" >> ~/.claude/.env
+echo "~/.claude/.env" >> ~/.gitignore
+
+#### 3. 设置最小权限
+#### 只授予必需的 scopes
+
+#### 4. 定期轮换 Token
+#### 每 90 天更换一次
+
+#### 5. 使用 Secret 管理工具
+#### 如 1Password, Bitwarden, pass
+```
+
+###### ❌ 不应该做
+
+```bash
+#### 1. 不要提交到 Git
+#### ❌ 不要在配置文件中硬编码
+
+#### 2. 不要分享 Token
+#### ❌ 不要通过聊天/邮件发送
+
+#### 3. 不要使用过高权限
+#### ❌ 不要给予不必要的 admin 权限
+
+#### 4. 不要长期不更换
+#### ❌ 不要使用超过 1 年的 Token
+```
+
+###### 权限最小化
+
+**GitHub Token 权限示例：**
+
+```
+只读操作：
+✅ repo:status - 查看状态
+✅ public_repo - 访问公开仓库
+✅ read:org - 读取组织
+
+读写操作：
+⚠️  repo - 完整访问（谨慎使用）
+⚠️  workflow - 管理 Actions
+⚠️  admin:org - 管理组织（一般不需要）
+```
+
+###### 审计日志
+
+```bash
+#### 启用审计日志
+cat > ~/.claude/audit.conf << 'EOF'
+audit:
+  enabled: true
+  log_file: ~/.claude/logs/audit.log
+  log_level: info
+EOF
+
+#### 查看审计日志
+tail -f ~/.claude/logs/audit.log
+
+#### 分析敏感操作
+grep "token" ~/.claude/logs/audit.log
+```
+
+---
+
+##### 自定义 MCP 服务器
+
+###### 创建简单的 MCP Server
+
+###### 1. 初始化项目
+
+```bash
+#### 创建目录
+mkdir my-mcp-server
+cd my-mcp-server
+
+#### 初始化
+npm init -y
+
+#### 安装依赖
+npm install @modelcontextprotocol/sdk
+```
+
+###### 2. 实现 Server
+
+**src/index.ts**
+
+```typescript
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+
+const server = new Server(
+  {
+    name: "my-custom-server",
+    version: "1.0.0",
+  },
+  {
+    capabilities: {
+      tools: {},
+    },
+  }
+);
+
+// 定义工具
+server.setRequestHandler("tools/list", async () => {
+  return {
+    tools: [
+      {
+        name: "greet",
+        description: "Greet a user",
+        inputSchema: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              description: "Name to greet",
+            },
+          },
+          required: ["name"],
+        },
+      },
+    ],
+  };
+});
+
+// 实现工具
+server.setRequestHandler("tools/call", async (request) => {
+  if (request.params.name === "greet") {
+    const name = request.params.arguments?.name;
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Hello, ${name}!`,
+        },
+      ],
+    };
+  }
+
+  throw new Error(`Unknown tool: ${request.params.name}`);
+});
+
+// 启动 server
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+###### 3. 配置 package.json
+
+```json
+{
+  "name": "my-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "my-mcp-server": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  }
+}
+```
+
+###### 4. 编译和测试
+
+```bash
+#### 编译
+npm run build
+
+#### 测试
+node dist/index.js
+```
+
+###### 5. 配置到 Claude Code
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "my-custom-server": {
+      "command": "node",
+      "args": ["/path/to/my-mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+###### 6. 使用自定义 Server
+
+```bash
+#### 启动 Claude Code
+claude
+
+#### 测试工具
+使用 my-custom-server 打招呼给 Alice
+```
+
+---
+
+##### MCP 配置模板
+
+###### 完整配置示例
+
+**~/.claude/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${POSTGRES_CONNECTION_STRING}"
+      ]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-supabase"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_TOKEN}"
+      }
+    },
+    "sentry": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sentry"
+      ],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_TOKEN}",
+        "SENTRY_ORG_SLUG": "my-org"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-playwright"
+      ]
+    }
+  }
+}
+```
+
+###### 环境变量配置
+
+**~/.claude/.env**
+
+```bash
+#### GitHub
+GITHUB_TOKEN=ghp_your_github_token
+
+#### PostgreSQL
+POSTGRES_CONNECTION_STRING=postgresql://user:pass@localhost:5432/db
+
+#### Supabase
+SUPABASE_TOKEN=sbp_your_supabase_token
+
+#### Sentry
+SENTRY_TOKEN=your_sentry_token
+
+#### Slack
+SLACK_BOT_TOKEN=xoxb-your-slack-bot-token
+SLACK_TEAM_ID=T01234567
+```
+
+---
+
+##### 总结
+
+###### 配置检查清单
+
+- [ ] 确定需要的 MCP 服务器
+- [ ] 安装必要的 npm 包
+- [ ] 获取所需的 API tokens
+- [ ] 创建 ~/.claude/mcp.json
+- [ ] 配置环境变量（使用 .env）
+- [ ] 重启 Claude Code
+- [ ] 测试每个 MCP 服务器
+- [ ] 设置权限最小化
+- [ ] 定期轮换 tokens
+- [ ] 备份配置文件
+
+###### 最佳实践
+
+1. **使用环境变量** - 不要硬编码敏感信息
+2. **最小权限原则** - 只授予必要的权限
+3. **定期更新** - 保持 MCP 服务器最新
+4. **监控日志** - 定期检查错误日志
+5. **备份配置** - 保存配置备份
+
+###### 有用的资源
+
+- 官方文档: https://modelcontextprotocol.io
+- MCP Servers 仓库: https://github.com/modelcontextprotocol/servers
+- Claude Code 文档: https://code.claude.com/docs/
+
+开始配置你的 MCP 服务器吧！🚀
+
+
+# GitHub MCP
+claude mcp add --transport http github \
+  https://github.mcp.api.anthropic.com
+
+# Notion MCP
+claude mcp add --transport http notion \
+  https://mcp.notion.com/mcp
+
+特点：
+✅ 远程部署
+✅ 易于维护
+✅ 自动更新
+✅ OAuth 2.0 认证
+```
+
+**2. Stdio 服务器**（用于本地进程）
+
+```bash
+# PostgreSQL MCP（本地）
+claude mcp add --transport stdio postgres -- \
+  npx -y @modelcontextprotocol/server-postgres
+
+# Airtable MCP（Node.js）
+claude mcp add --transport stdio airtable -- \
+  npx -y airtable-mcp-server
+
+特点：
+✅ 本地运行
+✅ 完全控制
+✅ 无网络依赖
+✅ 自定义配置
+```
+
+**3. SSE 服务器**（已弃用）
+
+```bash
+# 不再推荐使用
+# 迁移到 HTTP 或 Stdio
+```
+
+#### 3.3.3 安装和配置 MCP 服务器
+
+**基本命令：**
+
+```bash
+# 查看所有可用 MCP 服务器
+claude mcp list
+
+# 添加新服务器
+claude mcp add --transport http github \
+  https://mcp.github.com/api
+
+# 查看服务器详情
+claude mcp get github
+
+# 删除服务器
+claude mcp remove github
+
+# 测试连接
+claude mcp test github
+```
+
+**常用 MCP 服务器安装：**
+
+**GitHub - 代码仓库操作**
+```bash
+claude mcp add --transport http github \
+  https://github.mcp.api.anthropic.com
+
+功能：
+- 列出 repositories, issues, PRs
+- 创建和更新 issues
+- 管理 PRs
+- 查看提交历史
+```
+
+**PostgreSQL - 数据库查询**
+```bash
+claude mcp add --transport stdio postgres -- \
+  npx -y @modelcontextprotocol/server-postgres
+
+配置环境变量：
+DATABASE_URL=postgresql://user:pass@localhost/dbname
+
+功能：
+- 执行 SQL 查询
+- 列出表和列
+- 分析查询性能
+- 数据迁移建议
+```
+
+**Sentry - 错误监控**
+```bash
+claude mcp add --transport http sentry \
+  https://sentry.mcp.api.anthropic.com
+
+功能：
+- 查看错误报告
+- 分析崩溃趋势
+- 修复建议
+- 性能监控
+```
+
+**Slack - 团队通信**
+```bash
+claude mcp add --transport http slack \
+  https://slack.mcp.api.anthropic.com
+
+功能：
+- 发送消息
+- 查询频道历史
+- 搜索对话
+- 管理成员
+```
+
+**Figma - 设计资源**
+```bash
+claude mcp add --transport http figma \
+  https://figma.mcp.api.anthropic.com
+
+功能：
+- 获取设计文件
+- 提取组件
+- 导出资源
+- 设计系统集成
+```
+
+**Filesystem - 文件操作**
+```bash
+claude mcp add --transport stdio filesystem -- \
+  npx -y @modelcontextprotocol/server-filesystem \
+  /path/to/allowed/directory
+
+功能：
+- 读写特定目录
+- 文件搜索
+- 目录遍历
+```
+
+#### 3.3.4 MCP 配置范围
+
+**本地配置**（默认，不提交）
+
+```bash
+# 仅限当前项目
+claude mcp add --transport http github \
+  https://mcp.github.com
+
+存储位置：.claude/mcp.json
+特点：
+✅ 包含私有令牌
+❌ 不提交到版本控制
+🔒 仅本地可用
+```
+
+**项目配置**（共享）
+
+```bash
+# 与团队共享
+claude mcp add --transport http github \
+  https://mcp.github.com --scope project
+
+存储位置：.mcp.json
+特点：
+✅ 提交到版本控制
+✅ 团队共享
+❌ 不包含令牌
+```
+
+**用户配置**（全局）
+
+```bash
+# 跨所有项目
+claude mcp add --transport http github \
+  https://mcp.github.com --scope user
+
+存储位置：~/.claude/.mcp.json
+特点：
+✅ 所有项目可用
+✅ 个人配置
+🔒 仅当前用户
+```
+
+**配置文件示例：**
+
+**.mcp.json**（项目级，可提交）
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "transport": "http",
+      "url": "https://mcp.github.com/api",
+      "description": "GitHub repository access"
+    },
+    "postgres": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "description": "PostgreSQL database access"
+    }
+  }
+}
+```
+
+**.claude/mcp.json**（本地覆盖，不提交）
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "transport": "http",
+      "url": "https://mcp.github.com/api",
+      "auth": {
+        "type": "oauth2",
+        "token": "ghp_xxxxxxxxxxxxxxxxxxxx",
+        "refresh_token": "ghr_xxxxxxxxxxxxxxxxxxxx",
+        "expires_at": "2025-12-31T23:59:59Z"
+      }
+    },
+    "postgres": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://dev:devpass@localhost/mydb"
+      }
+    }
+  }
+}
+```
+
+#### 3.3.5 在交互模式中使用 MCP
+
+**检查 MCP 状态：**
+
+```bash
+# 在交互模式中
+/mcp
+
+输出示例：
+═══════════════════════════════════════
+已连接的 MCP 服务器：
+═══════════════════════════════════════
+
+✅ github (HTTP)
+   URL: https://mcp.github.com/api
+   状态：已连接
+   工具：15 个
+   - list_repositories
+   - get_issues
+   - create_pr
+   - ...
+
+✅ postgres (Stdio)
+   命令：npx @modelcontextprotocol/server-postgres
+   状态：运行中
+   工具：8 个
+   - execute_query
+   - list_tables
+   - describe_table
+   - ...
+
+❌ sentry (HTTP)
+   状态：需要认证
+   操作：/mcp auth sentry
+```
+
+**OAuth 2.0 认证：**
+
+```bash
+# 验证需要 OAuth 的服务器
+/mcp
+
+# 选择需要认证的服务器
+# Claude Code 会打开浏览器
+# 完成 OAuth 流程
+# 令牌自动刷新
+```
+
+**使用 MCP 工具：**
+
+一旦配置，MCP 工具在提示中自动可用：
+
+```bash
+# GitHub MCP 示例
+查看 anthropics/claude-code 仓库的最新 5 个 pull requests
+
+# Claude 会自动：
+# 1. 识别需要 GitHub MCP
+# 2. 调用 list_pull_requests 工具
+# 3. 返回格式化结果
+
+# 数据库 MCP 示例
+查询 users 表，找出过去 7 天注册的用户
+
+# Claude 会：
+# 1. 使用 postgres MCP
+# 2. 构造 SQL 查询
+# 3. 执行并格式化结果
+
+# Figma MCP 示例
+从 Figma 文件"设计系统"中提取所有按钮组件
+
+# Claude 会：
+# 1. 连接 Figma MCP
+# 2. 搜索组件
+# 3. 生成代码
+```
+
+#### 3.3.6 常用 MCP 服务器列表
+
+| 服务器 | 类型 | 用途 | 安装命令 |
+|--------|------|------|----------|
+| **GitHub** | HTTP | 代码仓库操作 | `claude mcp add --transport http github https://github.mcp.api.anthropic.com` |
+| **PostgreSQL** | Stdio | 数据库查询 | `claude mcp add --transport stdio postgres -- npx -y @modelcontextprotocol/server-postgres` |
+| **Sentry** | HTTP | 错误监控 | `claude mcp add --transport http sentry https://sentry.mcp.api.anthropic.com` |
+| **Slack** | HTTP | 团队通信 | `claude mcp add --transport http slack https://slack.mcp.api.anthropic.com` |
+| **Figma** | HTTP | 设计资源 | `claude mcp add --transport http figma https://figma.mcp.api.anthropic.com` |
+| **Notion** | HTTP | 知识库 | `claude mcp add --transport http notion https://mcp.notion.com/mcp` |
+| **Linear** | HTTP | 问题跟踪 | `claude mcp add --transport http linear https://linear.mcp.api.anthropic.com` |
+| **Vercel** | HTTP | 部署管理 | `claude mcp add --transport http vercel https://vercel.mcp.api.anthropic.com` |
+| **Gmail** | HTTP | 电子邮件 | `claude mcp add --transport http gmail https://gmail.mcp.api.anthropic.com` |
+| **Supabase** | HTTP | 后端服务 | 已内置 |
+
+#### 3.3.7 企业 MCP 管理
+
+管理员可以在系统级别配置 MCP：
+
+**macOS/Linux：**
+
+```bash
+sudo tee /etc/claude-code/mcp.json << EOF
+{
+  "mcpServers": {
+    "github": {
+      "transport": "http",
+      "url": "https://github.mcp.api.anthropic.com",
+      "required": true
+    },
+    "internal-api": {
+      "transport": "http",
+      "url": "https://internal.company.com/mcp",
+      "required": true
+    }
+  },
+  "allowed_transports": ["http"],
+  "blocked_servers": ["unsafe-mcp-server"]
+}
+EOF
+```
+
+**Windows：**
+
+```
+C:\ProgramData\Claude Code\mcp.json
+```
+
+**企业策略：**
+- 由 MDM 或 Group Policy 强制执行
+- 用户无法添加未经批准的服务器
+- 防止未授权的数据访问
+- 审计所有 MCP 连接
+
+---
+
+### 3.4 Agent/Subagent 系统
+
+#### 3.4.1 什么是 Agent 和 Subagent
+
+**Agent：** 主要的 Claude Code 实例
+```
+- 你的主要交互点
+- 管理文件、执行命令
+- 协调整体工作流程
+```
+
+**Subagent：** 专门的 AI 助手
+```
+- 有专门的目的和领域
+- 在隔离的上下文中运行
+- 可配置特定工具
+- 可按名称调用或自动委派
+```
+
+**为什么使用 Subagent？**
+
+```
+1. 上下文保留
+   - 不污染主会话历史
+   - 保持对话整洁
+   - 节省 token
+
+2. 专业精通
+   - 代码审查专家
+   - 测试编写专家
+   - 安全审计专家
+   - 性能优化专家
+
+3. 可重用性
+   - 跨项目共享
+   - 团队成员共用
+   - 标准化流程
+
+4. 灵活权限
+   - 限制工具访问
+   - 确保安全
+   - 专门化能力
+```
+
+#### 3.4.2 内置 Subagent
+
+**1. General-Purpose Subagent**
+```
+用途：需要修改的复杂多步骤任务
+工具：完整工具访问
+模型：Sonnet
+使用场景：
+- 功能开发
+- 复杂重构
+- 多文件修改
+```
+
+**2. Explore Subagent**
+```
+用途：快速、只读代码库浏览
+工具：ReadFile, SearchCode, Grep
+模型：Haiku（快速且便宜）
+使用场景：
+- 代码搜索
+- 架构分析
+- 依赖追踪
+- 文档生成
+```
+
+**3. Plan Subagent**
+```
+用途：在 Plan Mode 中使用
+工具：ReadFile, SearchCode
+模型：Sonnet
+使用场景：
+- 研究和规划
+- 方案设计
+- 不直接执行更改
+```
+
+**4. Debugger Subagent**
+```
+用途：根本原因分析
+工具：ReadFile, Bash, Grep
+模型：Opus（最强）
+使用场景：
+- 追踪错误
+- 分析崩溃
+- 性能问题
+- 复杂 bug
+```
+
+#### 3.4.3 使用 Subagent
+
+**自动委派：**
+
+```bash
+# Claude 自动选择合适的 Subagent
+检查这个 bug 的根本原因
+
+# Claude 内部：
+# 1. 识别任务类型（调试）
+# 2. 选择 Debugger Subagent
+# 3. 委派任务
+# 4. 整合结果
+```
+
+**显式请求：**
+
+```bash
+# 明确要求特定 Subagent
+使用 explore subagent 找到所有 API 端点
+
+# 或
+请 code review subagent 检查我的更改
+
+# 或
+用 debugger subagent 分析这个崩溃日志
+```
+
+**查看可用 Subagent：**
+
+```bash
+/agents
+
+输出示例：
+═══════════════════════════════════════
+可用 Subagents：
+═══════════════════════════════════════
+
+内置：
+✓ general-purpose     多用途开发
+✓ explore            代码浏览（只读）
+✓ plan               计划和设计
+✓ debugger           调试和分析
+
+自定义（项目）：
+✓ code-reviewer      代码审查专家
+✓ test-writer        测试编写专家
+✓ security-auditor   安全审计专家
+
+自定义（用户）：
+✓ my-python-expert   Python 专家助手
+```
+
+#### 3.4.4 创建自定义 Subagent
+
+**使用 /agents 命令：**
+
+```bash
+# 在交互模式中
+/agents
+
+# 选择操作：
+# 1. Create new agent
+# 2. Edit existing agent
+# 3. Delete agent
+# 4. View agent details
+```
+
+**Subagent 配置文件格式：**
+
+文件位置：`.claude/agents/code-reviewer.md`
+
+```yaml
+---
+name: Code Reviewer
+description: 执行彻底的代码审查并提供改进建议
+role: 具有最佳实践专业知识的高级代码审查员
+tools:
+  - ReadFile
+  - SearchCode
+  - ExecuteBash
+  - Diff
+model: sonnet
+max_turns: 10
+---
+
+# 代码审查指南
+
+你是一个专家级代码审查员。你的职责是：
+
+## 审查清单
+
+1. **正确性**
+   - 逻辑正确性
+   - 边界条件
+   - 错误处理
+
+2. **性能**
+   - 时间复杂度
+   - 空间复杂度
+   - 不必要的计算
+
+3. **安全性**
+   - 输入验证
+   - SQL 注入
+   - XSS 漏洞
+   - 认证/授权
+
+4. **可维护性**
+   - 代码清晰度
+   - 命名约定
+   - 注释质量
+   - 模块化
+
+5. **测试**
+   - 测试覆盖
+   - 边界情况
+   - 错误场景
+
+## 审查流程
+
+1. 开始时简要总结代码用途
+2. 列出关键问题（如有）
+3. 提供改进建议
+4. 提供代码示例（如需要）
+5. 结束时给出总体评分（1-10）
+
+## 输出格式
+
+\`\`\`markdown
+# 代码审查报告
+
+
+## 第五部分：团队协作与企业应用
+
+## 团队协作最佳实践
+
+> 团队使用 Claude Code 的协作指南
+
+---
+
+### 📋 目录
+
+- [为什么团队需要 Claude Code](#为什么团队需要-claude-code)
+- [共享配置管理](#共享配置管理)
+- [CLAUDE.md 维护策略](#claudemd-维护策略)
+- [Agent 和命令共享](#agent-和命令共享)
+- [权限策略制定](#权限策略制定)
+- [代码审查流程](#代码审查流程)
+- [知识分享机制](#知识分享机制)
+- [新成员上手指南](#新成员上手指南)
+- [团队规范](#团队规范)
+- [衡量和优化](#衡量和优化)
+
+---
+
+### 为什么团队需要 Claude Code
+
+#### 团队面临的挑战
+
+```
+传统开发挑战：
+❌ 代码审查耗时
+❌ 新人上手慢
+❌ 知识分散
+❌ 重复劳动
+❌ 文档过时
+❌ 标准不一致
+```
+
+#### Claude Code 的团队价值
+
+```
+Claude Code 优势：
+✅ 统一代码风格
+✅ 自动化代码审查
+✅ 知识文档化
+✅ 加速开发
+✅ 减少重复工作
+✅ 标准化流程
+```
+
+#### ROI 估算
+
+```
+团队规模: 5 人
+每周节省: 10 小时/人
+时薪: $50
+月节省: 5 × 10 × 4 × $50 = $10,000
+
+Claude Code 月成本: ~$500
+ROI: 2000%
+```
+
+---
+
+### 共享配置管理
+
+#### 配置层次结构
+
+```
+优先级从高到低：
+1. 本地配置 (~/.claude/)
+2. 项目配置 (.claude/)
+3. 团队配置 (Git repo)
+4. 默认配置
+```
+
+#### 团队配置仓库
+
+##### 1. 创建团队配置仓库
+
+```bash
+## 创建配置仓库
+mkdir claude-team-config
+cd claude-team-config
+
+## 初始化
+git init
+
+## 创建结构
+mkdir -p {agents,commands,templates}
+
+## 添加 README
+cat > README.md << 'EOF'
+## Claude Code 团队配置
+
+本仓库包含团队共享的 Claude Code 配置。
+
+### 使用方法
+
+```bash
+## 克隆到本地
+git clone https://github.com/myorg/claude-team-config ~/.claude-team
+
+## 链接到项目
+cd your-project
+ln -s ~/.claude-team/agents .claude/agents
+ln -s ~/.claude-team/commands .claude/commands
+```
+
+### 目录结构
+
+- `agents/` - 团队共享的自定义 Agents
+- `commands/` - 团队共享的斜线命令
+- `templates/` - 项目模板和配置示例
+EOF
+
+git add .
+git commit -m "Initial team config"
+git push
+```
+
+##### 2. 团队 settings.json
+
+**templates/settings.json**
+
+```json
+{
+  "defaultModel": "sonnet",
+  "permissions": {
+    "default_mode": "default",
+    "allow": [
+      "ReadFile",
+      "WriteFile",
+      "ExecuteBash",
+      "SearchFiles",
+      "ListFiles"
+    ],
+    "deny": [
+      "DeleteFile"
+    ],
+    "auto_accept": {
+      "read": ["src/**", "tests/**", "docs/**"],
+      "write": ["src/**", "tests/**"],
+      "bash": [
+        "npm test",
+        "npm run lint",
+        "git status",
+        "git diff"
+      ]
+    }
+  },
+  "cost": {
+    "warning_threshold": 10.0,
+    "limit": 50.0
+  },
+  "display": {
+    "show_token_count": true,
+    "show_cost": true
+  }
+}
+```
+
+##### 3. 团队 MCP 配置
+
+**templates/mcp.json**
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sentry"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_TOKEN}",
+        "SENTRY_ORG_SLUG": "${SENTRY_ORG}"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${SLACK_TEAM_ID}"
+      }
+    }
+  }
+}
+```
+
+##### 4. 安装脚本
+
+**install.sh**
+
+```bash
+#!/bin/bash
+
+## Claude Code 团队配置安装脚本
+
+set -e
+
+TEAM_CONFIG_REPO="https://github.com/myorg/claude-team-config"
+TEAM_CONFIG_DIR="$HOME/.claude-team"
+
+echo "📦 安装 Claude Code 团队配置..."
+
+## 1. 克隆团队配置
+if [ -d "$TEAM_CONFIG_DIR" ]; then
+  echo "更新现有配置..."
+  cd "$TEAM_CONFIG_DIR"
+  git pull
+else
+  echo "克隆团队配置..."
+  git clone "$TEAM_CONFIG_REPO" "$TEAM_CONFIG_DIR"
+fi
+
+## 2. 创建用户 Claude 目录
+mkdir -p ~/.claude/{agents,commands,logs}
+
+## 3. 链接团队资源
+echo "链接团队资源..."
+ln -sf "$TEAM_CONFIG_DIR/agents/"* ~/.claude/agents/
+ln -sf "$TEAM_CONFIG_DIR/commands/"* ~/.claude/commands/
+
+## 4. 复制配置模板（如果不存在）
+if [ ! -f ~/.claude/settings.json ]; then
+  echo "创建 settings.json..."
+  cp "$TEAM_CONFIG_DIR/templates/settings.json" ~/.claude/settings.json
+fi
+
+if [ ! -f ~/.claude/mcp.json ]; then
+  echo "创建 mcp.json..."
+  cp "$TEAM_CONFIG_DIR/templates/mcp.json" ~/.claude/mcp.json
+  echo "⚠️  请配置 MCP tokens 在 ~/.claude/.env"
+fi
+
+## 5. 创建 .env 模板
+if [ ! -f ~/.claude/.env ]; then
+  cat > ~/.claude/.env << 'EOF'
+## GitHub
+GITHUB_TOKEN=
+
+## Sentry
+SENTRY_TOKEN=
+SENTRY_ORG=
+
+## Slack
+SLACK_BOT_TOKEN=
+SLACK_TEAM_ID=
+EOF
+  echo "⚠️  请填写 ~/.claude/.env 中的 tokens"
+fi
+
+echo "✅ 团队配置安装完成！"
+echo ""
+echo "下一步："
+echo "1. 填写 ~/.claude/.env 中的 API tokens"
+echo "2. 运行 'claude' 测试配置"
+```
+
+#### 项目级配置
+
+##### 项目 CLAUDE.md 模板
+
+**templates/project/CLAUDE.md**
+
+````markdown
+## 项目：[项目名称]
+
+### 项目概述
+
+[简要描述项目]
+
+### 技术栈
+
+- 语言: [TypeScript, Python, etc.]
+- 框架: [React, Django, etc.]
+- 数据库: [PostgreSQL, MongoDB, etc.]
+- 部署: [Vercel, AWS, etc.]
+
+### 代码风格
+
+#### TypeScript/JavaScript
+
+```typescript
+// 使用 TypeScript strict 模式
+// 使用函数式编程风格
+// 优先使用 const
+
+// 组件示例
+export function UserProfile({ userId }: { userId: string }) {
+  const { data, loading } = useUser(userId);
+
+  if (loading) return <Spinner />;
+  return <div>{data.name}</div>;
+}
+```
+
+#### 命名约定
+
+```
+文件: kebab-case (user-profile.tsx)
+组件: PascalCase (UserProfile)
+函数: camelCase (fetchUser)
+常量: SCREAMING_SNAKE_CASE (API_URL)
+类型: PascalCase (UserData)
+```
+
+### 项目结构
+
+```
+src/
+├── components/     # React 组件
+├── lib/           # 工具函数
+├── hooks/         # 自定义 hooks
+├── types/         # TypeScript 类型
+├── api/           # API 调用
+└── tests/         # 测试文件
+```
+
+### 开发流程
+
+1. 创建功能分支
+2. 开发并编写测试
+3. 提交前运行 `npm test`
+4. 创建 PR
+5. 代码审查
+6. 合并到 main
+
+### 测试要求
+
+- 所有新功能必须有测试
+- 测试覆盖率 > 80%
+- E2E 测试覆盖关键流程
+
+### API 设计
+
+```typescript
+// RESTful API
+GET    /api/users       # 列出用户
+GET    /api/users/:id   # 获取用户
+POST   /api/users       # 创建用户
+PUT    /api/users/:id   # 更新用户
+DELETE /api/users/:id   # 删除用户
+```
+
+### 环境变量
+
+```bash
+## 开发
+DATABASE_URL=
+API_KEY=
+
+## 生产
+## 在 Vercel 中配置
+```
+
+### 常用命令
+
+```bash
+## 开发
+npm run dev
+
+## 测试
+npm test
+npm run test:e2e
+
+## 构建
+npm run build
+
+## 部署
+npm run deploy
+```
+
+### 注意事项
+
+- 不要提交 .env 文件
+- 使用 async/await 而不是 .then()
+- 所有组件必须有 TypeScript 类型
+- API 调用必须有错误处理
+````
+
+---
+
+### CLAUDE.md 维护策略
+
+#### 谁来维护？
+
+```
+角色分工：
+👤 Tech Lead - 审批重大更改
+👥 Senior Dev - 维护和更新
+👨‍💻 All Devs - 提出改进建议
+```
+
+#### 维护流程
+
+##### 1. 定期审查
+
+```bash
+## 每月审查清单
+- [ ] 删除过时信息
+- [ ] 更新技术栈版本
+- [ ] 添加新的最佳实践
+- [ ] 更新项目结构
+- [ ] 审查代码示例
+- [ ] 验证命令仍然有效
+```
+
+##### 2. 更新流程
+
+```bash
+## 1. 创建分支
+git checkout -b update-claude-md
+
+## 2. 更新 CLAUDE.md
+## 编辑...
+
+## 3. 通知团队
+git add CLAUDE.md
+git commit -m "docs: update CLAUDE.md with new API patterns"
+
+## 4. 创建 PR
+gh pr create --title "Update CLAUDE.md" --body "更新 API 设计模式"
+
+## 5. 团队审查
+## 至少 2 人批准
+
+## 6. 合并
+gh pr merge
+```
+
+##### 3. 版本控制
+
+```bash
+## 在 CLAUDE.md 中添加版本历史
+
+### 变更历史
+
+#### 2024-01-15
+- 添加 API 认证规范
+- 更新测试要求
+
+#### 2024-01-01
+- 初始版本
+```
+
+#### CLAUDE.md 质量检查
+
+```bash
+## 创建检查脚本
+## scripts/check-claude-md.sh
+
+#!/bin/bash
+
+CLAUDE_MD="CLAUDE.md"
+
+echo "检查 CLAUDE.md 质量..."
+
+## 1. 检查文件存在
+if [ ! -f "$CLAUDE_MD" ]; then
+  echo "❌ CLAUDE.md 不存在"
+  exit 1
+fi
+
+## 2. 检查必需章节
+REQUIRED_SECTIONS=(
+  "项目概述"
+  "技术栈"
+  "代码风格"
+  "项目结构"
+)
+
+for section in "${REQUIRED_SECTIONS[@]}"; do
+  if ! grep -q "$section" "$CLAUDE_MD"; then
+    echo "❌ 缺少章节: $section"
+    exit 1
+  fi
+done
+
+## 3. 检查代码块
+if ! grep -q '```' "$CLAUDE_MD"; then
+  echo "⚠️  建议添加代码示例"
+fi
+
+## 4. 检查文件大小
+SIZE=$(wc -c < "$CLAUDE_MD")
+if [ $SIZE -lt 1000 ]; then
+  echo "⚠️  CLAUDE.md 太短，建议添加更多内容"
+fi
+
+echo "✅ CLAUDE.md 检查通过"
+```
+
+---
+
+### Agent 和命令共享
+
+#### 团队 Agents
+
+##### 1. Code Reviewer Agent
+
+**agents/code-reviewer.md**
+
+````markdown
+---
+name: code-reviewer
+description: 团队代码审查标准
+model: sonnet
+tools:
+  - Read
+  - Grep
+  - Glob
+---
+
+## Code Reviewer Agent
+
+你是团队的代码审查专家。
+
+### 审查清单
+
+#### 1. 代码质量
+- [ ] 遵循团队代码风格
+- [ ] 无明显 bug
+- [ ] 无安全漏洞
+- [ ] 性能优化合理
+
+#### 2. 测试
+- [ ] 有单元测试
+- [ ] 测试覆盖关键路径
+- [ ] 测试命名清晰
+
+#### 3. 文档
+- [ ] 函数有注释
+- [ ] 复杂逻辑有说明
+- [ ] README 更新
+
+#### 4. Git
+- [ ] Commit 消息规范
+- [ ] 无大文件
+- [ ] 无敏感信息
+
+### 审查流程
+
+1. 阅读所有更改的文件
+2. 按清单逐项检查
+3. 提供具体的改进建议
+4. 标注严重问题和建议改进
+
+### 输出格式
+
+```markdown
+## 代码审查报告
+
+### 概述
+[总体评价]
+
+### 严重问题 🔴
+1. [问题描述] (文件:行号)
+
+### 建议改进 🟡
+1. [建议描述] (文件:行号)
+
+### 亮点 ✅
+1. [好的实践]
+
+### 总结
+[是否批准合并]
+```
+````
+
+##### 2. Test Generator Agent
+
+**agents/test-generator.md**
+
+````markdown
+---
+name: test-generator
+description: 生成符合团队标准的测试
+model: sonnet
+tools:
+  - Read
+  - Write
+---
+
+## Test Generator Agent
+
+你是团队的测试专家，生成符合团队标准的测试。
+
+### 测试框架
+
+- 单元测试: Vitest
+- E2E 测试: Playwright
+- 组件测试: Testing Library
+
+### 测试模板
+
+#### React 组件测试
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { ComponentName } from './component-name';
+
+describe('ComponentName', () => {
+  it('renders correctly', () => {
+    render(<ComponentName />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+
+  it('handles user interaction', async () => {
+    const { user } = render(<ComponentName />);
+    await user.click(screen.getByRole('button'));
+    expect(screen.getByText('Result')).toBeInTheDocument();
+  });
+});
+```
+
+#### API 测试
+
+```typescript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { api } from './api';
+
+describe('API: /users', () => {
+  beforeEach(() => {
+    // Setup
+  });
+
+  it('GET /users returns user list', async () => {
+    const response = await api.get('/users');
+    expect(response.status).toBe(200);
+    expect(response.data).toHaveLength(10);
+  });
+
+  it('POST /users creates new user', async () => {
+    const newUser = { name: 'John' };
+    const response = await api.post('/users', newUser);
+    expect(response.status).toBe(201);
+    expect(response.data.name).toBe('John');
+  });
+});
+```
+
+### 测试要求
+
+1. 每个测试一个断言主题
+2. 使用描述性的测试名称
+3. 测试边界情况
+4. 使用 beforeEach 设置状态
+5. 清理副作用
+````
+
+#### 团队斜线命令
+
+##### 1. PR 准备命令
+
+**.claude/commands/pr-ready.md**
+
+```markdown
+---
+description: 准备创建 PR
+---
+
+请帮我准备创建 PR：
+
+1. 运行所有测试
+2. 检查代码风格
+3. 审查所有更改
+4. 生成 PR 描述
+
+PR 描述格式：
+```markdown
+### 变更概述
+[简要描述]
+
+### 变更类型
+- [ ] 新功能
+- [ ] Bug 修复
+- [ ] 重构
+- [ ] 文档
+
+### 测试
+[测试说明]
+
+### 截图（如适用）
+[截图]
+
+### 检查清单
+- [ ] 所有测试通过
+- [ ] 代码审查完成
+- [ ] 文档已更新
+```
+```
+
+##### 2. 快速修复命令
+
+**.claude/commands/quick-fix.md**
+
+```markdown
+---
+description: 快速修复常见问题
+---
+
+请分析并修复以下常见问题：
+
+1. 类型错误
+2. Lint 错误
+3. 测试失败
+4. 导入问题
+
+修复后：
+1. 运行测试验证
+2. 检查没有引入新问题
+3. 提供修复说明
+```
+
+#### Agent/Command 分享流程
+
+```bash
+## 1. 开发人员创建新 Agent
+cd .claude/agents
+cat > my-agent.md << 'EOF'
+## My Agent
+...
+EOF
+
+## 2. 本地测试
+claude
+/my-agent
+
+## 3. 提交到团队配置
+cd ~/.claude-team
+cp ~/.claude/agents/my-agent.md agents/
+git add agents/my-agent.md
+git commit -m "feat: add my-agent for [用途]"
+git push
+
+## 4. 创建 PR 到团队配置仓库
+## 5. 团队审查和批准
+## 6. 其他成员运行 ~/.claude-team/install.sh 更新
+```
+
+---
+
+### 权限策略制定
+
+#### 默认权限策略
+
+```json
+{
+  "permissions": {
+    "default_mode": "default",
+    "allow": [
+      "ReadFile",
+      "WriteFile",
+      "ExecuteBash",
+      "SearchFiles",
+      "ListFiles"
+    ],
+    "deny": [
+      "DeleteFile",
+      "ModifySystemFiles"
+    ]
+  }
+}
+```
+
+#### 敏感操作审批
+
+```json
+{
+  "permissions": {
+    "require_approval": [
+      {
+        "tool": "ExecuteBash",
+        "patterns": [
+          "rm -rf",
+          "git push --force",
+          "npm publish"
+        ]
+      },
+      {
+        "tool": "WriteFile",
+        "patterns": [
+          ".env",
+          "*.key",
+          "credentials*"
+        ]
+      }
+    ]
+  }
+}
+```
+
+#### 不同角色的权限
+
+##### Junior Developer
+
+```json
+{
+  "permissions": {
+    "default_mode": "plan",
+    "auto_accept": {
+      "read": ["src/**", "tests/**"],
+      "write": ["src/**", "tests/**"],
+      "bash": ["npm test", "npm run lint"]
+    },
+    "deny": [
+      "DeleteFile",
+      {
+        "tool": "ExecuteBash",
+        "patterns": ["git push", "npm publish", "rm -rf"]
+      }
+    ]
+  }
+}
+```
+
+##### Senior Developer
+
+```json
+{
+  "permissions": {
+    "default_mode": "default",
+    "auto_accept": {
+      "read": ["**/*"],
+      "write": ["src/**", "tests/**", "docs/**"],
+      "bash": [
+        "npm *",
+        "git *",
+        "docker *"
+      ]
+    }
+  }
+}
+```
+
+##### Lead Developer
+
+```json
+{
+  "permissions": {
+    "default_mode": "bypass_permissions"
+  }
+}
+```
+
+---
+
+### 代码审查流程
+
+#### 审查工作流
+
+```
+1. 开发者创建 PR
+   ↓
+2. 自动代码审查 (Claude Code)
+   ↓
+3. 人工审查
+   ↓
+4. 修复问题
+   ↓
+5. 批准合并
+```
+
+#### Claude Code 自动审查
+
+##### GitHub Action 集成
+
+**.github/workflows/claude-review.yml**
+
+```yaml
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic/claude-code
+
+      - name: Run Code Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude -p "
+          请审查这个 PR 的所有更改。
+
+          重点关注：
+          1. 代码质量
+          2. 安全问题
+          3. 性能问题
+          4. 测试覆盖
+
+          提供详细的审查报告。
+          " > review.md
+
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const review = fs.readFileSync('review.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🤖 Claude Code 自动审查\n\n${review}`
+            });
+```
+
+#### 人工审查清单
+
+**PR 审查模板**
+
+```markdown
+### 审查清单
+
+#### 代码质量
+- [ ] 代码清晰易懂
+- [ ] 遵循团队规范
+- [ ] 无重复代码
+- [ ] 适当的抽象
+
+#### 功能
+- [ ] 实现了需求
+- [ ] 边界情况处理
+- [ ] 错误处理完善
+
+#### 测试
+- [ ] 有单元测试
+- [ ] 测试覆盖关键路径
+- [ ] 测试通过
+
+#### 性能
+- [ ] 无明显性能问题
+- [ ] 数据库查询优化
+- [ ] 资源使用合理
+
+#### 安全
+- [ ] 无 SQL 注入风险
+- [ ] 无 XSS 漏洞
+- [ ] 敏感数据加密
+- [ ] 权限检查完善
+
+#### 文档
+- [ ] 代码注释充分
+- [ ] README 更新
+- [ ] API 文档更新
+
+### 审查结果
+
+- [ ] ✅ 批准
+- [ ] 🔄 请求修改
+- [ ] ❌ 拒绝
+
+### 评论
+[详细反馈]
+```
+
+---
+
+### 知识分享机制
+
+#### 1. 会话分享
+
+```bash
+## 导出有价值的会话
+claude
+[完成任务...]
+/export
+
+## 分享给团队
+cp ~/.claude/exports/session-2024-01-15.md docs/knowledge/
+git add docs/knowledge/
+git commit -m "docs: add session on authentication implementation"
+git push
+```
+
+#### 2. 决策记录 (ADR)
+
+**docs/decisions/001-use-react-query.md**
+
+```markdown
+## ADR 001: 使用 React Query 进行数据获取
+
+### 状态
+已采纳
+
+### 背景
+需要一个数据获取和缓存方案。
+
+### 决策
+使用 React Query。
+
+### 理由
+- 简化数据获取逻辑
+- 内置缓存和重试
+- 优秀的开发体验
+- 活跃的社区
+
+### 替代方案
+- Redux Toolkit Query
+- SWR
+- 自己实现
+
+### 后果
+#### 正面
+- 减少样板代码
+- 更好的用户体验
+
+#### 负面
+- 增加依赖
+- 学习成本
+
+### 相关会话
+- [Claude Code 会话: React Query 评估](../knowledge/session-react-query.md)
+
+### 日期
+2024-01-15
+```
+
+#### 3. 技术分享会
+
+```bash
+## 每周技术分享
+## 主题：Claude Code 最佳实践
+
+### 议程
+1. 本周发现的新技巧
+2. 解决的难题分享
+3. Agent/命令演示
+4. 团队配置更新
+
+### 记录
+## 在 docs/meetings/ 中记录
+```
+
+#### 4. 知识库
+
+```
+docs/
+├── knowledge/          # Claude Code 会话导出
+├── decisions/          # 架构决策记录
+├── meetings/           # 技术分享会记录
+├── guides/            # 操作指南
+│   ├── claude-code-setup.md
+│   ├── common-workflows.md
+│   └── troubleshooting.md
+└── templates/         # 项目模板
+    ├── CLAUDE.md
+    ├── agent-template.md
+    └── command-template.md
+```
+
+---
+
+### 新成员上手指南
+
+#### 第一天
+
+```bash
+## 上手清单
+- [ ] 安装 Claude Code
+- [ ] 配置团队设置
+- [ ] 克隆项目
+- [ ] 阅读 CLAUDE.md
+- [ ] 运行第一个任务
+```
+
+##### 安装脚本
+
+**onboarding/setup.sh**
+
+```bash
+#!/bin/bash
+
+echo "🎉 欢迎加入团队！"
+echo ""
+echo "开始配置 Claude Code..."
+
+## 1. 检查 Claude Code
+if ! command -v claude &> /dev/null; then
+  echo "安装 Claude Code..."
+  curl -fsSL https://code.claude.com/install.sh | sh
+fi
+
+## 2. 安装团队配置
+echo "安装团队配置..."
+bash <(curl -fsSL https://raw.githubusercontent.com/myorg/claude-team-config/main/install.sh)
+
+## 3. 克隆项目
+echo "克隆项目..."
+git clone https://github.com/myorg/myproject
+cd myproject
+
+## 4. 安装依赖
+echo "安装依赖..."
+npm install
+
+## 5. 运行测试
+echo "运行测试..."
+npm test
+
+echo ""
+echo "✅ 设置完成！"
+echo ""
+echo "下一步："
+echo "1. 阅读 CLAUDE.md"
+echo "2. 运行 'claude' 开始"
+echo "3. 尝试 '/help' 查看可用命令"
+```
+
+#### 第一周
+
+##### 学习任务
+
+```markdown
+### Week 1: Claude Code 上手
+
+#### Day 1: 基础操作
+- [ ] 完成安装配置
+- [ ] 阅读 CLAUDE.md
+- [ ] 尝试基本命令 (/help, /status, /context)
+- [ ] 修复一个简单的 bug
+
+#### Day 2: 文件操作
+- [ ] 使用 @ 引用文件
+- [ ] 使用 Grep 搜索代码
+- [ ] 使用 Glob 查找文件
+- [ ] 完成一个小功能
+
+#### Day 3: 工作流
+- [ ] 学习 Plan Mode
+- [ ] 学习权限模式
+- [ ] 使用 Git 工作流
+- [ ] 创建第一个 PR
+
+#### Day 4: Agents 和命令
+- [ ] 使用团队 Agents
+- [ ] 尝试自定义命令
+- [ ] 理解 Agent 工作原理
+
+#### Day 5: 综合任务
+- [ ] 独立完成一个功能
+- [ ] 使用 Claude Code 全流程
+- [ ] 代码审查和提交
+```
+
+#### 新人任务模板
+
+```bash
+## 第一个任务：修复拼写错误
+claude
+
+任务描述：
+在 src/components/welcome.tsx 中有拼写错误
+"Welcom" 应该是 "Welcome"
+
+步骤：
+1. 搜索文件
+2. 修复错误
+3. 运行测试
+4. 创建提交
+
+提示：
+- 使用 @src/components/welcome.tsx 引用文件
+- 使用 Edit 工具修改
+- 运行 npm test 验证
+```
+
+#### Buddy System
+
+```
+新人 ←→ Buddy (资深成员)
+
+Buddy 职责：
+- 解答问题
+- 代码审查
+- 分享最佳实践
+- 每日签到
+
+Week 1: 每天
+Week 2-4: 每周 2-3 次
+Month 2+: 按需
+```
+
+---
+
+### 团队规范
+
+#### Commit 消息规范
+
+```bash
+## 格式
+<type>(<scope>): <subject>
+
+## 类型
+feat:     新功能
+fix:      bug 修复
+docs:     文档
+style:    格式
+refactor: 重构
+test:     测试
+chore:    构建/工具
+
+## 示例
+feat(auth): add JWT authentication
+fix(api): handle null response
+docs(readme): update setup instructions
+```
+
+#### PR 规范
+
+```markdown
+### PR 标题
+<type>: <description>
+
+### PR 描述
+#### 变更概述
+[描述]
+
+#### 变更类型
+- [ ] 新功能
+- [ ] Bug 修复
+- [ ] 重构
+- [ ] 文档
+
+#### 测试
+[测试方法]
+
+#### 截图
+[如适用]
+
+#### 检查清单
+- [ ] 测试通过
+- [ ] 代码审查
+- [ ] 文档更新
+- [ ] CHANGELOG 更新
+```
+
+#### 分支策略
+
+```bash
+main          # 生产环境
+├── develop   # 开发环境
+    ├── feature/user-auth
+    ├── feature/dashboard
+    ├── fix/login-bug
+    └── refactor/api-client
+```
+
+#### Code Review 标准
+
+```
+快速审查 (<100 行): 24 小时内
+正常审查 (100-500 行): 48 小时内
+大型审查 (>500 行): 分批审查
+
+审查标准：
+- 至少 1 人批准
+- 无未解决的评论
+- CI 通过
+- 测试覆盖率达标
+```
+
+---
+
+### 衡量和优化
+
+#### 团队效率指标
+
+```bash
+## 收集指标
+## scripts/team-metrics.sh
+
+#!/bin/bash
+
+echo "📊 团队 Claude Code 使用统计"
+echo ""
+
+## 1. PR 创建到合并时间
+echo "PR 平均处理时间:"
+gh pr list --state merged --json createdAt,mergedAt --jq '
+  map((.mergedAt | fromdateiso8601) - (.createdAt | fromdateiso8601)) |
+  add / length / 3600 | floor
+' | xargs echo "小时"
+
+## 2. 代码审查时间
+echo ""
+echo "代码审查平均时间:"
+## ...
+
+## 3. 每周 PR 数量
+echo ""
+echo "本周 PR 数量:"
+gh pr list --state all --search "created:>=$(date -v-7d +%Y-%m-%d)" --json number | jq 'length'
+
+## 4. Claude Code 使用率
+echo ""
+echo "Claude Code 使用情况:"
+## 统计包含 "Generated with Claude Code" 的 commits
+git log --all --since="1 week ago" --grep="Claude Code" --oneline | wc -l | xargs echo "commits"
+```
+
+#### 成本优化
+
+```bash
+## 团队成本监控
+## scripts/cost-report.sh
+
+#!/bin/bash
+
+echo "💰 团队 Claude Code 成本报告"
+echo ""
+
+TEAM_MEMBERS=("alice" "bob" "charlie")
+
+TOTAL_COST=0
+
+for member in "${TEAM_MEMBERS[@]}"; do
+  COST=$(claude --user $member -p "/usage" | grep "本月成本" | awk '{print $2}')
+  echo "$member: \$$COST"
+  TOTAL_COST=$(echo "$TOTAL_COST + $COST" | bc)
+done
+
+echo ""
+echo "总计: \$$TOTAL_COST"
+echo ""
+
+## 计算 ROI
+TEAM_SIZE=${#TEAM_MEMBERS[@]}
+HOURS_SAVED=$(echo "$TEAM_SIZE * 10 * 4" | bc)  # 每人每周 10 小时
+VALUE=$(echo "$HOURS_SAVED * 50" | bc)  # $50/小时
+ROI=$(echo "scale=2; $VALUE / $TOTAL_COST" | bc)
+
+echo "时间节省: $HOURS_SAVED 小时/月"
+echo "价值: \$$VALUE"
+echo "ROI: ${ROI}x"
+```
+
+#### 持续改进
+
+```bash
+## 每月团队回顾
+
+### 议程
+1. 回顾上月目标
+2. 分享成功案例
+3. 识别问题和挑战
+4. 提出改进建议
+5. 设定下月目标
+
+### 输出
+- 改进的 Agent/命令
+- 更新的团队配置
+- 新的最佳实践
+- 培训计划
+```
+
+---
+
+### 实用工具和脚本
+
+#### 团队仪表板
+
+**dashboard.html**
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Claude Code 团队仪表板</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .metric { display: inline-block; margin: 10px; padding: 20px; background: #f5f5f5; border-radius: 5px; }
+    .metric h3 { margin: 0; color: #333; }
+    .metric .value { font-size: 32px; font-weight: bold; color: #007bff; }
+  </style>
+</head>
+<body>
+  <h1>Claude Code 团队仪表板</h1>
+
+  <div class="metric">
+    <h3>本周 PRs</h3>
+    <div class="value" id="prs">-</div>
+  </div>
+
+  <div class="metric">
+    <h3>平均审查时间</h3>
+    <div class="value" id="review-time">-</div>
+  </div>
+
+  <div class="metric">
+    <h3>本月成本</h3>
+    <div class="value" id="cost">-</div>
+  </div>
+
+  <div class="metric">
+    <h3>节省时间</h3>
+    <div class="value" id="time-saved">-</div>
+  </div>
+
+  <script>
+    // 从 API 或脚本获取数据
+    async function updateMetrics() {
+      // 实现数据获取
+    }
+    updateMetrics();
+    setInterval(updateMetrics, 60000); // 每分钟更新
+  </script>
+</body>
+</html>
+```
+
+---
+
+### 总结
+
+#### 团队协作关键要素
+
+1. **标准化配置** - 统一的工具和设置
+2. **知识共享** - 文档化最佳实践
+3. **流程规范** - 清晰的工作流程
+4. **持续改进** - 定期回顾和优化
+5. **培训支持** - 帮助新人快速上手
+
+#### 实施路线图
+
+##### Phase 1: 基础设施 (Week 1-2)
+- [ ] 创建团队配置仓库
+- [ ] 设置 MCP 服务器
+- [ ] 编写团队 CLAUDE.md
+
+##### Phase 2: 流程规范 (Week 3-4)
+- [ ] 制定 PR 流程
+- [ ] 设置代码审查规范
+- [ ] 创建团队 Agents
+
+##### Phase 3: 培训推广 (Month 2)
+- [ ] 团队培训
+- [ ] 新人上手指南
+- [ ] 最佳实践分享
+
+##### Phase 4: 优化迭代 (Ongoing)
+- [ ] 收集反馈
+- [ ] 持续优化
+- [ ] 扩展到更多项目
+
+#### 成功指标
+
+```
+- PR 处理时间减少 50%
+- 代码审查时间减少 60%
+- 新人上手时间减少 70%
+- 团队满意度 > 8/10
+- ROI > 10x
+```
+
+开始构建高效的 Claude Code 团队协作吧！🚀
+
+
+## 总结
+[简要描述]
+
+## 关键问题 🚨
+1. [问题描述]
+   - 位置：file.ts:42
+   - 建议：[如何修复]
+
+## 改进建议 💡
+1. [建议描述]
+   - 影响：[性能/可维护性/等]
+   - 示例：[代码示例]
+
+## 总体评分：8/10
+\`\`\`
+
+## 示例
+
+好的注释：
+\`\`\`typescript
+// 使用二分查找优化性能，O(log n)
+function findUser(id: number): User | undefined {
+  // ...
+}
+\`\`\`
+
+避免的模式：
+\`\`\`typescript
+// 不好：硬编码
+const API_KEY = "abc123"
+
+// 好：使用环境变量
+const API_KEY = process.env.API_KEY
+\`\`\`
+```
+
+**另一个示例 - 测试编写器：**
+
+`.claude/agents/test-writer.md`
+
+```yaml
+---
+name: Test Writer
+description: 为代码编写全面的测试
+role: 测试驱动开发专家
+tools:
+  - ReadFile
+  - WriteFile
+  - ExecuteBash
+model: sonnet
+---
+
+# 测试编写指南
+
+你是测试编写专家。遵循 TDD 最佳实践。
+
+## 测试原则
+
+1. **AAA 模式**
+   - Arrange（准备）
+   - Act（执行）
+   - Assert（断言）
+
+2. **测试覆盖**
+   - 正常路径
+   - 边界条件
+   - 错误场景
+   - 边缘情况
+
+3. **测试命名**
+   - 描述性
+   - 说明预期行为
+   - 格式：`should_ExpectedBehavior_When_Condition`
+
+## 测试模板
+
+\`\`\`typescript
+describe('UserService', () => {
+  describe('createUser', () => {
+    it('should create user with valid data', async () => {
+      // Arrange
+      const userData = {
+        name: 'John Doe',
+        email: 'john@example.com'
+      }
+
+      // Act
+      const user = await userService.createUser(userData)
+
+      // Assert
+      expect(user.id).toBeDefined()
+      expect(user.name).toBe(userData.name)
+      expect(user.email).toBe(userData.email)
+    })
+
+    it('should throw error when email is invalid', async () => {
+      // Arrange
+      const userData = {
+        name: 'John Doe',
+        email: 'invalid-email'
+      }
+
+      // Act & Assert
+      await expect(
+        userService.createUser(userData)
+      ).rejects.toThrow('Invalid email format')
+    })
+  })
+})
+\`\`\`
+
+## 测试类型
+
+1. **单元测试** - 测试单个函数/方法
+2. **集成测试** - 测试模块交互
+3. **E2E 测试** - 测试完整用户流程
+
+## 测试清单
+
+✅ 覆盖所有公共方法
+✅ 测试成功和失败路径
+✅ 验证边界条件
+✅ Mock 外部依赖
+✅ 使用有意义的测试数据
+✅ 保持测试独立
+✅ 快速执行
+```
+
+#### 3.4.5 Subagent 位置和共享
+
+**项目级别**（与团队共享）
+
+```
+.claude/agents/
+├── code-reviewer.md
+├── test-writer.md
+├── security-auditor.md
+└── performance-optimizer.md
+
+# 提交到版本控制
+git add .claude/agents/
+git commit -m "Add custom subagents"
+```
+
+**用户级别**（个人使用）
+
+```
+~/.claude/agents/
+├── my-python-expert.md
+├── my-react-specialist.md
+└── my-devops-helper.md
+
+# 不提交，个人配置
+```
+
+#### 3.4.6 Subagent 最佳实践
+
+**1. 单一职责**
+
+```
+✅ 代码审查 Subagent
+✅ 测试编写 Subagent
+✅ 安全审计 Subagent
+
+❌ 代码审查 + 测试 + 安全 Subagent
+```
+
+**2. 详细系统提示**
+
+```
+✅ 明确角色、期望和流程
+✅ 提供具体示例
+✅ 定义输出格式
+
+❌ "你是一个有帮助的助手"
+```
+
+**3. 限制工具访问**
+
+```yaml
+# 只读审查者
+tools:
+  - ReadFile
+  - SearchCode
+  - Bash
+
+# 不包括 WriteFile 或 DeleteFile
+```
+
+**4. 使用合适的模型**
+
+```yaml
+# 简单任务 - Haiku
+model: haiku
+# 例：代码搜索、文档生成
+
+# 一般任务 - Sonnet
+model: sonnet
+# 例：代码审查、测试编写
+
+# 复杂任务 - Opus
+model: opus
+# 例：架构设计、复杂调试
+```
+
+**5. 版本控制项目 Subagent**
+
+```bash
+# 团队共享 Subagent
+git add .claude/agents/
+git commit -m "Add code review subagent"
+
+# 确保一致的流程
+```
+
+---
+
+### 3.5 Git 集成和并行开发
+
+#### Git Worktree 完整教程
+
+> 使用 Git Worktrees 实现真正的并行开发
+
+---
+
+##### 📋 目录
+
+- [什么是 Git Worktrees](#什么是-git-worktrees)
+- [为什么使用 Worktrees](#为什么使用-worktrees)
+- [基本操作](#基本操作)
+- [与 Claude Code 集成](#与-claude-code-集成)
+- [实际应用场景](#实际应用场景)
+- [高级技巧](#高级技巧)
+- [常见问题](#常见问题)
+- [最佳实践](#最佳实践)
+
+---
+
+##### 什么是 Git Worktrees
+
+###### 定义
+
+**Git Worktrees** 允许你在同一个 Git 仓库中同时检出多个分支到不同的目录。
+
+###### 传统方式 vs Worktrees
+
+**传统方式的问题：**
+
+```bash
+#### 问题 1: 需要来回切换分支
+git checkout feature-a
+#### 工作一会儿...
+git checkout feature-b
+#### 工作一会儿...
+git checkout main
+#### 又要切换...
+
+#### 问题 2: 切换时可能丢失未提交的更改
+git checkout other-branch  # 错误：有未提交的更改
+
+#### 问题 3: 或者需要 stash
+git stash
+git checkout other-branch
+#### 工作...
+git checkout original-branch
+git stash pop
+
+#### 问题 4: 克隆多次浪费空间
+git clone repo project-1    # 1GB
+git clone repo project-2    # 又是 1GB
+git clone repo project-3    # 再 1GB
+#### 总共 3GB，但其实大部分内容是重复的！
+```
+
+**使用 Worktrees：**
+
+```bash
+#### 一个仓库，多个工作目录
+my-project/              # 主仓库，main 分支
+my-project-feature-a/    # worktree，feature-a 分支
+my-project-feature-b/    # worktree，feature-b 分支
+my-project-hotfix/       # worktree，hotfix 分支
+
+#### 所有 worktrees 共享同一个 .git 目录
+#### 节省空间，切换快速！
+```
+
+###### 工作原理
+
+```
+项目根目录/
+├── .git/                  # 共享的 Git 数据库
+│   ├── objects/           # 所有 worktrees 共享
+│   ├── refs/
+│   └── worktrees/         # worktree 元数据
+│       ├── feature-a/
+│       └── feature-b/
+├── src/                   # main 分支的工作目录
+├── README.md
+└── package.json
+
+../my-project-feature-a/   # worktree 1
+├── src/                   # feature-a 分支的内容
+├── README.md
+└── package.json
+
+../my-project-feature-b/   # worktree 2
+├── src/                   # feature-b 分支的内容
+├── README.md
+└── package.json
+```
+
+---
+
+##### 为什么使用 Worktrees
+
+###### 与 Claude Code 结合的优势
+
+###### 1. 真正的并行开发
+
+```bash
+#### 终端 1: 主项目 - 修复 Bug
+cd ~/my-project
+claude
+> 修复登录 Bug #123
+
+#### 终端 2: Feature A - 开发新功能
+cd ~/my-project-auth
+claude
+> 实现 JWT 认证系统
+
+#### 终端 3: Feature B - 重构
+cd ~/my-project-refactor
+claude
+> 重构用户服务模块
+
+#### 终端 4: Hotfix - 紧急修复
+cd ~/my-project-hotfix
+claude
+> 紧急修复生产环境问题
+
+#### 4 个 Claude 实例并行工作，互不干扰！
+```
+
+###### 2. 上下文隔离
+
+```
+每个 worktree 有：
+✅ 独立的文件状态
+✅ 独立的 Claude Code 会话
+✅ 独立的上下文历史
+✅ 独立的工作目录
+
+这意味着：
+✅ 不会混淆不同任务
+✅ 清晰的任务边界
+✅ 更好的专注度
+✅ 更低的认知负担
+```
+
+###### 3. 快速切换
+
+```bash
+#### 传统方式：切换分支
+git stash
+git checkout other-branch
+#### 重新打开编辑器
+#### 重新启动 Claude Code
+#### 重新加载上下文
+
+#### Worktrees 方式：切换终端
+Cmd+Tab  # 或 Alt+Tab
+#### 完成！上下文已经在那里
+```
+
+###### 4. 节省空间
+
+```
+传统克隆 3 次：
+  repo1: 1.2 GB
+  repo2: 1.2 GB
+  repo3: 1.2 GB
+  总计: 3.6 GB
+
+使用 Worktrees：
+  .git:  1.2 GB  (共享)
+  work1: 0.1 GB  (只有工作文件)
+  work2: 0.1 GB
+  work3: 0.1 GB
+  总计: 1.5 GB
+
+节省: 2.1 GB (58%)
+```
+
+---
+
+##### 基本操作
+
+###### 安装和准备
+
+```bash
+#### Git 2.5+ 自带 worktree 功能
+git --version  # 确保 >= 2.5
+
+#### 检查当前仓库
+cd ~/projects/my-project
+git status
+```
+
+###### 创建 Worktree
+
+###### 基本语法
+
+```bash
+git worktree add <路径> <分支>
+```
+
+###### 示例 1: 基于现有分支创建
+
+```bash
+#### 创建 worktree for existing branch
+git worktree add ../my-project-feature feature/auth
+
+#### 结果：
+#### - 在 ../my-project-feature 创建目录
+#### - 检出 feature/auth 分支
+#### - 可以立即开始工作
+```
+
+###### 示例 2: 创建新分支
+
+```bash
+#### 创建新分支并创建 worktree
+git worktree add -b feature/new-feature ../my-project-new
+
+#### 等价于：
+git worktree add ../my-project-new -b feature/new-feature
+
+#### 结果：
+#### - 创建新分支 feature/new-feature
+#### - 创建 worktree
+#### - 基于当前分支
+```
+
+###### 示例 3: 基于特定提交
+
+```bash
+#### 基于特定提交创建
+git worktree add ../my-project-hotfix abc1234
+
+#### 基于 tag
+git worktree add ../my-project-v1 v1.0.0
+```
+
+###### 示例 4: 基于远程分支
+
+```bash
+#### 基于远程分支
+git worktree add ../my-project-remote origin/feature/remote-branch
+```
+
+###### 查看 Worktrees
+
+```bash
+#### 列出所有 worktrees
+git worktree list
+
+#### 输出示例：
+#### /Users/you/my-project          abc1234 [main]
+#### /Users/you/my-project-auth     def5678 [feature/auth]
+#### /Users/you/my-project-hotfix   ghi9012 [hotfix/critical]
+
+#### 详细信息
+git worktree list --porcelain
+
+#### 输出：
+#### worktree /Users/you/my-project
+#### HEAD abc1234567890
+#### branch refs/heads/main
+#
+#### worktree /Users/you/my-project-auth
+#### HEAD def5678901234
+#### branch refs/heads/feature/auth
+```
+
+###### 删除 Worktree
+
+###### 方法 1: 使用 Git 命令（推荐）
+
+```bash
+#### 删除 worktree
+git worktree remove ../my-project-feature
+
+#### 如果有未提交的更改
+git worktree remove --force ../my-project-feature
+```
+
+###### 方法 2: 手动删除 + 清理
+
+```bash
+#### 1. 删除目录
+rm -rf ../my-project-feature
+
+#### 2. 清理元数据
+git worktree prune
+
+#### 3. 验证
+git worktree list
+```
+
+###### 移动 Worktree
+
+```bash
+#### 移动 worktree 到新位置
+git worktree move ../old-path ../new-path
+
+#### 验证
+git worktree list
+```
+
+###### 锁定/解锁 Worktree
+
+```bash
+#### 锁定 worktree（防止被 prune）
+git worktree lock ../my-project-feature
+
+#### 解锁
+git worktree unlock ../my-project-feature
+```
+
+---
+
+##### 与 Claude Code 集成
+
+###### 基本工作流
+
+###### 场景: 并行开发 3 个功能
+
+```bash
+#### 1. 主项目
+cd ~/projects/myapp
+git status  # 确保在 main 分支
+
+#### 2. 创建 worktrees
+git worktree add ../myapp-auth feature/auth
+git worktree add ../myapp-ui feature/ui-redesign
+git worktree add ../myapp-api feature/api-v2
+
+#### 3. 打开 4 个终端窗口/标签
+
+#### 终端 1: 主项目 (main) - 常规维护
+cd ~/projects/myapp
+claude
+> 查看和处理 issues
+
+#### 终端 2: Auth feature
+cd ~/projects/myapp-auth
+claude
+> 实现 JWT 认证系统，包括：
+> - Token 生成和验证
+> - Refresh token 机制
+> - 认证中间件
+
+#### 终端 3: UI Redesign
+cd ~/projects/myapp-ui
+claude
+> 重新设计用户界面：
+> - 新的设计系统
+> - 响应式布局
+> - 无障碍改进
+
+#### 终端 4: API v2
+cd ~/projects/myapp-api
+claude
+> 设计和实现 API v2：
+> - RESTful 规范
+> - GraphQL 支持
+> - 完整文档
+```
+
+###### 高级工作流
+
+###### 使用 tmux 管理多个会话
+
+```bash
+#### 安装 tmux (如未安装)
+brew install tmux  # macOS
+#### 或
+sudo apt install tmux  # Linux
+
+#### 创建 tmux 会话脚本
+#### ~/scripts/start-dev.sh
+
+#!/bin/bash
+
+#### 创建新 tmux 会话
+tmux new-session -d -s myapp
+
+#### 窗口 1: 主项目
+tmux rename-window -t myapp:0 'main'
+tmux send-keys -t myapp:0 'cd ~/projects/myapp && claude' C-m
+
+#### 窗口 2: Auth
+tmux new-window -t myapp:1 -n 'auth'
+tmux send-keys -t myapp:1 'cd ~/projects/myapp-auth && claude' C-m
+
+#### 窗口 3: UI
+tmux new-window -t myapp:2 -n 'ui'
+tmux send-keys -t myapp:2 'cd ~/projects/myapp-ui && claude' C-m
+
+#### 窗口 4: API
+tmux new-window -t myapp:3 -n 'api'
+tmux send-keys -t myapp:3 'cd ~/projects/myapp-api && claude' C-m
+
+#### 附加到会话
+tmux attach-session -t myapp
+
+#### 使用:
+#### Ctrl+B, 0-3: 切换窗口
+#### Ctrl+B, d: 分离会话
+#### tmux attach -t myapp: 重新附加
+```
+
+###### 自定义斜线命令
+
+创建 `.claude/commands/worktree.md`:
+
+```markdown
+---
+name: worktree
+description: 管理 Git worktrees
+---
+
+请执行以下操作：
+
+1. 询问用户想要的操作：
+   - create: 创建新 worktree
+   - list: 列出所有 worktrees
+   - remove: 删除 worktree
+   - switch: 提供切换命令
+
+2. 根据操作执行相应命令
+
+3. 如果是 create:
+   - 询问分支名称
+   - 询问 worktree 路径（默认：../项目名-分支名）
+   - 创建 worktree
+   - 提供切换命令
+```
+
+**使用：**
+
+```bash
+#### 在 Claude Code 中
+/worktree
+
+#### Claude 会交互式地帮助管理 worktrees
+```
+
+---
+
+##### 实际应用场景
+
+###### 场景 1: 紧急 Hotfix
+
+```bash
+#### 正在开发 feature
+cd ~/projects/myapp-feature
+claude
+> 正在实现新功能...
+
+#### 突然需要紧急修复生产问题！
+
+#### 无需中断当前工作
+#### 打开新终端
+git worktree add ../myapp-hotfix main
+cd ../myapp-hotfix
+claude
+> 紧急修复生产环境登录问题
+
+#### 修复完成
+! git add .
+! git commit -m "hotfix: resolve login issue"
+! git push origin main
+
+#### 回到 feature 开发
+#### 切换回原终端
+#### 上下文还在，继续工作
+```
+
+###### 场景 2: 代码审查
+
+```bash
+#### 审查 PR 而不影响当前工作
+
+#### 当前工作
+cd ~/projects/myapp-current
+claude
+> 正在开发...
+
+#### 需要审查 PR #123
+git worktree add ../myapp-pr-123 pr-123
+cd ../myapp-pr-123
+claude
+
+Shift+Tab  # 进入 Plan Mode
+> 请 code-reviewer agent 审查这个 PR
+> @src/auth/jwt.ts
+> @src/middleware/auth.ts
+
+#### 审查完成，提供反馈
+! gh pr review 123 --approve
+
+#### 删除 worktree
+cd ..
+git worktree remove myapp-pr-123
+
+#### 回到原工作
+#### 无缝继续
+```
+
+###### 场景 3: 实验性开发
+
+```bash
+#### 想尝试不同的实现方案
+
+#### 方案 A: 使用 REST API
+git worktree add ../myapp-rest-api experiment/rest
+cd ../myapp-rest-api
+claude
+> 实现 REST API 方案
+
+#### 方案 B: 使用 GraphQL
+git worktree add ../myapp-graphql experiment/graphql
+cd ../myapp-graphql
+claude
+> 实现 GraphQL 方案
+
+#### 比较两个方案
+! cd ~/projects
+! diff -r myapp-rest-api myapp-graphql
+
+#### 选择更好的方案
+#### 删除另一个
+git worktree remove ../myapp-rest-api
+```
+
+###### 场景 4: 多版本维护
+
+```bash
+#### 维护多个版本
+
+#### v1.x 维护
+git worktree add ../myapp-v1 release/v1.x
+
+#### v2.x 维护
+git worktree add ../myapp-v2 release/v2.x
+
+#### v3.x 开发
+#### (主仓库在 main 分支)
+
+#### 可以同时修复不同版本的 bug
+```
+
+###### 场景 5: 大型重构
+
+```bash
+#### 大型重构需要长时间
+
+#### 创建重构分支
+git worktree add ../myapp-refactor refactor/architecture
+cd ../myapp-refactor
+claude
+> 进行大型架构重构...
+
+#### 同时在主分支继续开发
+cd ~/projects/myapp
+claude
+> 继续日常开发和 bug 修复
+
+#### 重构完成后合并
+cd ~/projects/myapp-refactor
+! git rebase main
+! git push
+! gh pr create
+```
+
+---
+
+##### 高级技巧
+
+###### 技巧 1: 命名约定
+
+```bash
+#### 使用一致的命名约定
+项目名-分支类型-简短描述
+
+#### 示例：
+myapp-feature-auth
+myapp-fix-login
+myapp-refactor-api
+myapp-hotfix-critical
+myapp-experiment-graphql
+
+#### 优点：
+#### - 一目了然
+#### - 易于组织
+#### - 方便自动化
+```
+
+###### 技巧 2: 组织结构
+
+```bash
+#### 推荐的目录结构
+~/projects/
+├── myapp/                  # 主仓库 (main)
+├── myapp-features/         # 功能开发
+│   ├── auth/
+│   ├── payments/
+│   └── notifications/
+├── myapp-fixes/            # Bug 修复
+│   ├── login-issue/
+│   └── performance/
+└── myapp-experiments/      # 实验性开发
+    ├── graphql/
+    └── microservices/
+
+#### 创建脚本自动化
+#### ~/scripts/create-worktree.sh
+
+#!/bin/bash
+
+TYPE=$1  # feature, fix, experiment
+NAME=$2
+
+BASE_DIR=~/projects
+PROJECT=myapp
+
+case $TYPE in
+  feature)
+    DIR="$BASE_DIR/${PROJECT}-features/$NAME"
+    BRANCH="feature/$NAME"
+    ;;
+  fix)
+    DIR="$BASE_DIR/${PROJECT}-fixes/$NAME"
+    BRANCH="fix/$NAME"
+    ;;
+  experiment)
+    DIR="$BASE_DIR/${PROJECT}-experiments/$NAME"
+    BRANCH="experiment/$NAME"
+    ;;
+esac
+
+mkdir -p $(dirname $DIR)
+cd $BASE_DIR/$PROJECT
+git worktree add -b $BRANCH $DIR
+
+echo "Created worktree: $DIR"
+echo "Branch: $BRANCH"
+echo "To start: cd $DIR && claude"
+```
+
+**使用：**
+
+```bash
+#### 创建功能开发 worktree
+./create-worktree.sh feature auth
+
+#### 创建 bug 修复 worktree
+./create-worktree.sh fix login-issue
+
+#### 创建实验 worktree
+./create-worktree.sh experiment graphql
+```
+
+###### 技巧 3: 批量操作
+
+```bash
+#### 批量更新所有 worktrees
+
+#### ~/scripts/update-all-worktrees.sh
+
+#!/bin/bash
+
+#### 获取所有 worktrees
+git worktree list | while read -r path commit branch; do
+  echo "Updating: $path"
+  cd "$path"
+  git pull
+  npm install  # 或其他更新命令
+done
+
+echo "All worktrees updated!"
+```
+
+###### 技巧 4: 状态检查脚本
+
+```bash
+#### ~/scripts/worktree-status.sh
+
+#!/bin/bash
+
+echo "=== Worktree Status ==="
+echo
+
+git worktree list | while read -r path commit branch; do
+  echo "📁 $(basename $path)"
+  echo "   Branch: $branch"
+  echo "   Commit: ${commit:0:7}"
+
+  cd "$path"
+
+  # 检查未提交的更改
+  if [[ -n $(git status -s) ]]; then
+    echo "   ⚠️  Uncommitted changes:"
+    git status -s | sed 's/^/      /'
+  fi
+
+  # 检查未推送的提交
+  UNPUSHED=$(git log origin/$branch..$branch --oneline 2>/dev/null | wc -l)
+  if [[ $UNPUSHED -gt 0 ]]; then
+    echo "   📤 $UNPUSHED unpushed commits"
+  fi
+
+  echo
+done
+```
+
+###### 技巧 5: 清理脚本
+
+```bash
+#### ~/scripts/cleanup-worktrees.sh
+
+#!/bin/bash
+
+echo "=== Worktree Cleanup ==="
+echo
+
+#### 查找合并的分支
+MAIN_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+
+git worktree list | tail -n +2 | while read -r path commit branch; do
+  BRANCH_NAME=$(echo $branch | sed 's/\[//' | sed 's/\]//')
+
+  # 检查是否已合并
+  if git branch --merged $MAIN_BRANCH | grep -q "$BRANCH_NAME"; then
+    echo "🗑️  $BRANCH_NAME is merged. Remove?"
+    read -p "   (y/n): " confirm
+
+    if [[ $confirm == "y" ]]; then
+      git worktree remove "$path"
+      git branch -d "$BRANCH_NAME"
+      echo "   ✅ Removed"
+    fi
+  fi
+
+  echo
+done
+
+#### 清理悬空的 worktree 引用
+git worktree prune
+echo "✨ Cleanup complete!"
+```
+
+---
+
+##### 常见问题
+
+###### Q1: Worktree 和 Clone 有什么区别？
+
+| 特性 | Worktree | Clone |
+|------|----------|-------|
+| 磁盘空间 | 共享 .git，节省空间 | 独立 .git，占用更多 |
+| 创建速度 | 快（只复制工作文件） | 慢（复制整个历史） |
+| 同步 | 自动同步（共享历史） | 需要 push/pull |
+| 适用场景 | 同一项目多分支 | 完全独立的副本 |
+
+###### Q2: 能在 Worktree 中创建新分支吗？
+
+```bash
+#### 可以！
+
+cd ~/projects/myapp-feature
+git checkout -b new-feature
+
+#### 或创建时指定
+git worktree add -b new-feature ../myapp-new
+```
+
+###### Q3: 如何在 Worktrees 之间共享配置？
+
+```bash
+#### 方法 1: 使用符号链接
+cd ~/projects/myapp-feature
+ln -s ../myapp/.env .env
+
+#### 方法 2: Git 配置
+git config --global worktree.guessRemote true
+
+#### 方法 3: 共享脚本
+#### ~/projects/.shared/
+####   ├── setup.sh
+####   └── config/
+```
+
+###### Q4: Worktree 会影响 Git 性能吗？
+
+```
+通常不会：
+✅ 创建快速
+✅ 切换快速
+✅ 提交正常
+✅ 推送正常
+
+注意：
+⚠️ 过多 worktrees (>10) 可能稍慢
+⚠️ 大型仓库创建时需要时间
+```
+
+###### Q5: 如何备份 Worktrees？
+
+```bash
+#### Worktrees 本质是工作目录
+#### 只需备份主仓库 .git
+
+#### 备份
+tar -czf backup.tar.gz ~/projects/myapp/.git
+
+#### 恢复后重新创建 worktrees
+git worktree add ../myapp-feature feature/auth
+```
+
+###### Q6: 能删除主仓库的 worktree 吗？
+
+```bash
+#### 不能删除主 worktree
+git worktree remove ~/projects/myapp
+#### 错误: cannot remove a locked working tree
+
+#### 只能删除其他 worktrees
+git worktree remove ~/projects/myapp-feature
+```
+
+###### Q7: Worktree 中的 .git 文件是什么？
+
+```bash
+#### 查看
+cat ~/projects/myapp-feature/.git
+
+#### 内容示例：
+gitdir: /Users/you/projects/myapp/.git/worktrees/myapp-feature
+
+#### 这是一个指向主 .git 目录的指针
+#### 不是完整的 .git 目录
+```
+
+---
+
+##### 最佳实践
+
+###### ✅ DO（应该做）
+
+###### 1. 使用一致的命名约定
+
+```bash
+#### 好的命名
+myapp-feature-auth
+myapp-fix-login
+myapp-refactor-api
+
+#### 避免
+myapp-new
+myapp-test
+myapp-tmp
+```
+
+###### 2. 定期清理
+
+```bash
+#### 每周运行
+git worktree list
+#### 删除不需要的
+git worktree remove ../old-worktree
+#### 清理元数据
+git worktree prune
+```
+
+###### 3. 在 .gitignore 中排除 worktree 目录
+
+```bash
+#### .gitignore
+../*-feature/
+../*-fix/
+../*-experiment/
+```
+
+###### 4. 使用脚本自动化
+
+```bash
+#### 创建、状态检查、清理脚本
+~/scripts/
+├── create-worktree.sh
+├── worktree-status.sh
+└── cleanup-worktrees.sh
+```
+
+###### 5. 为每个 Worktree 使用独立的 Claude Code 实例
+
+```bash
+#### 每个 worktree 一个终端
+#### 每个终端一个 Claude Code 会话
+#### 上下文自然隔离
+```
+
+###### ❌ DON'T（不应该做）
+
+###### 1. 不要创建过多 Worktrees
+
+```bash
+#### ❌ 避免
+#### 创建 20+ 个 worktrees
+
+#### ✅ 应该
+#### 保持 3-5 个活跃 worktrees
+#### 完成后立即删除
+```
+
+###### 2. 不要在 Worktree 中修改 .git 配置
+
+```bash
+#### ❌ 避免
+cd ~/projects/myapp-feature
+git config user.name "Different Name"
+#### 这会影响所有 worktrees！
+
+#### ✅ 应该
+#### 使用全局配置
+#### 或在提交时指定
+git commit --author="Name <email>"
+```
+
+###### 3. 不要嵌套 Worktrees
+
+```bash
+#### ❌ 避免
+cd ~/projects/myapp-feature
+git worktree add ./nested-worktree
+
+#### ✅ 应该
+#### 在同级目录创建
+git worktree add ../myapp-another
+```
+
+###### 4. 不要忘记推送
+
+```bash
+#### ❌ 避免
+#### 在 worktree 中提交但忘记推送
+
+#### ✅ 应该
+#### 提交后立即推送
+git commit -m "feat: new feature"
+git push origin feature-branch
+
+#### 或使用状态检查脚本
+~/scripts/worktree-status.sh
+```
+
+---
+
+##### 快速参考
+
+###### 常用命令
+
+```bash
+#### 创建
+git worktree add <path> <branch>
+git worktree add -b <new-branch> <path>
+
+#### 查看
+git worktree list
+git worktree list --porcelain
+
+#### 删除
+git worktree remove <path>
+git worktree remove --force <path>
+
+#### 移动
+git worktree move <old-path> <new-path>
+
+#### 清理
+git worktree prune
+
+#### 锁定/解锁
+git worktree lock <path>
+git worktree unlock <path>
+```
+
+###### 工作流速查
+
+**创建并开始工作：**
+```bash
+git worktree add ../myapp-feature feature/auth
+cd ../myapp-feature
+claude
+```
+
+**并行开发：**
+```bash
+#### 终端 1
+cd ~/projects/myapp && claude
+
+#### 终端 2
+cd ~/projects/myapp-feature && claude
+```
+
+**完成后清理：**
+```bash
+git worktree remove ../myapp-feature
+git branch -d feature/auth
+```
+
+---
+
+##### 总结
+
+###### 关键要点
+
+1. **Worktrees 节省空间** - 共享 .git 目录
+2. **真正的并行开发** - 多个 Claude 实例同时工作
+3. **上下文隔离** - 清晰的任务边界
+4. **快速切换** - 无需 stash 或切换分支
+5. **简单强大** - Git 内置功能，稳定可靠
+
+###### 最佳实践总结
+
+- ✅ 使用一致的命名约定
+- ✅ 定期清理不需要的 worktrees
+- ✅ 使用脚本自动化常见操作
+- ✅ 每个 worktree 独立的 Claude Code 会话
+- ✅ 保持 3-5 个活跃 worktrees
+
+###### 下一步
+
+1. 尝试创建你的第一个 worktree
+2. 在两个 worktrees 中同时运行 Claude Code
+3. 体验并行开发的效率提升
+4. 创建自动化脚本
+5. 分享给团队
+
+---
+
+**资源链接：**
+- [Git Worktree 官方文档](https://git-scm.com/docs/git-worktree)
+- [与 Claude Code 并行开发](https://medium.com/@dtunai/mastering-git-worktrees-with-claude-code-for-parallel-development-workflow-41dc91e645fe)
+- [incident.io 的经验](https://incident.io/blog/shipping-faster-with-claude-code-and-git-worktrees)
+
+开始使用 Git Worktrees 提升你的开发效率吧！🚀
+
+
+# 查看工作区状态
+! git status
+
+# 查看提交历史
+! git log --oneline -10
+
+# 查看分支
+! git branch -a
+
+# 查看差异
+! git diff
+! git diff --staged
+! git diff HEAD~1
+```
+
+**提交管理：**
+
+```bash
+# 让 Claude 创建提交
+请分析更改并创建合适的提交
+
+# Claude 会：
+# 1. 运行 git status
+# 2. 运行 git diff
+# 3. 分析更改
+# 4. 生成提交消息
+# 5. 创建提交
+```
+
+**分支操作：**
+
+```bash
+# 创建新分支
+! git checkout -b feature/new-feature
+
+# 切换分支
+! git checkout main
+
+# 查看分支
+! git branch -v
+```
+
+#### 3.5.2 Git Worktrees 并行开发
+
+**什么是 Git Worktrees？**
+
+Git Worktrees 允许你在同一个仓库的不同目录中同时检出多个分支。
+
+**传统方式的问题：**
+
+```bash
+# 问题：需要来回切换分支
+git checkout feature-a
+# 工作一会儿...
+git checkout feature-b
+# 工作一会儿...
+git checkout main
+# 又要切换...
+
+# 或者克隆多次（浪费空间）
+git clone repo project-1
+git clone repo project-2
+git clone repo project-3
+```
+
+**Worktrees 的优势：**
+
+```
+✅ 同时工作在多个分支
+✅ 不需要来回切换
+✅ 共享 .git 目录（节省空间）
+✅ 每个 worktree 独立的文件状态
+✅ 可以运行多个 Claude Code 实例
+✅ 真正的并行开发
+```
+
+#### 3.5.3 创建和管理 Worktrees
+
+**基本操作：**
+
+```bash
+# 创建新 worktree
+git worktree add ../feature-auth feature/auth
+
+# 创建并基于当前分支
+git worktree add ../hotfix-123 -b hotfix/issue-123
+
+# 创建并从远程分支
+git worktree add ../feature-new origin/feature/new
+
+# 列出所有 worktrees
+git worktree list
+
+# 输出示例：
+# /Users/dev/project          abc1234 [main]
+# /Users/dev/feature-auth     def5678 [feature/auth]
+# /Users/dev/hotfix-123       ghi9012 [hotfix/issue-123]
+```
+
+**删除 worktree：**
+
+```bash
+# 删除 worktree
+git worktree remove ../feature-auth
+
+# 或手动删除后清理
+rm -rf ../feature-auth
+git worktree prune
+```
+
+#### 3.5.4 多 Claude 实例并行工作
+
+**设置并行开发环境：**
+
+```bash
+# 终端 1：主分支 - 处理 bug 修复
+cd ~/project
+claude
+# 工作在 main 分支
+
+# 终端 2：功能分支 - 开发新功能
+cd ~/project-feature-auth
+claude
+# 工作在 feature/auth 分支
+
+# 终端 3：另一个功能 - 独立开发
+cd ~/project-feature-ui
+claude
+# 工作在 feature/ui 分支
+```
+
+**实际工作流示例：**
+
+```bash
+# 1. 从主项目创建 worktrees
+cd ~/project
+git worktree add ../project-auth feature/auth
+git worktree add ../project-ui feature/ui-redesign
+git worktree add ../project-perf feature/performance
+
+# 2. 在不同终端启动 Claude Code
+# 终端 1
+cd ~/project
+claude
+> 请修复主分支上的 bug #123
+
+# 终端 2
+cd ~/project-auth
+claude
+> 实现用户认证系统
+
+# 终端 3
+cd ~/project-ui
+claude
+> 重新设计用户界面，使用新的设计系统
+
+# 终端 4
+cd ~/project-perf
+claude
+> 优化数据库查询性能
+
+# 3. 所有实例并行工作，互不干扰！
+```
+
+**并行开发的好处：**
+
+```
+1. 时间效率
+   - 4 个任务同时进行
+   - 不需要上下文切换
+   - 没有分支切换开销
+
+2. 上下文隔离
+   - 每个 Claude 实例有独立上下文
+   - 不会混淆不同任务
+   - 清晰的任务边界
+
+3. 代码隔离
+   - 每个 worktree 独立文件状态
+   - 不会互相影响
+   - 安全的实验环境
+
+4. 审查方便
+   - 每个特性独立提交
+   - 清晰的更改历史
+   - 易于 code review
+```
+
+#### 3.5.5 Worktree 最佳实践
+
+**1. 组织 Worktrees**
+
+```bash
+# 好的结构
+~/projects/
+├── myapp/              # 主仓库
+├── myapp-auth/         # worktree: feature/auth
+├── myapp-ui/           # worktree: feature/ui
+└── myapp-hotfix/       # worktree: hotfix/critical
+
+# 使用命名约定
+git worktree add ../myapp-<feature-name> feature/<feature-name>
+```
+
+**2. 定期清理**
+
+```bash
+# 查看 worktrees
+git worktree list
+
+# 删除已完成的 worktrees
+git worktree remove ../myapp-completed-feature
+
+# 清理损坏的引用
+git worktree prune
+```
+
+**3. 自动化 Worktree 创建**
+
+创建自定义斜线命令：`.claude/commands/worktree.md`
+
+```markdown
+---
+name: worktree
+description: 创建新 worktree 并启动 Claude Code
+---
+
+请执行以下操作：
+
+1. 询问用户特性名称
+2. 创建新分支和 worktree：
+   \`git worktree add ../$(basename $PWD)-<feature> -b feature/<feature>\`
+3. 提供打开新终端的命令
+```
+
+**使用：**
+
+```bash
+/worktree
+# 输入：auth
+# Claude 创建：../myapp-auth 和 feature/auth 分支
+```
+
+**4. 状态检查脚本**
+
+`.claude/commands/worktree-status.md`
+
+```markdown
+---
+name: worktree-status
+description: 检查所有 worktrees 的状态
+---
+
+请执行：
+1. \`git worktree list\`
+2. 对每个 worktree：
+   - 检查未提交更改
+   - 显示最新提交
+   - 显示与主分支的差异
+3. 总结状态
+```
+
+#### 3.5.6 提交管理和 PR 工作流
+
+**让 Claude 创建提交：**
+
+```bash
+# 简单方式
+创建提交，添加用户认证功能
+
+# Claude 会：
+# 1. git status - 查看更改
+# 2. git add . - 暂存文件
+# 3. 分析更改
+# 4. 生成语义化提交消息
+# 5. git commit -m "..."
+```
+
+**遵循 Conventional Commits：**
+
+```bash
+请创建符合 Conventional Commits 规范的提交
+
+# Claude 生成：
+feat(auth): add JWT authentication
+
+- Implement JWT token generation
+- Add refresh token mechanism
+- Create auth middleware
+- Add tests for auth flow
+
+Breaking Change: Auth API endpoint changed from /login to /auth/login
+```
+
+**创建 Pull Request：**
+
+```bash
+# 使用 GitHub CLI
+! gh pr create --title "Add user authentication" \
+  --body "Implements JWT-based authentication system"
+
+# 或让 Claude 帮助
+请分析我的更改并创建一个详细的 PR
+
+# Claude 会：
+# 1. 分析所有提交
+# 2. 生成 PR 标题
+# 3. 编写详细描述
+# 4. 列出更改文件
+# 5. 创建 PR
+```
+
+**PR 描述模板：**
+
+```markdown
+## 概述
+[简要描述这个 PR 做了什么]
+
+## 更改
+- [更改 1]
+- [更改 2]
+- [更改 3]
+
+## 测试
+- [ ] 单元测试通过
+- [ ] 集成测试通过
+- [ ] 手动测试完成
+
+## 截图
+[如果是 UI 更改]
+
+## 相关 Issue
+Closes #123
+Relates to #456
+
+## 检查清单
+- [ ] 代码遵循项目风格指南
+- [ ] 添加了必要的测试
+- [ ] 更新了文档
+- [ ] 没有破坏性更改
+```
+
+---
+
+### 3.6 工作流程循环
+
+#### Claude Code 工作流程指南
+
+> 详细的日常工作流程和最佳实践
+
+---
+
+##### 📋 目录
+
+- [日常开发工作流](#日常开发工作流)
+- [特性开发流程](#特性开发流程)
+- [Bug 修复流程](#bug-修复流程)
+- [代码审查流程](#代码审查流程)
+- [重构工作流](#重构工作流)
+- [CI/CD 集成](#cicd-集成)
+- [团队协作流程](#团队协作流程)
+
+---
+
+##### 日常开发工作流
+
+###### 早晨开始工作
+
+```bash
+#### 1. 启动 Claude Code
+cd ~/projects/myapp
+claude -c  # 恢复昨天的会话
+
+#### 2. 检查状态
+/status
+/context
+
+#### 3. 查看今天的任务
+! git status
+! git log --oneline -5
+
+#### 4. 如果需要，清除旧会话开始新任务
+/clear
+```
+
+###### 开始新任务
+
+```bash
+#### 1. 创建新分支
+! git checkout -b feature/new-feature
+
+#### 2. 描述任务
+我需要实现一个用户通知系统
+
+#### 3. 让 Claude 制定计划
+请制定详细的实现计划
+
+#### 4. 进入 Plan Mode 审查
+Shift+Tab  # 切换到 Plan Mode
+
+#### 5. 批准计划
+y
+
+#### 6. 开始实现
+#### Claude 会逐步实现...
+```
+
+###### 工作中断处理
+
+```bash
+#### 如果需要临时切换任务
+
+#### 1. 保存当前工作
+! git add .
+! git stash save "WIP: current task"
+
+#### 2. 压缩当前会话
+/compact
+
+#### 3. 切换分支
+! git checkout other-branch
+
+#### 4. 或者使用 worktree（推荐）
+! git worktree add ../myapp-urgent hotfix/urgent
+cd ../myapp-urgent
+claude  # 新的独立会话
+```
+
+###### 工作结束
+
+```bash
+#### 1. 提交更改
+请创建提交，总结今天的工作
+
+#### 2. 推送到远程
+! git push origin feature/new-feature
+
+#### 3. 导出会话（可选）
+/export
+
+#### 4. 检查成本
+/cost
+/usage
+
+#### 5. 退出
+/exit
+```
+
+---
+
+##### 特性开发流程
+
+###### 完整流程图
+
+```
+需求分析 → 计划设计 → 实现开发 → 测试验证 → 代码审查 → 合并部署
+    ↓         ↓          ↓          ↓          ↓          ↓
+  [Plan]   [Plan]    [Code]     [Test]    [Review]    [Merge]
+```
+
+###### 第 1 步：需求分析
+
+```bash
+#### 启动 Claude Code
+claude
+
+#### 描述需求
+我需要添加一个用户通知功能，要求：
+1. 实时推送通知
+2. 通知历史记录
+3. 通知偏好设置
+4. 邮件通知集成
+
+#### 让 Claude 分析需求
+请分析这个需求，列出：
+1. 需要的技术栈
+2. 涉及的模块
+3. 数据库设计
+4. API 端点
+5. 前端组件
+
+#### Claude 会提供详细分析...
+```
+
+###### 第 2 步：计划设计
+
+```bash
+#### 进入 Plan Mode
+Shift+Tab
+
+#### 请求详细计划
+请制定详细的实现计划，包括：
+1. 数据库 Schema
+2. 后端 API 设计
+3. 前端组件结构
+4. 测试策略
+5. 部署步骤
+
+#### 审查计划
+#### Claude 会显示完整计划...
+
+#### 如果需要调整
+modify
+请将实时通知部分延后，先实现基础功能
+
+#### 批准计划
+y
+```
+
+###### 第 3 步：分阶段实现
+
+```bash
+#### 阶段 1: 数据库 Schema
+实现计划中的数据库部分
+
+#### 等待完成后
+! npx prisma migrate dev --name add_notifications
+! npx prisma generate
+
+#### 阶段 2: 后端 API
+实现通知相关的 API 端点
+
+#### 运行测试
+! npm test notifications
+
+#### 阶段 3: 前端组件
+实现通知 UI 组件
+
+#### 本地测试
+! npm run dev
+#### 手动测试功能
+
+#### 阶段 4: 集成测试
+! npm run test:e2e
+```
+
+###### 第 4 步：代码审查
+
+```bash
+#### 自我审查
+/review
+
+#### 或使用审查 Agent
+请 code-reviewer agent 审查所有更改
+
+#### 根据反馈修复问题
+根据审查建议修复问题
+```
+
+###### 第 5 步：创建 PR
+
+```bash
+#### 生成 PR 描述
+请分析所有更改，创建详细的 PR 描述
+
+#### 创建 PR
+! gh pr create --title "feat: add user notification system" \
+  --body "$(cat pr-description.md)"
+
+#### 推送更改
+! git push origin feature/notifications
+```
+
+---
+
+##### Bug 修复流程
+
+###### 快速修复流程
+
+```
+报告 Bug → 重现问题 → 定位原因 → 修复验证 → 部署上线
+    ↓         ↓          ↓         ↓          ↓
+ [Report]  [Debug]   [Analyze]   [Fix]    [Deploy]
+```
+
+###### 详细步骤
+
+###### 1. Bug 报告和重现
+
+```bash
+#### 启动 Claude Code
+claude
+
+#### 描述 Bug
+用户报告：登录后立即登出
+错误日志：
+[粘贴错误日志]
+
+#### 让 Claude 分析
+请分析这个错误日志，可能的原因是什么？
+
+#### 重现问题
+! npm run dev
+#### 手动重现...
+```
+
+###### 2. 使用 Debugger Agent
+
+```bash
+#### 复杂 Bug 使用 Debugger Agent
+请 debugger agent 分析这个问题
+
+[粘贴完整错误信息和相关日志]
+
+#### Debugger Agent 会：
+#### 1. 搜索相关代码
+#### 2. 分析调用栈
+#### 3. 识别根本原因
+#### 4. 提供修复建议
+```
+
+###### 3. 定位代码
+
+```bash
+#### 搜索相关代码
+请搜索所有与登录和会话管理相关的代码
+
+#### 查看具体文件
+@src/lib/auth.ts
+@src/middleware/session.ts
+
+#### 分析流程
+请追踪用户登录后的会话处理流程
+```
+
+###### 4. 修复实现
+
+```bash
+#### 进入 Plan Mode
+Shift+Tab
+
+#### 请求修复方案
+请提供修复方案，并解释为什么会出现这个问题
+
+#### 审查方案
+#### ...
+
+#### 批准并实施
+y
+
+#### 验证修复
+! npm test auth
+! npm run dev
+#### 手动测试
+```
+
+###### 5. 创建测试
+
+```bash
+#### 添加回归测试
+请为这个 Bug 添加测试，确保不会再次出现
+
+#### 运行所有测试
+! npm test
+```
+
+###### 6. 提交和部署
+
+```bash
+#### 创建提交
+请创建提交：fix(auth): resolve session expiry issue
+
+#### 创建 hotfix PR
+! gh pr create --title "fix: session expiry after login" \
+  --label "hotfix" \
+  --body "Fixes #123"
+```
+
+---
+
+##### 代码审查流程
+
+###### 作为审查者
+
+###### 1. 获取 PR 信息
+
+```bash
+#### 启动 Claude Code
+claude
+
+#### 获取 PR
+! gh pr checkout 123
+
+#### 或直接查看
+! gh pr view 123
+
+#### 查看更改
+! git diff main...HEAD
+```
+
+###### 2. 使用 Code Reviewer Agent
+
+```bash
+#### 切换到 Plan Mode
+Shift+Tab
+
+#### 请求审查
+请 code-reviewer agent 审查这个 PR：
+
+@src/auth/jwt.ts
+@src/middleware/auth.ts
+@tests/auth.test.ts
+
+重点关注：
+1. 安全性
+2. 性能
+3. 测试覆盖
+4. 代码质量
+
+#### Agent 会提供详细的审查报告
+```
+
+###### 3. 提供反馈
+
+```bash
+#### 如果有问题，生成评论
+请基于审查结果生成 PR 评论
+
+#### 发布评论
+! gh pr comment 123 --body "$(cat review-comments.md)"
+
+#### 或请求修改
+! gh pr review 123 --request-changes --body "请解决安全问题"
+
+#### 批准 PR
+! gh pr review 123 --approve --body "LGTM! 👍"
+```
+
+###### 作为提交者
+
+###### 1. 自我审查
+
+```bash
+#### 提交 PR 前自我审查
+/review
+
+#### 或
+请审查我的更改，检查：
+1. 代码质量
+2. 测试覆盖
+3. 文档完整性
+4. 性能问题
+```
+
+###### 2. 响应审查反馈
+
+```bash
+#### 查看审查评论
+! gh pr view 123
+
+#### 修复问题
+根据审查反馈修复以下问题：
+[粘贴反馈]
+
+#### 更新 PR
+! git add .
+! git commit -m "fix: address review feedback"
+! git push
+```
+
+---
+
+##### 重构工作流
+
+###### 重构准备
+
+```bash
+#### 1. 确保有完整的测试
+! npm test
+#### 确保所有测试通过
+
+#### 2. 创建重构分支
+! git checkout -b refactor/improve-auth
+
+#### 3. 分析现有代码
+@src/auth/
+请分析这个模块，识别可以改进的地方
+```
+
+###### 重构计划
+
+```bash
+#### 进入 Plan Mode
+Shift+Tab
+
+#### 请求重构计划
+请制定重构计划：
+
+目标：
+1. 提高代码可读性
+2. 减少重复代码
+3. 改进错误处理
+4. 提升性能
+
+约束：
+1. 不改变公共 API
+2. 保持向后兼容
+3. 所有测试必须通过
+
+#### 审查计划
+#### ...
+
+#### 批准
+y
+```
+
+###### 增量重构
+
+```bash
+#### 分步骤重构
+请先重构步骤 1: 提取辅助函数
+
+#### 运行测试
+! npm test
+
+#### 继续下一步
+请继续步骤 2: 简化主函数逻辑
+
+#### 每步之后都运行测试
+! npm test
+
+#### 提交小的增量更改
+! git add .
+! git commit -m "refactor: extract helper functions"
+```
+
+###### 重构验证
+
+```bash
+#### 1. 运行完整测试套件
+! npm test
+! npm run test:e2e
+
+#### 2. 性能测试
+! npm run test:performance
+
+#### 3. 代码审查
+/review
+
+#### 4. 对比前后代码
+! git diff main...HEAD --stat
+```
+
+---
+
+##### CI/CD 集成
+
+###### GitHub Actions 集成
+
+###### 1. 自动化测试
+
+**.github/workflows/test.yml**
+
+```yaml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm test
+```
+
+###### 2. Claude Code 自动审查
+
+**.github/workflows/claude-review.yml**
+
+```yaml
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Claude Code Review
+        run: |
+          claude -p "Review this PR and provide feedback" \
+            --output-format json > review.json
+      - name: Post Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const review = require('./review.json')
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: review.content
+            })
+```
+
+###### 本地 CI 测试
+
+```bash
+#### 在提交前运行完整 CI 流程
+! npm run ci
+
+#### 包含：
+#### - Linting
+#### - Type checking
+#### - Unit tests
+#### - Integration tests
+#### - Build
+```
+
+---
+
+##### 团队协作流程
+
+###### 每日站会准备
+
+```bash
+#### 1. 导出昨天的工作
+/export
+
+#### 2. 查看提交历史
+! git log --since="yesterday" --author="$(git config user.name)"
+
+#### 3. 让 Claude 总结
+请总结昨天的工作内容和今天的计划
+```
+
+###### 知识分享
+
+```bash
+#### 1. 导出有价值的会话
+/export
+
+#### 2. 创建团队文档
+请将这个会话中的关键决策整理成文档
+
+#### 3. 分享给团队
+! git add docs/decisions/
+! git commit -m "docs: add architecture decision"
+! git push
+```
+
+###### Pair Programming
+
+```bash
+#### 1. 共享会话（通过屏幕分享）
+claude
+
+#### 2. 轮流驱动
+#### Driver 操作，Navigator 提供建议
+
+#### 3. 使用 Plan Mode 讨论
+Shift+Tab
+#### 查看计划，讨论方案
+
+#### 4. 记录决策
+请记录我们刚才讨论的架构决策
+```
+
+---
+
+##### 工作流最佳实践
+
+###### ✅ DO（应该做）
+
+1. **早期使用 Plan Mode**
+   ```bash
+   # 在大型更改前
+   Shift+Tab
+   请制定计划...
+   ```
+
+2. **定期压缩会话**
+   ```bash
+   # 每 50-100 轮对话
+   /compact
+   ```
+
+3. **明确引用文件**
+   ```bash
+   # 使用 @
+   @src/specific-file.ts
+   ```
+
+4. **频繁提交**
+   ```bash
+   # 小步提交
+   ! git add .
+   ! git commit -m "feat: add user validation"
+   ```
+
+5. **编写测试**
+   ```bash
+   请为这个函数编写测试
+   ```
+
+6. **代码审查**
+   ```bash
+   /review
+   # 或
+   请 code-reviewer agent 审查
+   ```
+
+###### ❌ DON'T（不应该做）
+
+1. **不要跳过计划**
+   ```bash
+   # ❌ 避免
+   直接实现复杂功能  # 没有计划
+
+   # ✅ 应该
+   Shift+Tab
+   请先制定计划
+   ```
+
+2. **不要忽略错误**
+   ```bash
+   # ❌ 避免
+   继续下一个任务  # 忽略测试失败
+
+   # ✅ 应该
+   ! npm test  # 确保通过
+   ```
+
+3. **不要大批量更改**
+   ```bash
+   # ❌ 避免
+   同时修改 50 个文件
+
+   # ✅ 应该
+   分阶段，每次修改 3-5 个文件
+   ```
+
+4. **不要盲目信任**
+   ```bash
+   # ❌ 避免
+   y  # 不看计划就批准
+
+   # ✅ 应该
+   # 仔细审查计划
+   # 理解每个步骤
+   y  # 确认后批准
+   ```
+
+---
+
+##### 常见场景速查
+
+###### 紧急 Bug 修复
+
+```bash
+#### 1. 快速修复流程
+claude
+描述 Bug + 错误日志
+请提供快速修复方案
+应用修复
+! npm test
+! git commit -m "fix: critical bug"
+! git push
+```
+
+###### 代码审查
+
+```bash
+#### 1. 审查 PR
+! gh pr checkout 123
+Shift+Tab
+请 code-reviewer agent 审查
+提供反馈或批准
+```
+
+###### 重构
+
+```bash
+#### 1. 安全重构
+Shift+Tab
+请制定重构计划
+分步实施
+每步运行测试
+```
+
+###### 新功能开发
+
+```bash
+#### 1. 完整流程
+描述需求
+Shift+Tab
+制定计划
+分阶段实现
+编写测试
+代码审查
+创建 PR
+```
+
+---
+
+##### 工作流清单
+
+###### 开始工作
+- [ ] 启动 Claude Code
+- [ ] 检查状态 (/status, /context)
+- [ ] 查看任务列表
+- [ ] 创建或切换分支
+
+###### 实现功能
+- [ ] 描述需求
+- [ ] 使用 Plan Mode 制定计划
+- [ ] 审查并批准计划
+- [ ] 分阶段实现
+- [ ] 编写测试
+- [ ] 运行测试确保通过
+
+###### 提交代码
+- [ ] 代码自我审查
+- [ ] 创建语义化提交
+- [ ] 推送到远程
+- [ ] 创建 PR
+- [ ] 请求团队审查
+
+###### 结束工作
+- [ ] 检查所有测试通过
+- [ ] 导出重要会话（可选）
+- [ ] 检查成本 (/cost)
+- [ ] 压缩长会话 (/compact)
+- [ ] 退出 (/exit)
+
+---
+
+**提示**: 将此清单打印出来，放在桌面上作为日常参考！
+
+
+# 1. 切换到 Plan Mode
+Shift+Tab
+
+# 2. 请求审查
+审查这个 PR 的代码质量、性能和安全性
+@src/auth/jwt.ts
+@src/middleware/auth.ts
+@tests/auth.test.ts
+
+# 3. Claude 分析
+Plan Mode 输出：
+═══════════════════════════════════════
+代码审查计划
+═══════════════════════════════════════
+
+步骤 1: 分析代码结构
+步骤 2: 检查安全漏洞
+步骤 3: 评估性能
+步骤 4: 检查测试覆盖
+步骤 5: 提供改进建议
+
+继续？(y/n/modify)
+
+# 4. 批准
+y
+
+# 5. Claude 执行审查并提供详细报告
+```
+
+**使用自定义 Subagent：**
+
+```bash
+# 使用专门的审查 Subagent
+请 code-reviewer subagent 审查这个 PR
+
+# 或
+/agents
+# 选择 code-reviewer
+```
+
+#### 3.6.2 Bug 修复工作流
+
+**流程：**
+
+```
+1. 描述 bug
+   ↓
+2. 提供错误消息/日志
+   ↓
+3. Claude 分析
+   ↓
+4. 建议修复
+   ↓
+5. 应用修复
+   ↓
+6. 运行测试
+   ↓
+7. 提交更改
+```
+
+**实际操作：**
+
+```bash
+# 1. 描述问题
+我们的登录功能返回 500 错误
+
+# 2. 提供错误日志
+! npm run dev 2>&1 | tail -50
+
+或者：
+```
+[粘贴错误日志]
+```
+
+# 3. Claude 分析
+让我分析这个错误...
+
+# Claude 会：
+# - 搜索相关代码
+# - 识别问题
+# - 提供修复方案
+
+# 4. 应用修复
+应用建议的修复方案
+
+# 5. 测试
+! npm test auth
+
+# 6. 提交
+创建提交：fix(auth): resolve 500 error on login
+```
+
+**使用 Debugger Subagent：**
+
+```bash
+# 复杂 bug
+请 debugger subagent 分析这个崩溃
+
+[粘贴崩溃日志]
+
+# Debugger Subagent 会：
+# - 深入分析
+# - 追踪根本原因
+# - 提供详细诊断
+# - 建议修复方案
+```
+
+#### 3.6.3 特性开发工作流
+
+**流程：**
+
+```
+1. 描述特性
+   ↓
+2. 要求制定计划
+   ↓
+3. 审查计划 (Plan Mode)
+   ↓
+4. 批准计划
+   ↓
+5. 逐步实现
+   ↓
+6. 定期测试
+   ↓
+7. 创建 PR
+```
+
+**实际操作：**
+
+```bash
+# 1. 描述特性
+我需要添加一个用户通知系统，包括：
+- 实时通知
+- 通知历史
+- 通知设置
+- 邮件集成
+
+# 2. 请求计划
+请制定详细的实现计划
+
+# 3. 进入 Plan Mode
+Shift+Tab
+
+# 4. Claude 提供计划
+═══════════════════════════════════════
+实现计划：用户通知系统
+═══════════════════════════════════════
+
+阶段 1: 数据库设计
+- 创建 notifications 表
+- 创建 notification_settings 表
+- 添加索引
+
+阶段 2: 后端 API
+- POST /api/notifications - 创建通知
+- GET /api/notifications - 获取通知列表
+- PATCH /api/notifications/:id - 标记为已读
+- GET /api/notifications/settings - 获取设置
+- PUT /api/notifications/settings - 更新设置
+
+阶段 3: 实时功能
+- WebSocket 连接
+- 实时推送
+- 连接管理
+
+阶段 4: 前端组件
+- NotificationBell 组件
+- NotificationList 组件
+- NotificationSettings 页面
+
+阶段 5: 邮件集成
+- 邮件模板
+- 发送逻辑
+- 用户偏好
+
+继续？(y/n/modify)
+
+# 5. 批准
+y
+
+# 6. 逐步实现
+# Claude 实现每个阶段
+
+# 7. 测试
+! npm test notifications
+
+# 8. 创建 PR
+请创建 PR 描述这个新功能
+```
+
+#### 3.6.4 重构工作流
+
+**流程：**
+
+```
+1. 选择要重构的代码
+   ↓
+2. 分析问题
+   ↓
+3. 使用 Plan Mode 查看方案
+   ↓
+4. 批准重构计划
+   ↓
+5. 执行重构
+   ↓
+6. 确保测试通过
+   ↓
+7. 验证功能不变
+   ↓
+8. 提交
+```
+
+**实际操作：**
+
+```bash
+# 1. 选择代码
+@src/services/user-service.ts
+
+分析这个文件并建议重构
+
+# 2. 进入 Plan Mode
+Shift+Tab
+
+# 3. Claude 分析
+═══════════════════════════════════════
+重构计划：UserService
+═══════════════════════════════════════
+
+问题：
+1. 函数过长（200+ 行）
+2. 多个职责混合
+3. 错误处理不一致
+4. 缺少类型安全
+
+建议方案：
+1. 拆分为多个小函数
+2. 提取验证逻辑到单独模块
+3. 统一错误处理
+4. 添加完整类型定义
+
+步骤：
+1. 提取验证函数
+2. 提取数据库操作
+3. 简化主函数
+4. 添加类型
+5. 更新测试
+
+预期结果：
+- 减少 40% 代码行数
+- 提高可测试性
+- 更好的类型安全
+- 更清晰的职责分离
+
+继续？(y/n/modify)
+
+# 4. 批准
+y
+
+# 5. 执行
+# Claude 执行重构
+
+# 6. 测试
+! npm test user-service
+
+# 7. 提交
+创建提交：refactor(services): improve UserService structure
+```
+
+#### 3.6.5 学习和探索工作流
+
+**流程：**
+
+```
+1. 提出问题
+   ↓
+2. 使用 Explore Subagent
+   ↓
+3. Claude 搜索代码
+   ↓
+4. 生成总结
+   ↓
+5. 提供示例
+   ↓
+6. 回答后续问题
+```
+
+**实际操作：**
+
+```bash
+# 1. 探索架构
+这个项目的认证系统是如何工作的？
+
+# Claude 自动使用 Explore Subagent
+# （Haiku - 快速且便宜）
+
+# 2. 搜索相关代码
+# Claude 搜索：
+# - 认证相关文件
+# - 中间件
+# - API 路由
+# - 配置文件
+
+# 3. 生成总结
+═══════════════════════════════════════
+认证系统架构
+═══════════════════════════════════════
+
+## 概述
+使用 JWT (JSON Web Tokens) 实现认证
+
+## 核心组件
+
+1. 认证服务 (src/lib/auth.ts)
+   - 生成 JWT tokens
+   - 验证 tokens
+   - 刷新机制
+
+2. 认证中间件 (src/middleware/auth.ts)
+   - 保护 API 路由
+   - 提取用户信息
+   - 处理过期 tokens
+
+3. API 端点
+   - POST /api/auth/login
+   - POST /api/auth/refresh
+   - POST /api/auth/logout
+
+## 流程图
+[ASCII 流程图]
+
+## 代码示例
+[关键代码片段]
+
+# 4. 后续问题
+如何添加双因素认证？
+
+# Claude 继续探索和解释...
+```
+
+**深入探索：**
+
+```bash
+# 使用 Plan Mode 探索
+Shift+Tab
+
+请详细分析这个代码库的架构，包括：
+- 目录结构
+- 主要模块
+- 数据流
+- 依赖关系
+
+# Claude 生成全面的架构文档
+```
+
+---
+
+
+### 3.7 Claude Code 使用哲学
+
+#### Claude Code 使用哲学与感悟
+
+> 从实践中积累的智慧与洞察
+
+---
+
+##### 📋 目录
+
+- [核心哲学](#核心哲学)
+- [沟通的艺术](#沟通的艺术)
+- [明确性原则](#明确性原则)
+- [迭代改进思维](#迭代改进思维)
+- [信任与验证的平衡](#信任与验证的平衡)
+- [上下文的力量](#上下文的力量)
+- [渐进式任务分解](#渐进式任务分解)
+- [人机协作的智慧](#人机协作的智慧)
+- [失败与学习](#失败与学习)
+- [思维模式转变](#思维模式转变)
+- [实践中的禅意](#实践中的禅意)
+
+---
+
+##### 核心哲学
+
+###### Claude 可以推断意图，但不能读心
+
+> **"Claude can infer intent, but it can't read minds. Specificity leads to better alignment with expectations."**
+
+**深层含义：**
+
+```
+模糊的请求 → 模糊的结果
+明确的请求 → 精确的结果
+
+Claude 很聪明，但不是魔法师。
+它需要你的引导，而不是猜测。
+```
+
+**实践对比：**
+
+```bash
+#### ❌ 模糊的请求
+"帮我修复这个 bug"
+
+#### ✅ 明确的请求
+"在 src/auth/login.ts 的第 45 行，当用户名为空时，
+登录函数没有返回错误信息，而是抛出了未捕获的异常。
+请添加输入验证，如果用户名为空，返回 '用户名不能为空' 的错误。"
+```
+
+**为什么重要：**
+
+1. **减少来回沟通** - 一次说清，一次做对
+2. **提高成功率** - 明确的目标更容易达成
+3. **节省时间和成本** - 减少重试次数
+4. **更好的结果** - 精确匹配你的期望
+
+---
+
+##### 沟通的艺术
+
+###### 1. 说人话，但要说清楚
+
+> **"Write naturally, but write completely."**
+
+**错误示范：**
+```
+"优化代码"
+- 优化什么？性能？可读性？
+- 哪部分代码？
+- 优化到什么程度？
+```
+
+**正确示范：**
+```
+"我想优化 src/api/users.ts 中的 fetchUsers 函数：
+- 目标：减少 API 调用时间
+- 当前问题：每次都重新获取所有数据
+- 期望：添加缓存机制，5 分钟内使用缓存数据"
+```
+
+###### 2. 给出"为什么"，不只是"做什么"
+
+> **"Context is king. Explain the why, not just the what."**
+
+**对比：**
+
+```bash
+#### ❌ 只说做什么
+"添加一个用户表单"
+
+#### ✅ 说明为什么
+"我们需要添加一个用户注册表单，因为：
+- 当前用户只能通过管理员手动创建
+- 用户反馈注册流程太复杂
+- 目标是让用户能自助注册，提高转化率"
+```
+
+**为什么重要：**
+- Claude 可以根据目标调整实现方式
+- 可能提出更好的解决方案
+- 避免过度工程或不足工程
+
+###### 3. 用例子说话
+
+> **"Show, don't just tell."**
+
+```bash
+#### ❌ 抽象描述
+"我想要一个 API 返回格式化的数据"
+
+#### ✅ 用例子说明
+"我想要 API 返回这样的格式：
+{
+  \"success\": true,
+  \"data\": {
+    \"users\": [...],
+    \"total\": 100
+  },
+  \"pagination\": {
+    \"page\": 1,
+    \"pageSize\": 20,
+    \"totalPages\": 5
+  }
+}
+
+而不是现在的平铺结构。"
+```
+
+---
+
+##### 明确性原则
+
+###### 具体 > 抽象
+
+**哲学：**
+```
+抽象是人类思维的美德
+但对 AI 来说，具体是交流的桥梁
+
+不要假设 AI "知道你想要什么"
+明确地说出来
+```
+
+**实践指南：**
+
+###### 1. 明确文件位置
+
+```bash
+#### ❌ 模糊
+"修改登录文件"
+
+#### ✅ 具体
+@src/auth/login.tsx
+@src/lib/auth-utils.ts
+```
+
+###### 2. 明确要修改的内容
+
+```bash
+#### ❌ 模糊
+"改进错误处理"
+
+#### ✅ 具体
+"在第 67-82 行的 try-catch 块中：
+- 捕获 AuthenticationError 时，显示 '用户名或密码错误'
+- 捕获 NetworkError 时，显示 '网络连接失败，请重试'
+- 其他错误显示 '未知错误，请联系支持'"
+```
+
+###### 3. 明确预期结果
+
+```bash
+#### ❌ 模糊
+"让它更快"
+
+#### ✅ 具体
+"目标：将页面加载时间从 3 秒减少到 1 秒以内
+方向：
+- 优化图片加载（lazy loading）
+- 减少初始 bundle 大小（code splitting）
+- 添加 loading 状态提升用户感知"
+```
+
+###### 量化你的期望
+
+> **"Numbers speak louder than words."**
+
+```bash
+#### ❌ 定性描述
+"测试覆盖率要高"
+
+#### ✅ 定量指标
+"测试覆盖率要达到 85% 以上
+重点覆盖：
+- 所有 API 调用函数
+- 关键业务逻辑
+- 边界情况和错误处理"
+```
+
+---
+
+##### 迭代改进思维
+
+###### 完美是迭代出来的，不是一次完成的
+
+> **"Rome wasn't built in a day, neither is good code."**
+
+**核心理念：**
+
+```
+第一次：实现基本功能
+第二次：添加错误处理
+第三次：优化性能
+第四次：完善文档
+
+不要期望一步到位
+```
+
+**实践方法：**
+
+###### MVP 思维
+
+```bash
+#### 第一步：最小可行产品
+"先实现基本的用户登录功能：
+- 用户名密码登录
+- 简单的表单验证
+- 登录成功后跳转首页"
+
+#### 第二步：增强
+"现在添加：
+- Remember me 功能
+- 忘记密码链接
+- 错误提示优化"
+
+#### 第三步：完善
+"最后添加：
+- OAuth 登录（Google, GitHub）
+- 双因素认证
+- 登录历史记录"
+```
+
+###### 反馈循环
+
+```
+实现 → 测试 → 反馈 → 改进 → 重复
+
+每次迭代都是学习的机会
+```
+
+**感悟：**
+
+```
+与其花 3 小时想一个"完美"的方案
+不如花 30 分钟实现一个"可行"的方案
+然后用 2.5 小时迭代改进
+
+前者可能一无所获
+后者至少有可运行的代码
+```
+
+---
+
+##### 信任与验证的平衡
+
+###### Trust, but verify
+
+> **"AI is a powerful tool, not an infallible oracle."**
+
+**黄金法则：**
+
+```
+Claude 写的代码：
+✅ 通常是正确的
+✅ 遵循最佳实践
+✅ 考虑了边界情况
+
+但：
+⚠️  不是 100% 完美
+⚠️  可能有更好的方案
+⚠️  需要你的专业判断
+```
+
+**实践指南：**
+
+###### 1. 关键代码必须审查
+
+```bash
+高风险代码（必须仔细审查）：
+- 安全相关（认证、授权、加密）
+- 数据库操作（迁移、删除）
+- 支付逻辑
+- 生产环境配置
+
+低风险代码（可以快速审查）：
+- UI 组件
+- 样式调整
+- 文档更新
+- 测试代码
+```
+
+###### 2. 测试是必须的
+
+```bash
+Claude 生成的代码：
+1. 运行测试 ✓
+2. 手动测试关键路径 ✓
+3. 检查边界情况 ✓
+4. Code Review ✓
+
+然后才能合并到 main
+```
+
+###### 3. 理解而不是盲目接受
+
+```bash
+#### ❌ 错误做法
+"Claude 生成了代码，看起来没问题，直接提交"
+
+#### ✅ 正确做法
+"Claude 生成了代码，让我理解一下：
+- 为什么用这个算法？
+- 有没有潜在的性能问题？
+- 边界情况处理了吗？
+- 有没有更简单的实现？"
+```
+
+**感悟：**
+
+```
+Claude 是你的高级助手
+但最终的决策者是你
+
+它可以：
+- 节省你 80% 的时间
+- 提供高质量的初始实现
+- 提醒你可能忽略的问题
+
+你需要：
+- 提供 20% 的专业判断
+- 确保最终结果符合标准
+- 对代码负责
+```
+
+---
+
+##### 上下文的力量
+
+###### Context is everything
+
+> **"The more Claude knows, the better it performs."**
+
+**核心理念：**
+
+```
+Claude 不知道：
+❌ 你的项目结构
+❌ 你的代码风格
+❌ 你的业务逻辑
+❌ 你的技术栈约束
+
+除非你告诉它
+```
+
+**提供上下文的层次：**
+
+###### Level 1: CLAUDE.md（最佳实践）
+
+```markdown
+#### 项目上下文
+
+##### 技术栈
+- React 18 + TypeScript
+- Next.js 14 (App Router)
+- Tailwind CSS
+- tRPC for API
+
+##### 代码风格
+- 函数式组件
+- 自定义 hooks
+- Server Components 优先
+
+##### 项目结构
+[...]
+```
+
+**为什么重要：**
+- Claude 每次启动都能了解项目
+- 一次写入，永久受益
+- 团队成员也能看到
+
+###### Level 2: 会话上下文
+
+```bash
+#### 每次开始新任务时
+"我现在要实现用户通知功能。
+相关背景：
+- 我们使用 Supabase 作为后端
+- 已经有用户认证系统
+- 通知需要支持实时推送
+- 参考 @docs/architecture.md 中的消息系统设计"
+```
+
+###### Level 3: 文件引用
+
+```bash
+#### 使用 @ 提供代码上下文
+"请参考：
+@src/components/UserProfile.tsx
+@src/lib/api-client.ts
+@types/user.ts
+
+使用相同的模式实现 NotificationList 组件"
+```
+
+**实践技巧：**
+
+```bash
+#### ❌ 缺少上下文
+"添加一个按钮"
+
+#### ✅ 提供充足上下文
+"在 @src/components/Header.tsx 中添加一个按钮：
+- 位置：搜索框右侧
+- 样式：参考 @src/components/Button.tsx 的 primary 变体
+- 功能：点击打开通知面板
+- 图标：使用 lucide-react 的 Bell 图标"
+```
+
+**感悟：**
+
+```
+上下文就像地图
+没有地图，Claude 在黑暗中摸索
+有了地图，Claude 知道要去哪里
+
+花 5 分钟提供上下文
+可以节省 30 分钟的返工
+```
+
+---
+
+##### 渐进式任务分解
+
+###### 小步快跑，不断验证
+
+> **"Complexity is the enemy of reliability."**
+
+**哲学：**
+
+```
+大任务 = 高风险
+- 容易出错
+- 难以调试
+- 浪费时间
+
+小任务 = 低风险
+- 容易验证
+- 快速反馈
+- 持续进步
+```
+
+**实践方法：**
+
+###### 任务分解金字塔
+
+```
+🎯 大目标：构建用户通知系统
+
+📦 阶段 1：数据层
+  ├─ 任务 1.1：设计数据库 schema
+  ├─ 任务 1.2：创建 migration
+  └─ 任务 1.3：测试数据模型
+
+📦 阶段 2：API 层
+  ├─ 任务 2.1：实现创建通知 API
+  ├─ 任务 2.2：实现获取通知 API
+  └─ 任务 2.3：实现标记已读 API
+
+📦 阶段 3：UI 层
+  ├─ 任务 3.1：通知列表组件
+  ├─ 任务 3.2：通知项组件
+  └─ 任务 3.3：通知图标和徽章
+
+📦 阶段 4：实时功能
+  ├─ 任务 4.1：WebSocket 连接
+  └─ 任务 4.2：实时更新逻辑
+```
+
+**每个小任务的模式：**
+
+```bash
+1. 明确目标（What）
+2. 实现功能（How）
+3. 写测试（Test）
+4. 验证结果（Verify）
+5. 提交代码（Commit）
+
+然后进入下一个任务
+```
+
+**对话示例：**
+
+```bash
+#### 第一步
+"先实现数据库 schema：
+创建 notifications 表，包含：
+- id, user_id, title, message, type, read, created_at"
+
+#### Claude 实现...
+
+#### 验证
+"运行 migration，确认表创建成功"
+
+#### 第二步
+"现在实现创建通知的 API：
+POST /api/notifications
+接收 {userId, title, message, type}"
+
+#### 继续...
+```
+
+**感悟：**
+
+```
+每完成一个小任务：
+✅ 获得一个小胜利
+✅ 验证方向正确
+✅ 保持动力
+✅ 降低风险
+
+就像爬楼梯
+一步一步，稳健前进
+```
+
+---
+
+##### 人机协作的智慧
+
+###### AI 是助手，不是替代品
+
+> **"The best results come from human expertise + AI capabilities."**
+
+**定位：**
+
+```
+Claude 擅长：
+✅ 生成代码
+✅ 重复性工作
+✅ 最佳实践建议
+✅ 快速原型
+
+你擅长：
+✅ 架构决策
+✅ 业务理解
+✅ 创造性思考
+✅ 质量把关
+```
+
+**协作模式：**
+
+###### 1. 你设计，Claude 实现
+
+```bash
+你："我设计了这个用户流程：
+1. 用户填写表单
+2. 前端验证
+3. 提交到 API
+4. 后端验证和存储
+5. 发送确认邮件
+
+请实现前端部分，我来处理后端"
+
+Claude："好的，我来实现前端表单和验证逻辑..."
+```
+
+###### 2. Claude 建议，你决策
+
+```bash
+Claude："我注意到这里有几种实现方式：
+1. 使用 React Query - 更简单，更流行
+2. 使用 Redux - 更强大，更复杂
+3. 使用 SWR - 轻量级，专注数据获取
+
+你倾向于哪种？"
+
+你："用 React Query，我们追求简单"
+```
+
+###### 3. 互相学习
+
+```bash
+你："为什么你选择用 useCallback 而不是普通函数？"
+
+Claude："因为这个函数传给了子组件，使用 useCallback
+可以避免不必要的重新渲染..."
+
+你："明白了，这是性能优化的一个点"
+```
+
+**工作流程：**
+
+```
+1. 你：定义需求和目标
+   ↓
+2. Claude：提出实现方案
+   ↓
+3. 你：审查和调整方案
+   ↓
+4. Claude：编写代码
+   ↓
+5. 你：审查和测试代码
+   ↓
+6. Claude：根据反馈改进
+   ↓
+7. 你：批准和合并
+
+这是一个持续的对话过程
+```
+
+**感悟：**
+
+```
+最好的代码来自：
+🤝 人的智慧 + AI 的效率
+
+不要指望 AI 做所有事情
+也不要拒绝 AI 的帮助
+
+找到平衡点
+发挥各自优势
+```
+
+---
+
+##### 失败与学习
+
+###### 拥抱失败，快速学习
+
+> **"Every error is a learning opportunity."**
+
+**心态转变：**
+
+```
+传统思维：
+❌ 失败 = 浪费时间
+❌ 错误 = 挫折
+
+Claude Code 思维：
+✅ 失败 = 快速学习
+✅ 错误 = 反馈信号
+✅ 迭代 = 进步
+```
+
+**常见场景：**
+
+###### 场景 1：代码不工作
+
+```bash
+#### ❌ 放弃思维
+"Claude 生成的代码有 bug，AI 不靠谱"
+
+#### ✅ 学习思维
+"代码有 bug，让我看看：
+- 是我的需求不够明确吗？
+- 是缺少了某些上下文吗？
+- 是边界情况没考虑到吗？
+
+让我更清楚地描述需求再试一次"
+```
+
+###### 场景 2：结果不符合预期
+
+```bash
+#### ❌ 抱怨
+"生成的代码太复杂了，不是我想要的"
+
+#### ✅ 反思和改进
+"这个实现很复杂，可能是因为：
+- 我没说清楚简单性的要求
+- 需求本身确实需要这个复杂度
+- 有更简单的方案我没想到
+
+让我具体说明：'使用最简单的实现，
+不需要考虑高并发，用户量 < 1000'"
+```
+
+###### 场景 3：花了很多时间
+
+```bash
+#### ❌ 自责
+"我花了 2 小时才完成，效率太低了"
+
+#### ✅ 总结经验
+"这 2 小时我学到了：
+- CLAUDE.md 的重要性（下次先写）
+- 小步迭代比一次性做完更快
+- 明确需求能省很多来回时间
+
+下次会更快"
+```
+
+**失败的价值：**
+
+```
+第一次失败：学到方法
+第二次失败：改进流程
+第三次失败：找到根因
+第四次成功：形成经验
+
+没有失败，就没有成长
+```
+
+**实践建议：**
+
+```bash
+#### 记录失败和学习
+##### 失败日志
+
+###### 2024-01-15: 需求不明确导致返工
+**问题：**
+让 Claude 实现表单验证，结果不符合预期
+
+**原因：**
+没有说明具体的验证规则
+
+**学到：**
+提供具体的验证要求，最好有例子
+
+**改进：**
+以后提供具体的输入输出示例
+```
+
+---
+
+##### 思维模式转变
+
+###### 从"控制"到"协作"
+
+**传统编程思维：**
+
+```
+我 → 完全控制 → 代码
+- 每一行都是我写的
+- 我知道所有细节
+- 我负责所有决策
+```
+
+**AI 辅助编程思维：**
+
+```
+我 ← 对话协作 → Claude → 代码
+- 我设定方向和标准
+- Claude 提供实现
+- 我审查和验证
+- 共同迭代改进
+```
+
+**心态调整：**
+
+###### 1. 从"怀疑"到"信任"
+
+```
+初期：
+"AI 生成的代码能用吗？"
+"我还是自己写比较放心"
+
+成熟期：
+"Claude 的初始实现通常很好"
+"我负责审查和完善"
+```
+
+###### 2. 从"完美主义"到"迭代主义"
+
+```
+初期：
+"我要一次性说清楚所有需求"
+"第一版就要完美"
+
+成熟期：
+"先实现基本功能"
+"然后逐步完善"
+```
+
+###### 3. 从"单打独斗"到"团队协作"
+
+```
+初期：
+"我一个人完成所有代码"
+
+成熟期：
+"我和 Claude 是一个团队"
+"各自发挥优势"
+```
+
+**转变的标志：**
+
+```
+Level 1: 尝试者
+"让我试试 Claude Code 能做什么"
+
+Level 2: 怀疑者
+"有些地方 Claude 做得不够好"
+
+Level 3: 学习者
+"我需要学习如何更好地使用 Claude"
+
+Level 4: 熟练者
+"我知道什么时候用 Claude，什么时候自己写"
+
+Level 5: 大师
+"Claude 和我形成了高效的协作模式"
+```
+
+---
+
+##### 实践中的禅意
+
+###### 慢下来，才能快起来
+
+> **"Go slow to go fast."**
+
+**反直觉的智慧：**
+
+```
+花 5 分钟明确需求
+比花 30 分钟修改不满意的代码更快
+
+写一个清晰的 CLAUDE.md
+比每次都重复说明项目结构更快
+
+先写测试用例
+比后面调试 bug 更快
+```
+
+###### 简单是终极的复杂
+
+> **"Simplicity is the ultimate sophistication."**
+
+**指导原则：**
+
+```bash
+#### ❌ 追求复杂
+"实现一个通用的、可配置的、可扩展的框架"
+
+#### ✅ 追求简单
+"解决当前的具体问题
+如果将来需要扩展，再重构"
+```
+
+**YAGNI (You Aren't Gonna Need It)：**
+
+```
+不要为可能的未来需求写代码
+解决当前的问题
+保持代码简单
+```
+
+###### 对话是一门艺术
+
+> **"The quality of your output depends on the quality of your input."**
+
+**提问的艺术：**
+
+```
+好的问题：
+- 清晰、具体、可执行
+- 提供足够上下文
+- 说明预期结果
+
+差的问题：
+- 模糊、抽象、难以理解
+- 缺少背景信息
+- 没有明确目标
+```
+
+###### 享受过程，而不只是结果
+
+```
+编程不只是完成任务
+也是解决问题的过程
+学习新知识的过程
+提升技能的过程
+
+和 Claude 协作：
+- 学习最佳实践
+- 发现新的模式
+- 提升代码质量
+- 享受创造的乐趣
+```
+
+---
+
+##### 实践智慧集锦
+
+###### 30 条使用感悟
+
+1. **明确 > 模糊**
+   ```
+   花 1 分钟明确需求 > 花 10 分钟修改结果
+   ```
+
+2. **上下文是关键**
+   ```
+   CLAUDE.md 写得好 = 效率提升 10 倍
+   ```
+
+3. **小步快跑**
+   ```
+   10 个小任务 > 1 个大任务
+   ```
+
+4. **先实现，后优化**
+   ```
+   Working > Perfect
+   ```
+
+5. **信任但验证**
+   ```
+   Claude 生成代码 → 必须审查 → 才能合并
+   ```
+
+6. **用例子说话**
+   ```
+   输入输出示例 > 长篇大论
+   ```
+
+7. **失败是老师**
+   ```
+   每次失败 = 一次学习机会
+   ```
+
+8. **保持对话**
+   ```
+   持续反馈 > 一次性大需求
+   ```
+
+9. **文档优先**
+   ```
+   先写 CLAUDE.md → 然后开始编码
+   ```
+
+10. **测试是必须的**
+    ```
+    代码 + 测试 = 可靠
+    代码 - 测试 = 赌博
+    ```
+
+11. **上下文积累**
+    ```
+    会话越长 → Claude 越了解你 → 结果越好
+    ```
+
+12. **Plan Mode 保平安**
+    ```
+    大改动 = 先用 Plan Mode
+    ```
+
+13. **引用具体文件**
+    ```
+    @file.ts > "那个登录文件"
+    ```
+
+14. **给出"为什么"**
+    ```
+    目标 + 原因 > 只有目标
+    ```
+
+15. **迭代改进**
+    ```
+    v1: 能用 → v2: 好用 → v3: 优雅
+    ```
+
+16. **批量处理**
+    ```
+    一次处理 10 个文件 > 10 次处理 1 个文件
+    ```
+
+17. **压缩会话**
+    ```
+    /compact 定期使用 = 保持性能
+    ```
+
+18. **选对模型**
+    ```
+    简单任务用 Haiku = 省钱
+    复杂任务用 Sonnet = 省时
+    ```
+
+19. **分阶段验证**
+    ```
+    每步验证 > 最后验证
+    ```
+
+20. **保存精华**
+    ```
+    /export 好的会话 → 团队学习
+    ```
+
+21. **专注当前**
+    ```
+    解决现在的问题 > 设计未来的框架
+    ```
+
+22. **标准化模式**
+    ```
+    团队 CLAUDE.md = 统一风格
+    ```
+
+23. **快速反馈**
+    ```
+    立即运行测试 > 稍后检查
+    ```
+
+24. **记录决策**
+    ```
+    为什么这样做 = 未来的你会感谢
+    ```
+
+25. **善用 Agents**
+    ```
+    重复任务 = 创建 Agent
+    ```
+
+26. **理解而非盲从**
+    ```
+    理解代码逻辑 > 直接复制粘贴
+    ```
+
+27. **保持简单**
+    ```
+    简单的正确 > 复杂的完美
+    ```
+
+28. **持续学习**
+    ```
+    每天学一个新技巧 = 一年精通
+    ```
+
+29. **享受过程**
+    ```
+    编程 = 创造的乐趣
+    ```
+
+30. **人机协作**
+    ```
+    你的智慧 + AI 的效率 = 最佳结果
+    ```
+
+---
+
+##### 从新手到专家的旅程
+
+###### 阶段 1: 探索期（第 1 周）
+
+**特征：**
+```
+- 尝试基本功能
+- 惊讶于 AI 的能力
+- 也遇到一些挫折
+- 在学习最佳实践
+```
+
+**建议：**
+- 从小任务开始
+- 多看文档和示例
+- 记录学习笔记
+- 不要期望完美
+
+###### 阶段 2: 适应期（第 2-4 周）
+
+**特征：**
+```
+- 开始形成工作流程
+- 知道什么时候用 Claude
+- 能写出更好的提示
+- 但还有很多困惑
+```
+
+**建议：**
+- 建立自己的模板
+- 开始写 CLAUDE.md
+- 尝试不同的模型
+- 总结成功经验
+
+###### 阶段 3: 熟练期（第 2-3 月）
+
+**特征：**
+```
+- 形成稳定的工作模式
+- 效率明显提升
+- 很少遇到意外
+- 开始帮助他人
+```
+
+**建议：**
+- 优化工作流程
+- 创建团队 Agents
+- 分享最佳实践
+- 持续改进
+
+###### 阶段 4: 精通期（第 4+ 月）
+
+**特征：**
+```
+- 人机协作如行云流水
+- 知道 Claude 的边界
+- 能处理复杂场景
+- 成为团队专家
+```
+
+**建议：**
+- 培训新人
+- 贡献社区
+- 探索高级用法
+- 推动团队采用
+
+---
+
+##### 最终感悟
+
+###### 最重要的三件事
+
+**1. 清晰的沟通**
+```
+Claude 不能读心
+你说得越清楚
+结果越好
+```
+
+**2. 持续的对话**
+```
+不是一次性的命令
+而是持续的协作
+```
+
+**3. 适度的信任**
+```
+信任 Claude 的能力
+但验证每个输出
+这是专业精神
+```
+
+###### 给初学者的建议
+
+```
+不要害怕尝试
+不要期望完美
+不要放弃学习
+
+Claude Code 是工具
+你才是主人
+
+用好这个工具
+你会飞得更高
+```
+
+###### 给经验用户的建议
+
+```
+分享你的经验
+帮助他人成长
+持续优化流程
+
+Claude Code 在进化
+你也要不断进化
+
+保持学习
+保持好奇
+```
+
+---
+
+##### 结语
+
+> **"The future belongs to those who learn how to collaborate with AI."**
+
+使用 Claude Code 不只是学习一个工具，而是：
+
+- **思维方式的转变** - 从控制到协作
+- **工作流程的进化** - 从手工到智能辅助
+- **能力的提升** - 从编码到架构和决策
+- **效率的飞跃** - 从小时到分钟
+
+这些感悟来自实践，也将指导实践。
+
+记住：
+- Claude 可以推断意图，但不能读心
+- 明确性带来更好的结果
+- 人机协作创造最佳价值
+
+**祝你在 AI 辅助编程的旅程中，收获满满！** 🚀
+
+---
+
+> 这份文档会持续更新，欢迎补充你的感悟和智慧。
+
+**贡献方式：**
+```bash
+#### 添加你的感悟
+git add 使用哲学与感悟.md
+git commit -m "docs: add insights on [主题]"
+git push
+```
+
+让我们一起构建 Claude Code 的集体智慧！🤝
+
+
+## 第四部分：常见问题和资源
+
+### 4.1 常见问题解答
+
+**Q1: 如何在多个项目间切换？**
+
+```bash
+# 每个项目有独立会话
+cd project-a
+claude -c  # 恢复 project-a 的会话
+
+cd project-b
+claude -c  # 恢复 project-b 的会话
+
+# 会话自动按工作目录隔离
+```
+
+**Q2: CLAUDE.md 应该放什么内容？**
+
+```markdown
+✅ 应该放：
+- 编码标准和风格
+- 项目架构说明
+- 技术栈信息
+- 命名约定
+- 不应该修改的文件
+- 测试要求
+- 性能指标
+
+❌ 不应该放：
+- 敏感信息（API 密钥）
+- 临时笔记
+- 具体任务列表
+- 代码片段（应该在代码中）
+```
+
+**Q3: Plan Mode 什么时候用？**
+
+| 情况 | 使用模式 | 原因 |
+|------|----------|------|
+| 简单一行修复 | Default | 快速执行 |
+| 多文件重构 | Plan | 审查整体计划 |
+| 不熟悉代码库 | Plan | 避免意外 |
+| 自动化脚本 | Auto-Accept | 完全信任 |
+| 学习代码 | Plan | 了解流程 |
+
+**Q4: MCP vs 常规工具有什么区别？**
+
+```
+MCP 服务器：
+✅ 标准化接口
+✅ 自动认证（OAuth）
+✅ 深度集成
+✅ 需要服务器支持
+📝 示例：GitHub, Slack, Figma
+
+常规 Bash 工具：
+✅ 更灵活
+✅ 本地命令
+✅ 无需服务器
+❌ 手动认证
+📝 示例：git, npm, grep
+```
+
+**Q5: 如何安全存储敏感数据？**
+
+```markdown
+# 在 CLAUDE.md 中指定拒绝访问
+
+## 敏感文件 - 禁止访问
+- `.env*` 文件
+- `secrets/` 目录
+- `config/keys.json`
+- `*.pem` 文件
+
+## 认证方式
+使用环境变量或 MCP OAuth
+不要在代码中硬编码密钥
+```
+
+```json
+// 在 settings.json 中配置
+{
+  "permissions": {
+    "deny": [
+      "**/.env*",
+      "**/secrets.*",
+      "**/*.key",
+      "**/*.pem"
+    ]
+  }
+}
+```
+
+**Q6: 如何优化 Token 成本？**
+
+```bash
+# 1. 使用合适的模型
+claude --model haiku "简单任务"
+claude --model sonnet "一般任务"
+claude --model opus "复杂任务"
+
+# 2. 定期压缩
+/compact   # 每 50-100 轮
+
+# 3. 使用 Explore Subagent
+请 explore subagent 搜索...  # 使用 Haiku
+
+# 4. 限制上下文
+@specific-file.ts  # 只加载需要的
+
+# 5. 批处理任务
+一次性处理多个相似任务
+
+# 6. 监控成本
+/cost
+/usage
+```
+
+**Q7: 如何与团队共享配置？**
+
+```bash
+# 提交到版本控制的文件
+.claude/
+├── CLAUDE.md           # ✅ 提交 - 项目记忆
+├── agents/             # ✅ 提交 - 团队 Agents
+│   ├── code-reviewer.md
+│   └── test-writer.md
+├── commands/           # ✅ 提交 - 团队命令
+│   └── optimize.md
+├── settings.json       # ✅ 提交 - 项目设置
+└── mcp.json           # ✅ 提交 - MCP 配置（无令牌）
+
+# 不提交的文件（添加到 .gitignore）
+.claude/
+├── mcp.json           # ❌ 不提交 - 包含令牌
+├── settings.local.json # ❌ 不提交 - 本地覆盖
+└── sessions/          # ❌ 不提交 - 会话历史
+
+# .gitignore
+.claude/mcp.json
+.claude/settings.local.json
+.claude/sessions/
+.claude/checkpoints/
+.claude/audit.log
+```
+
+**Q8: IDE 自动编辑如何确保安全？**
+
+```bash
+# 方法 1: 使用 Plan Mode
+Shift+Tab  # 切换到 Plan Mode
+
+# 方法 2: 设置权限限制
+# .claude/settings.json
+{
+  "permissions": {
+    "deny": [
+      "**/.vscode/**",
+      "**/.idea/**",
+      "**/.env*",
+      "**/config/secrets.*"
+    ],
+    "protected_paths": [
+      "package.json",
+      "tsconfig.json"
+    ]
+  }
+}
+
+# 方法 3: 不受信任项目用手动模式
+claude --permission-mode default
+```
+
+**Q9: 如何配置多行输入？**
+
+```bash
+# macOS
+Option+Enter  # 或 Shift+Enter
+
+# Linux/Windows
+Shift+Enter
+
+# 自动配置
+/terminal-setup
+
+# 手动配置 iTerm2
+Preferences → Profiles → Keys
+Option+Enter → Send Text: \n
+```
+
+**Q10: 可以离线使用吗？**
+
+```
+❌ 不能离线使用
+
+Claude Code 需要网络：
+- 与 Claude API 通信
+- 认证
+- MCP 服务器
+- 同步会话
+
+但你可以：
+- 预先制定计划
+- 离线查看结果
+- 准备好在线时执行
+```
+
+---
+
+### 4.2 快速参考表
+
+#### 4.2.1 快捷键汇总
+
+| 快捷键 | 功能 | 场景 |
+|--------|------|------|
+| `Tab` | 切换 Extended Thinking | 需要深度思考 |
+| `Shift+Tab` | 切换权限模式 | 在模式间循环 |
+| `Alt+M` | 切换权限模式 | 同上 |
+| `Ctrl+C` | 中断操作 | 停止当前任务 |
+| `Ctrl+L` | 清除屏幕 | 保留历史 |
+| `Ctrl+O` | 切换详细输出 | 显示/隐藏工具调用 |
+| `Ctrl+R` | 搜索历史 | 查找命令 |
+| `Esc Esc` | 回滚 | 撤销操作 |
+
+**IDE 特定：**
+
+| IDE | 快捷键 | 功能 |
+|-----|--------|------|
+| VS Code | `Cmd/Ctrl+K` | 快速打开 |
+| JetBrains | `Cmd/Ctrl+Esc` | 快速打开 |
+| JetBrains | `Cmd+Opt+K` / `Alt+Ctrl+K` | 文件引用 |
+
+#### 4.2.2 斜线命令速查
+
+**管理命令：**
+```bash
+/clear          # 清除会话
+/exit           # 退出
+/rewind         # 回滚
+/login          # 切换账户
+/logout         # 登出
+```
+
+**配置命令：**
+```bash
+/config         # 配置菜单
+/model          # 切换模型
+/permissions    # 权限设置
+/vim            # Vim 模式
+/output-style   # 输出格式
+```
+
+**分析命令：**
+```bash
+/context        # 查看上下文
+/status         # 账户状态
+/cost           # 成本估计
+/usage          # 使用统计
+/doctor         # 诊断
+```
+
+**工作流命令：**
+```bash
+/compact        # 压缩会话
+/export         # 导出会话
+/review         # 代码审查
+```
+
+**集成命令：**
+```bash
+/mcp            # MCP 管理
+/agents         # Agent 管理
+/memory         # 编辑 CLAUDE.md
+/ide            # IDE 集成
+/hooks          # Hook 管理
+```
+
+**帮助命令：**
+```bash
+/help           # 帮助信息
+/terminal-setup # 终端配置
+/feedback       # 反馈
+```
+
+#### 4.2.3 文件位置速查
+
+| 位置 | 用途 | 共享 |
+|------|------|------|
+| `~/.claude/CLAUDE.md` | 用户全局记忆 | 仅本人，所有项目 |
+| `./CLAUDE.md` | 项目记忆 | Git 团队 |
+| `./.claude/CLAUDE.md` | 项目记忆（备选） | Git 团队 |
+| `~/.claude/settings.json` | 用户设置 | 仅本人 |
+| `.claude/settings.json` | 项目设置 | Git 团队 |
+| `.claude/settings.local.json` | 本地覆盖 | 不提交 |
+| `.claude/agents/` | 项目 Agent | Git 团队 |
+| `~/.claude/agents/` | 用户 Agent | 仅本人 |
+| `.claude/commands/` | 项目命令 | Git 团队 |
+| `~/.claude/commands/` | 用户命令 | 仅本人 |
+| `.mcp.json` | MCP 配置（无令牌） | Git 团队 |
+| `.claude/mcp.json` | MCP 配置（有令牌） | 不提交 |
+
+---
+
+### 4.3 项目演示建议
+
+虽然具体项目由你现场选择，这里提供一些建议和演示时的重点：
+
+#### 4.3.1 适合演示的项目类型
+
+**1. Web 应用开发**
+```
+示例：Todo 应用、博客系统、Dashboard
+重点展示：
+✓ 从需求到代码
+✓ 前后端集成
+✓ 数据库设计
+✓ API 开发
+✓ 部署流程
+```
+
+**2. Bug 修复和重构**
+```
+示例：现有项目的改进
+重点展示：
+✓ 代码分析
+✓ 问题识别
+✓ Plan Mode 使用
+✓ 重构流程
+✓ 测试验证
+```
+
+**3. API 集成**
+```
+示例：集成第三方服务
+重点展示：
+✓ MCP 服务器使用
+✓ API 调用
+✓ 错误处理
+✓ 数据转换
+```
+
+**4. 自动化脚本**
+```
+示例：部署脚本、数据处理
+重点展示：
+✓ 一次性模式
+✓ 管道处理
+✓ 批处理
+✓ Git 集成
+```
+
+#### 4.3.2 演示流程建议
+
+**第一部分：基础演示（15分钟）**
+```
+1. 安装和配置（快速过）
+2. 简单任务演示
+   - 创建一个函数
+   - 修复一个 bug
+   - 生成测试
+3. 展示基本命令
+   - 斜线命令
+   - @ 文件引用
+   - ! Bash 命令
+```
+
+**第二部分：进阶功能（20分钟）**
+```
+1. CLAUDE.md 配置
+2. Plan Mode 演示
+3. 权限模式切换
+4. MCP 服务器使用
+5. 会话管理
+```
+
+**第三部分：实际项目（30-40分钟）**
+```
+1. 从零开始或改进现有项目
+2. 展示完整工作流
+3. 使用多个功能组合
+4. 强调最佳实践
+5. Git 提交和 PR
+```
+
+**第四部分：高级技巧（15分钟）**
+```
+1. Git Worktrees 并行开发
+2. 自定义 Agent
+3. 自定义命令
+4. 成本优化技巧
+```
+
+#### 4.3.3 演示时的重点提示
+
+**强调的优势：**
+```
+✅ 提高开发效率 10-30%
+✅ 减少上下文切换
+✅ 自动化重复任务
+✅ 学习和理解代码
+✅ 保持代码质量
+```
+
+**常见陷阱提醒：**
+```
+⚠️ 盲目信任输出
+⚠️ 忽略安全检查
+⚠️ 不审查大型更改
+⚠️ 忘记成本监控
+⚠️ 不使用版本控制
+```
+
+**互动环节建议：**
+```
+💡 让观众提出任务
+💡 现场解决实际问题
+💡 展示错误处理
+💡ăšžé—®ç­"çŽŻèŠ‚
+💡 收集反馈
+```
+
+---
+
+## 总结
+
+### 核心要点回顾
+
+**基本操作：**
+- ⚡ 多种安装方式，简单快速
+- 🔐 灵活的认证选项
+- 💻 完整的 IDE 集成
+- 🎯 强大的命令行界面
+
+**使用技巧：**
+- 📝 CLAUDE.md 分层记忆系统
+- 🔄 会话管理和压缩
+- 💰 成本优化策略
+- ⌨️ 高效快捷键使用
+
+**最佳实践：**
+- 🛡️ Plan Mode 安全审查
+- 🔒 权限模式灵活控制
+- 🔌 MCP 扩展生态系统
+- 🤖 Agent 专业化分工
+- 🌿 Git Worktrees 并行开发
+
+### 下一步建议
+
+1. **立即开始** - 在实际项目中使用
+2. **创建 CLAUDE.md** - 记录项目知识
+3. **配置权限** - 确保安全
+4. **探索 MCP** - 连接你使用的服务
+5. **定制 Agent** - 创建专属助手
+6. **分享经验** - 与团队协作
+
+### 资源链接
+
+**官方文档：**
+- [Claude Code 主文档](https://code.claude.com/docs/)
+- [Claude Code 最佳实践](https://www.anthropic.com/engineering/claude-code-best-practices)
+- [Model Context Protocol](https://modelcontextprotocol.io/)
+
+**社区资源：**
+- [Awesome Claude Code](https://github.com/hesreallyhim/awesome-claude-code)
+- [Claude Code 示例命令](https://github.com/wshobson/commands)
+- [开发者备忘单](https://awesomeclaude.ai/code-cheatsheet)
+
+**学习资源：**
+- [Claude Code 最佳实践博客](https://www.builder.io/blog/claude-code)
+- [Git Worktrees 教程](https://medium.com/@dtunai/mastering-git-worktrees-with-claude-code-for-parallel-development-workflow-41dc91e645fe)
+- [MCP 服务器集成指南](https://dev.to/oikon/enhancing-claude-code-with-mcp-servers-and-subagents-29dd)
+
+---
+
+**培训教程完**
+
+📅 最后更新：2025年12月2日
+📧 反馈和建议：[GitHub Issues](https://github.com/anthropics/claude-code/issues)
+⭐ 如果这个教程有帮助，请考虑分享给你的团队！
