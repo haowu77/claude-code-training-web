@@ -233,6 +233,65 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Case Studies */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <div className="inline-block px-4 py-1.5 mb-6 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-bold uppercase tracking-widest">
+            真实案例
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">使用 Claude Code 构建的产品</h2>
+          <p className="text-zinc-400 max-w-2xl mx-auto">这些都是真实上线的产品，从想法到发布，AI 辅助开发让一切变得更快。</p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <a href="https://innovator.video" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card rounded-xl overflow-hidden hover:border-amber-500/50 transition-all">
+              <img src="/cases/innovator-video.png" alt="Innovator Video" className="w-full aspect-video object-cover object-top" />
+              <div className="p-3">
+                <div className="text-sm font-semibold group-hover:text-amber-500 transition-colors">Innovator Video</div>
+                <div className="text-xs text-zinc-500">AI 视频生成</div>
+              </div>
+            </div>
+          </a>
+          <a href="https://www.sidewalksocial.ai/" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card rounded-xl overflow-hidden hover:border-amber-500/50 transition-all">
+              <img src="/cases/sidewalk-social.png" alt="Sidewalk Social" className="w-full aspect-video object-cover object-top" />
+              <div className="p-3">
+                <div className="text-sm font-semibold group-hover:text-amber-500 transition-colors">Sidewalk Social</div>
+                <div className="text-xs text-zinc-500">社媒内容生成</div>
+              </div>
+            </div>
+          </a>
+          <a href="https://www.lingua-sync.app/" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card rounded-xl overflow-hidden hover:border-amber-500/50 transition-all">
+              <img src="/cases/lingua-sync.png" alt="Lingua Sync" className="w-full aspect-video object-cover object-top" />
+              <div className="p-3">
+                <div className="text-sm font-semibold group-hover:text-amber-500 transition-colors">Lingua Sync</div>
+                <div className="text-xs text-zinc-500">视频本地化</div>
+              </div>
+            </div>
+          </a>
+          <a href="https://decidemeal.vercel.app/" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card rounded-xl overflow-hidden hover:border-amber-500/50 transition-all">
+              <img src="/cases/decidemeal.png" alt="Decide Meal" className="w-full aspect-video object-cover object-top" />
+              <div className="p-3">
+                <div className="text-sm font-semibold group-hover:text-amber-500 transition-colors">Decide Meal</div>
+                <div className="text-xs text-zinc-500">AI 餐饮推荐</div>
+              </div>
+            </div>
+          </a>
+          <a href="https://wordrefiner.vercel.app/" target="_blank" rel="noopener noreferrer" className="group">
+            <div className="glass-card rounded-xl overflow-hidden hover:border-amber-500/50 transition-all">
+              <img src="/cases/wordrefiner.png" alt="Word Refiner" className="w-full aspect-video object-cover object-top" />
+              <div className="p-3">
+                <div className="text-sm font-semibold group-hover:text-amber-500 transition-colors">Say It Better</div>
+                <div className="text-xs text-zinc-500">沟通助手</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
       {/* CTA Footer */}
       <footer className="py-20 px-6 text-center border-t border-zinc-900">
         <h2 className="text-4xl font-black mb-4 italic">"AI 不会写出完美的架构，但它能帮你更快地抵达。"</h2>
