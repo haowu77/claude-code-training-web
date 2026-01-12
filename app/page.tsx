@@ -136,6 +136,48 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Why Vibe Coding Section */}
+      <section className="py-20 px-6 max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <div className="inline-block px-4 py-1.5 mb-6 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-bold uppercase tracking-widest">
+            行业趋势 · 2025
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">为什么企业需要拥抱 <span className="gradient-text">Vibe Coding</span></h2>
+          <p className="text-zinc-400 max-w-2xl mx-auto">AI 编程正在重塑软件开发行业，数据说明一切。</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="glass-card p-6 rounded-2xl text-center">
+            <div className="text-4xl font-black gradient-text mb-2">$1B+</div>
+            <div className="text-zinc-400 text-sm">Claude Code 年化收入</div>
+            <div className="text-zinc-600 text-xs mt-1">Anthropic 2025 财报</div>
+          </div>
+          <div className="glass-card p-6 rounded-2xl text-center">
+            <div className="text-4xl font-black gradient-text mb-2">50%+</div>
+            <div className="text-zinc-400 text-sm">AI 编程市场份额</div>
+            <div className="text-zinc-600 text-xs mt-1">超越 GitHub Copilot</div>
+          </div>
+          <div className="glass-card p-6 rounded-2xl text-center">
+            <div className="text-4xl font-black gradient-text mb-2">95%</div>
+            <div className="text-zinc-400 text-sm">代码由 AI 生成</div>
+            <div className="text-zinc-600 text-xs mt-1">Y Combinator 创业公司</div>
+          </div>
+        </div>
+
+        <div className="glass-card p-8 rounded-3xl border-l-4 border-amber-500">
+          <blockquote className="text-lg text-zinc-300 leading-relaxed mb-4">
+            "我们看到越来越多的初创公司，只有少数几个工程师就能运营数百万美元的业务。AI 编程工具让小团队拥有了大公司的生产力。"
+          </blockquote>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-amber-500 rounded-full flex items-center justify-center font-bold text-black text-sm">YC</div>
+            <div>
+              <div className="font-semibold text-white">Y Combinator</div>
+              <div className="text-zinc-500 text-sm">2025 创业趋势报告</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Curriculum Outline */}
       <section id="curriculum" className="py-20 px-6 max-w-7xl mx-auto">
         <div className="flex items-end justify-between mb-12">
