@@ -121,7 +121,7 @@ export default function LandingPage() {
           <span className="gradient-text">Claude Code </span>实战内参
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed">
-          不谈虚构的案例，只谈真实的工作流。从命令行熟练度到最新的 <span className="text-white border-b border-amber-500">Ralph/Loop</span> 自动化闭环，分享我如何在真实业务中让生产力产生质变。
+          不谈虚构的案例，只谈真实的工作流。从命令行熟练度到 <span className="text-white border-b border-amber-500">MCP 服务器</span>、<span className="text-white border-b border-amber-500">Subagent</span>、<span className="text-white border-b border-amber-500">Plugin</span> 等高级特性，分享我如何在真实业务中让生产力产生质变。
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
