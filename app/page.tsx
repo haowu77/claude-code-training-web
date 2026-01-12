@@ -32,11 +32,11 @@ const modules: Module[] = [
   },
   {
     id: 2,
-    title: "MCP 协议与自动化闭环",
-    description: "探索最新的 Ralph (Loop) 机制，看 AI 如何自主思考并完成修复循环。",
+    title: "Claude 进阶用法与自动化闭环",
+    description: "探索 MCP、Subagent、Hooks 等进阶机制，看 AI 如何自主思考并完成修复循环。",
     icon: <Network className="w-6 h-6" />,
     items: [
-      "官方插件 Ralph 深度应用：感受「自动循环执行」带来的震撼",
+      "Agentic Loop 深度应用：感受「自动循环执行」带来的震撼",
       "MCP 协议实战：连接你的数据库、API 和私有文档库",
       "官方工具链 vs 第三方插件：我是如何做选型的",
       "闭环反馈流：让 AI 在执行、报错、修复中完成自主进化"
@@ -74,8 +74,8 @@ const faqs: FAQItem[] = [
     answer: "我不是全职讲师，我是一名每天都在写代码的开发者。网上的教程多是功能介绍，我分享的是「体感」和「避坑指南」。我会告诉你哪些指令在复杂业务里没用，哪些组合技能让你效率翻倍。"
   },
   {
-    question: "什么是「Ralph / Loop」功能？",
-    answer: "这是 Claude Code 最近出的「杀手锏」。它允许 AI 像人一样，运行代码、看报错、改代码、再运行，直到成功。这标志着从「对话式 AI」向「执行式 Agent」的跨越，我会带你深度玩转这个闭环。"
+    question: "什么是「Agentic Loop」功能？",
+    answer: "这是 Claude Code 的核心能力。它允许 AI 像人一样，运行代码、看报错、改代码、再运行，直到成功。这标志着从「对话式 AI」向「执行式 Agent」的跨越，我会带你深度玩转这个闭环。"
   },
   {
     question: "我的项目代码很旧/很乱，也能用吗？",
@@ -114,7 +114,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6 max-w-7xl mx-auto text-center">
         <div className="inline-block px-4 py-1.5 mb-6 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-500 text-xs font-bold uppercase tracking-widest">
-          200+ 页教程 · 50人团队实战验证
+          200+ 页教程 · 真实软件开发团队实战验证
         </div>
         <h1 className="text-5xl md:text-7xl font-extrabold mb-8 leading-tight">
           从资深开发者视角的<br />
